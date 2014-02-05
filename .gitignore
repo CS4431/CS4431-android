@@ -27,3 +27,24 @@ proguard/
 *.ipr
 *.iws
 .idea/
+
+# god damn gradle shit
+*gradle*
+gradle/*
+.gradle/
+/gradle
+gradlew
+/gradle/*
+
+# Android Studio
+.idea/
+.gradle
+/*/local.properties
+/*/out
+/*/*/build
+/*/*/production
+*.iml
+*.iws
+*.ipr
+*~
+*.swp
