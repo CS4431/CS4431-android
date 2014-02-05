@@ -16,6 +16,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.lakehead.textbookmarket.LoginActivity"
+            android:label="Login"
+            android:theme="@android:style/Theme.Light.NoTitleBar">
+        </activity>
+
+        <activity
+            android:name="com.lakehead.textbookmarket.RegisterActivity"
+            android:label="Register"
+            android:theme="@android:style/Theme.Light.NoTitleBar">
+        </activity>
+
     </application>
 
 </manifest>
