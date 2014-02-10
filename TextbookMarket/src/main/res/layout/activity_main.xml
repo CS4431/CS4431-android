@@ -6,4 +6,11 @@
     tools:context="com.lakehead.textbookmarket.MainActivity"
     tools:ignore="MergeRootFrame" >
 
+    <fragment
+        class="com.lakehead.textbookmarket.TabsFragment"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        tools:layout="@layout/fragment_tabs" />
+
 </FrameLayout>
