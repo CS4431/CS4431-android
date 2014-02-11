@@ -8,4 +8,19 @@
     <string name="tab_title_2">Books</string>
     <string name="tab_title_3">Courses</string>
 
+    <string-array name="pref_department_names">
+        <item>Anthropology</item>
+        <item>Biology</item>
+        <item>Chemistry</item>
+        <item>Classics</item>
+        <item>Computer Science</item>
+    </string-array>
+    <string-array name="pref_department_codes">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
 </resources>

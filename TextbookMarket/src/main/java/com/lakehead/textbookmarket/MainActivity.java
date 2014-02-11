@@ -13,9 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends FragmentActivity{
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,25 @@ public class MainActivity extends FragmentActivity{
         if (savedInstanceState == null) {
             setContentView(R.layout.activity_main);
         }
+
+
+        final ListView courseList = (ListView)findViewById(R.id.courseListView);
+        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
+                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
+                "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux",
+                "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2",
+                "Android", "iPhone", "WindowsMobile" };
+
+        final ArrayList<String> list = new ArrayList<String>();
+        for(int i = 0; i < values.length; i++)
+        {
+            list.add(values[i]);
+        }
+
+        final BookArrayAdapter bookAdapter = new BookArrayAdapter(this, values);
+        courseList.setAdapter(bookAdapter);
+
+
     }
 
 
