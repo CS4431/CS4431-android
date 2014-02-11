@@ -46,7 +46,7 @@ public class CoursesTab extends TabDefinition {
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
-                250);
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.weight = 1;
         indicator.setLayoutParams(layoutParams);
 

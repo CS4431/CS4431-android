@@ -5,27 +5,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
  * Created by Master on 2/10/14.
  */
-public class BookArrayAdapter extends ArrayAdapter<String> {
+public class BookArrayAdapter extends ArrayAdapter<Book> {
     private final Context context;
-    private final String[] values;
+    private final Book[] books;
 
-    public BookArrayAdapter(Context context, String[] values) {
-        super(context, R.layout.item_view,  values);
+    /**
+     *
+     * @param context
+     * @param books
+     */
+    public BookArrayAdapter(Context context, Book[] books) {
+        super(context, R.layout.item_view,  books);
         this.context = context;
-        this.values = values;
+        this.books = books;
     }
 
     /**
      *
-     * @param position
-     * @param convertView
-     * @param parent
-     * @return
+     * @param position The Array position of the iterable list
+     * @param convertView unused
+     * @param parent The parent of the current View.
+     * @return Returns the now-formulated row of data.
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
@@ -33,10 +39,13 @@ public class BookArrayAdapter extends ArrayAdapter<String> {
         View rowView = inflater.inflate(R.layout.item_view, parent, false);
 
         TextView titleTextView = (TextView)rowView.findViewById(R.id.bookTitle);
-        titleTextView.setText(values[position]);
+        titleTextView.setText(books[position].get_name());
+
+        ImageView iconImageView = (ImageView)rowView.findViewById(R.id.icon);
+        iconImageView.setImageDrawable(books[position].get_icon());
 
         TextView detailTextView = (TextView)rowView.findViewById(R.id.bookInfo);
-        detailTextView.setText("This is some placeholder info");
+        detailTextView.setText(books[position].get_author());
 
         return rowView;
 

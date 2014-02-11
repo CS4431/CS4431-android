@@ -32,19 +32,18 @@ public class MainActivity extends FragmentActivity{
 
 
         final ListView courseList = (ListView)findViewById(R.id.courseListView);
-        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux",
-                "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2",
-                "Android", "iPhone", "WindowsMobile" };
+        Book tempBook1 = new Book(this, "C How to Program", "4th", "Deitel&Deitel", R.drawable.book1);
+        Book tempBook2 = new Book(this, "Operating Systems", "3rd", "Frank Allaire", R.drawable.book2);
+        Book tempBook3 = new Book(this, "Database Management", "4th", "Francis Allairington", R.drawable.book3);
+        Book tempBook4 = new Book(this, "Game Design Patterns", "2nd", "Klein & Co.", R.drawable.book4);
+        Book tempBook5 = new Book(this, "Compiler Design", "1st", "Dragon", R.drawable.book2);
+        Book tempBook6 = new Book(this, "Object-Oriented Design", "4th", "Deitel&Deitel", R.drawable.book1);
+        Book tempBook7 = new Book(this, "Why's Poignant Guide to Ruby", "1st", "_why the lucky stiff", R.drawable.book4);
+        Book[] bookList = new Book[] {tempBook1, tempBook2, tempBook3, tempBook4, tempBook5, tempBook6, tempBook7};
 
-        final ArrayList<String> list = new ArrayList<String>();
-        for(int i = 0; i < values.length; i++)
-        {
-            list.add(values[i]);
-        }
 
-        final BookArrayAdapter bookAdapter = new BookArrayAdapter(this, values);
+
+        final BookArrayAdapter bookAdapter = new BookArrayAdapter(this, bookList);
         courseList.setAdapter(bookAdapter);
 
 
