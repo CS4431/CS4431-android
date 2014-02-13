@@ -39,7 +39,11 @@ public class MainActivity extends FragmentActivity{
         Book tempBook5 = new Book(this, "Compiler Design", "1st", "Dragon", R.drawable.book2);
         Book tempBook6 = new Book(this, "Object-Oriented Design", "4th", "Deitel&Deitel", R.drawable.book1);
         Book tempBook7 = new Book(this, "Why's Poignant Guide to Ruby", "1st", "_why the lucky stiff", R.drawable.book4);
-        Book[] bookList = new Book[] {tempBook1, tempBook2, tempBook3, tempBook4, tempBook5, tempBook6, tempBook7};
+        Book tempBook8 = new Book(this, "Why's Poignant Guide to Ruby", "1st", "_why the lucky stiff", R.drawable.book4);
+        Book tempBook9 = new Book(this, "Why's Poignant Guide to Ruby", "1st", "_why the lucky stiff", R.drawable.book4);
+        Book tempBook10 = new Book(this, "Why's Poignant Guide to Ruby", "1st", "_why the lucky stiff", R.drawable.book4);
+        Book[] bookList = new Book[] {tempBook1, tempBook2, tempBook3, tempBook4, tempBook5, tempBook6, tempBook7,
+                tempBook8, tempBook9, tempBook10};
 
 
 

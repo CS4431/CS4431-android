@@ -35,15 +35,16 @@
             android:layout_height="fill_parent"
             android:background="#FF00FF" />
 
+
             <FrameLayout
             android:id="@+id/tab3"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="#FFFFFF" >
+            android:background="#ff161616" >
 
                 <ListView
                     android:layout_width="wrap_content"
-                    android:layout_height="471dp"
+                    android:layout_height="430dp"
                     android:id="@+id/courseListView"
                     android:layout_gravity="center"
                     tools:listitem="@layout/item_view" />

@@ -8,6 +8,8 @@
         android:id="@+id/tabTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:background="#ff161616"
+        android:textColor="#ffffff"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </LinearLayout>
