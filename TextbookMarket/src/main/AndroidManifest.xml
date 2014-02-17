@@ -21,6 +21,19 @@
             android:name="com.lakehead.textbookmarket.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
+
+        <activity
+            android:name="com.lakehead.textbookmarket.LoginActivity"
+            android:label="Login"
+            android:theme="@android:style/Theme.Light.NoTitleBar">
+        </activity>
+
+        <activity
+            android:name="com.lakehead.textbookmarket.RegisterActivity"
+            android:label="Register"
+            android:theme="@android:style/Theme.Light.NoTitleBar">
+        </activity>
+
     </application>
 
 </manifest>
