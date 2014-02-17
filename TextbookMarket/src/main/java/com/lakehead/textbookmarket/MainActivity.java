@@ -1,5 +1,10 @@
 package com.lakehead.textbookmarket;
-
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.app.FragmentTransaction;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
@@ -15,48 +20,80 @@ import android.os.Build;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.view.Menu;
 
-import java.util.ArrayList;
+public class MainActivity extends FragmentActivity implements
+        ActionBar.TabListener {
 
-public class MainActivity extends FragmentActivity{
-
+    private ViewPager viewPager;
+    private TabsPagerAdapter mAdapter;
+    private ActionBar actionBar;
+    // Tab titles
+    private String[] tabs = { "Courses", "Listings", "Books" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (savedInstanceState == null) {
-            setContentView(R.layout.activity_main);
+        // Initilization
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        actionBar = getActionBar();
+        mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
+
+        viewPager.setAdapter(mAdapter);
+        actionBar.setHomeButtonEnabled(false);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        // Adding Tabs
+        for (String tab_name : tabs) {
+            actionBar.addTab(actionBar.newTab().setText(tab_name)
+                    .setTabListener(this));
         }
 
+        /**
+         * on swiping the viewpager make respective tab selected
+         * */
 
-        final ListView courseList = (ListView)findViewById(R.id.courseListView);
-        Book tempBook1 = new Book(this, "C How to Program", "4th", "Deitel&Deitel", R.drawable.book1);
-        Book tempBook2 = new Book(this, "Operating Systems", "3rd", "Frank Allaire", R.drawable.book2);
-        Book tempBook3 = new Book(this, "Database Management", "4th", "Francis Allairington", R.drawable.book3);
-        Book tempBook4 = new Book(this, "Game Design Patterns", "2nd", "Klein & Co.", R.drawable.book4);
-        Book tempBook5 = new Book(this, "Compiler Design", "1st", "Dragon", R.drawable.book2);
-        Book tempBook6 = new Book(this, "Object-Oriented Design", "4th", "Deitel&Deitel", R.drawable.book1);
-        Book tempBook7 = new Book(this, "Why's Poignant Guide to Ruby", "1st", "_why the lucky stiff", R.drawable.book4);
-        Book tempBook8 = new Book(this, "Why's Poignant Guide to Ruby", "1st", "_why the lucky stiff", R.drawable.book4);
-        Book tempBook9 = new Book(this, "Why's Poignant Guide to Ruby", "1st", "_why the lucky stiff", R.drawable.book4);
-        Book tempBook10 = new Book(this, "Why's Poignant Guide to Ruby", "1st", "_why the lucky stiff", R.drawable.book4);
-        Book[] bookList = new Book[] {tempBook1, tempBook2, tempBook3, tempBook4, tempBook5, tempBook6, tempBook7,
-                tempBook8, tempBook9, tempBook10};
+         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageSelected(int position) {
+                // on changing the page
+                // make respected tab selected
+                actionBar.setSelectedNavigationItem(position);
+            }
 
 
 
-        final BookArrayAdapter bookAdapter = new BookArrayAdapter(this, bookList);
-        courseList.setAdapter(bookAdapter);
+            @Override
+            public void onPageScrolled(int arg0, float arg1, int arg2) {
+            }
 
-
+            @Override
+            public void onPageScrollStateChanged(int arg0) {
+            }
+        });
     }
 
+    @Override
+    public void onTabReselected(Tab tab, FragmentTransaction ft) {
+    }
+
+    @Override
+    public void onTabSelected(Tab tab, FragmentTransaction ft) {
+        // on tab selected
+        // show respected fragment view
+        viewPager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -87,6 +124,5 @@ public class MainActivity extends FragmentActivity{
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
     }
-
 
 }
