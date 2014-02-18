@@ -13,8 +13,8 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
     public TabsPagerAdapter(FragmentManager fm) {
         super(fm);
         booksFragment = new BooksFragment();
-        coursesFragment = new BooksFragment();
-        listingsFragment = new BooksFragment();
+        coursesFragment = new CoursesFragment();
+        listingsFragment = new ListingsFragment();
     }
 
 
@@ -24,11 +24,11 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 
         switch (index) {
             case 0:
-                return booksFragment;
-            case 1:
                 return coursesFragment;
-            case 2:
+            case 1:
                 return listingsFragment;
+            case 2:
+                return booksFragment;
         }
 
         return null;

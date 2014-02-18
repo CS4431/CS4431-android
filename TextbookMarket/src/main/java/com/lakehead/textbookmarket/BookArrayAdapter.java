@@ -21,7 +21,7 @@ public class BookArrayAdapter extends ArrayAdapter<Book> {
      * @param books
      */
     public BookArrayAdapter(Context context, Book[] books) {
-        super(context, R.layout.item_view,  books);
+        super(context, R.layout.books_item_view,  books);
         this.context = context;
         this.books = books;
     }
@@ -36,13 +36,13 @@ public class BookArrayAdapter extends ArrayAdapter<Book> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.item_view, parent, false);
+        View rowView = inflater.inflate(R.layout.books_item_view, parent, false);
 
         TextView titleTextView = (TextView)rowView.findViewById(R.id.bookTitle);
-        titleTextView.setText(books[position].get_name());
+        titleTextView.setText(books[position].get_title());
 
         ImageView iconImageView = (ImageView)rowView.findViewById(R.id.icon);
-        iconImageView.setImageDrawable(books[position].get_icon());
+        iconImageView.setImageDrawable(books[position].get_icon_drawable());
 
         TextView detailTextView = (TextView)rowView.findViewById(R.id.bookInfo);
         detailTextView.setText(books[position].get_author());

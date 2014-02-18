@@ -14,16 +14,16 @@ public class BooksFragment extends Fragment {
     {
         View rootView = inflater.inflate(R.layout.fragment_books, container, false);
         ListView bookListView = (ListView)rootView.findViewById(R.id.book_list_view);
-        Book tempBook1 = new Book(this.getActivity(), "C How to Program", "4th", "Deitel&Deitel", R.drawable.book1);
-        Book tempBook2 = new Book(this.getActivity(), "Operating Systems", "3rd", "Frank Allaire", R.drawable.book2);
-        Book tempBook3 = new Book(this.getActivity(), "Database Management", "4th", "Francis Allairington", R.drawable.book3);
-        Book tempBook4 = new Book(this.getActivity(), "Game Design Patterns", "2nd", "Klein & Co.", R.drawable.book4);
-        Book tempBook5 = new Book(this.getActivity(), "Compiler Design", "1st", "Dragon", R.drawable.book2);
-        Book tempBook6 = new Book(this.getActivity(), "Object-Oriented Design", "4th", "Deitel&Deitel", R.drawable.book1);
-        Book tempBook7 = new Book(this.getActivity(), "Why's Poignant Guide to Ruby", "1st", "_why the lucky stiff", R.drawable.book4);
-        Book tempBook8 = new Book(this.getActivity(), "Why's Poignant Guide to Ruby", "1st", "_why the lucky stiff", R.drawable.book4);
-        Book tempBook9 = new Book(this.getActivity(), "Why's Poignant Guide to Ruby", "1st", "_why the lucky stiff", R.drawable.book4);
-        Book tempBook10 = new Book(this.getActivity(), "Why's Poignant Guide to Ruby", "1st", "_why the lucky stiff", R.drawable.book4);
+        Book tempBook1 = new Book(rootView.getContext(),1, "C How to Program","1232345234",1,"Deitel&Deitel",4,"Penguin Publishing","Paperback","Some_url.com/image.jpg", R.drawable.book2);
+        Book tempBook2 = new Book(rootView.getContext(),2, "Compiler Design","1232345234",1,"Deitel&Deitel",4,"Penguin Publishing","Paperback","Some_url.com/image.jpg", R.drawable.book1);
+        Book tempBook3 = new Book(rootView.getContext(),3, "Algorithm Analysis","1232345234",1,"Deitel&Deitel",4,"Penguin Publishing","Paperback","Some_url.com/image.jpg", R.drawable.book4);
+        Book tempBook4 = new Book(rootView.getContext(),4, "Data Structures","1232345234",1,"Deitel&Deitel",4,"Penguin Publishing","Paperback","Some_url.com/image.jpg", R.drawable.book3);
+        Book tempBook5 = new Book(rootView.getContext(),5, "Database Management Systems","1232345234",1,"Deitel&Deitel",4,"Penguin Publishing","Paperback","Some_url.com/image.jpg", R.drawable.book1);
+        Book tempBook6 = new Book(rootView.getContext(),6, "Object-Oriented Design and Methodologies","1232345234",1,"Deitel&Deitel",4,"Penguin Publishing","Paperback","Some_url.com/image.jpg", R.drawable.book2);
+        Book tempBook7 = new Book(rootView.getContext(),7, "Software Engineering Techniques","1232345234",1,"Deitel&Deitel",4,"Penguin Publishing","Paperback","Some_url.com/image.jpg", R.drawable.book1);
+        Book tempBook8 = new Book(rootView.getContext(),8, "The Dragon Book","1232345234",1,"Deitel&Deitel",4,"Penguin Publishing","Paperback","Some_url.com/image.jpg", R.drawable.book4);
+        Book tempBook9 = new Book(rootView.getContext(),9, "Clean Code 2","1232345234",1,"Deitel&Deitel",4,"Penguin Publishing","Paperback","Some_url.com/image.jpg", R.drawable.book3);
+        Book tempBook10 = new Book(rootView.getContext(),10, "Operating Systems in Depth","1232345234",1,"Deitel&Deitel",4,"Penguin Publishing","Paperback","Some_url.com/image.jpg", R.drawable.book2);
         Book[] bookList = new Book[] {tempBook1, tempBook2, tempBook3, tempBook4, tempBook5, tempBook6, tempBook7,
                 tempBook8, tempBook9, tempBook10};
 
