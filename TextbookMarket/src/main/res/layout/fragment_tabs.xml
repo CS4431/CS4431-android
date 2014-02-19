@@ -24,7 +24,9 @@
             <FrameLayout
                 android:id="@+id/tab1"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+                android:layout_height="fill_parent"
+                android:background="#ff161616">
+
 
 
             </FrameLayout>
@@ -33,15 +35,18 @@
             android:id="@+id/tab2"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="#FF00FF" />
+            android:background="#ff161616" >
+                <ListView
+                    android:layout_width="wrap_content"
+                    android:layout_height="430dp"></ListView>
+                </FrameLayout>
 
 
             <FrameLayout
             android:id="@+id/tab3"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="#ff161616" >
-
+            android:background="#ff161616">
                 <ListView
                     android:layout_width="wrap_content"
                     android:layout_height="430dp"

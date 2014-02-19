@@ -7,5 +7,6 @@
     <string name="tab_title_1">Listings</string>
     <string name="tab_title_2">Books</string>
     <string name="tab_title_3">Courses</string>
-
+    <string name="title_activity_scanner">Scanner</string>
+    <string name="scan">Scan</string>
 </resources>
