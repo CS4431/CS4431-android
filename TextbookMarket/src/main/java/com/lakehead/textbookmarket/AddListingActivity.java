@@ -23,11 +23,8 @@ public class AddListingActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_listing);
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
+        ProgressBar bar = (ProgressBar)findViewById(R.id.isbnProgressBar);
+        bar.setVisibility(View.INVISIBLE);
 
     }
 
@@ -51,10 +48,10 @@ public class AddListingActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+    /*
     /**
      * A placeholder fragment containing a simple view.
-     */
+
     public static class PlaceholderFragment extends Fragment {
 
         public PlaceholderFragment() {
@@ -64,12 +61,11 @@ public class AddListingActivity extends Activity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_add_listing, container, false);
-             ProgressBar bar = (ProgressBar)rootView.findViewById(R.id.isbnProgressBar);
-             bar.setVisibility(View.INVISIBLE);
+
             return rootView;
         }
     }
-
+    */
     public void okClicked(View view){
         TextView isbnTextView = (TextView)findViewById(R.id.isbnText);
         isbnTextView.clearFocus();
