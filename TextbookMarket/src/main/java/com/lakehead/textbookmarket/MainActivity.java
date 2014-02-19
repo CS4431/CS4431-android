@@ -11,6 +11,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -95,7 +96,7 @@ public class MainActivity extends FragmentActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
 
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main_activity_actions, menu);
         return true;
     }
 
@@ -109,7 +110,19 @@ public class MainActivity extends FragmentActivity implements
             openSettings();
             return true;
         }
+        else if(id == R.id.action_search){
+            Log.i("MainActivity", "onOptionsItemSelected: " + "Search Selected!");
+        }
+        else if(id == R.id.action_new_listing){
+            openIsbnSearch();
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openIsbnSearch() {
+        Intent addListingIntent = new Intent(this, AddListingActivity.class);
+        startActivity(addListingIntent);
+
     }
 
     /**
@@ -120,7 +133,7 @@ public class MainActivity extends FragmentActivity implements
     /**
      * Method is called when the Settings button is selected from the optionMenu; Starts new SettingsActivity.
      */
-    public void openSettings(){
+    private void openSettings(){
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
     }

@@ -7,5 +7,8 @@
     <string name="tab_title_1">Listings</string>
     <string name="tab_title_2">Books</string>
     <string name="tab_title_3">Courses</string>
+    <string name="title_activity_add_listing">AddListingActivity</string>
+    <string name="action_search">Search</string>
+    <string name="action_new_listing">New Listing</string>
 
 </resources>
