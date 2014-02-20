@@ -3,6 +3,7 @@ package com.lakehead.textbookmarket;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.os.Build;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -48,24 +50,38 @@ public class AddListingActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
-    /*
-    /**
-     * A placeholder fragment containing a simple view.
 
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_add_listing, container, false);
-
-            return rootView;
-        }
+    public void scanClicked(View view){
+        IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+        scanIntegrator.initiateScan(IntentIntegrator.BOOK_CODE_TYPES);
     }
-    */
+
+    public void onActivityResult(int requestCode, int resultCode,Intent intent){
+        try{
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if(scanningResult != null){
+            //had to do this stupid double-if statement because occasionally the scanner will return
+            //null as the STRING and occasionally will return null as the scanningResult
+            String scanContent = scanningResult.getContents();
+            if(scanContent != null && isISBN13Valid(scanContent)){
+                Log.d("AddListingActivity","This is the ISBN " + scanContent);
+                Log.d("AddListingActivity", "This is the scanFormat " + scanningResult.getFormatName());
+                TextView isbnTextView = (TextView)findViewById(R.id.isbnText);
+                isbnTextView.setText(scanContent);
+            }else{
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "No ISBN data received. Is this a valid ISBN13?", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+
+        }else{
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "No scan data received!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        }catch(Exception e){Log.e("AddListingActivity","Error during reading of scan data: " + e.toString());}
+    }
+
     public void okClicked(View view){
         TextView isbnTextView = (TextView)findViewById(R.id.isbnText);
         isbnTextView.clearFocus();
@@ -75,6 +91,23 @@ public class AddListingActivity extends Activity {
         //API CALL OR DB LOOKUP FOR BOOKS.
 
 
+    }
+
+    /**
+     *
+     * @param isbn
+     * @return whether or not the scanned barcode is a valid ISBN13 number.
+     */
+    public boolean isISBN13Valid(String isbn) {
+        int check = 0;
+        for (int i = 0; i < 12; i += 2) {
+            check += Integer.valueOf(isbn.substring(i, i + 1));
+        }
+        for (int i = 1; i < 12; i += 2) {
+            check += Integer.valueOf(isbn.substring(i, i + 1)) * 3;
+        }
+        check += Integer.valueOf(isbn.substring(12));
+        return check % 10 == 0;
     }
 
 }
