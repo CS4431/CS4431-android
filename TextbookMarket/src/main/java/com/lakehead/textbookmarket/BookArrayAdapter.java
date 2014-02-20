@@ -8,19 +8,21 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 /**
  * Created by Master on 2/10/14.
  */
 public class BookArrayAdapter extends ArrayAdapter<Book> {
     private final Context context;
-    private final Book[] books;
+    private final List<Book> books;
 
     /**
      *
      * @param context
      * @param books
      */
-    public BookArrayAdapter(Context context, Book[] books) {
+    public BookArrayAdapter(Context context, List<Book> books) {
         super(context, R.layout.books_item_view,  books);
         this.context = context;
         this.books = books;
@@ -39,13 +41,13 @@ public class BookArrayAdapter extends ArrayAdapter<Book> {
         View rowView = inflater.inflate(R.layout.books_item_view, parent, false);
 
         TextView titleTextView = (TextView)rowView.findViewById(R.id.bookTitle);
-        titleTextView.setText(books[position].get_title());
+        titleTextView.setText(books.get(position).get_title());
 
-        ImageView iconImageView = (ImageView)rowView.findViewById(R.id.icon);
-        iconImageView.setImageDrawable(books[position].get_icon_drawable());
+        //ImageView iconImageView = (ImageView)rowView.findViewById(R.id.icon);
+        //iconImageView.setImageDrawable(books[position].get_icon_drawable());
 
         TextView detailTextView = (TextView)rowView.findViewById(R.id.bookInfo);
-        detailTextView.setText(books[position].get_author());
+        detailTextView.setText(books.get(position).get_author());
 
         return rowView;
 

@@ -37,7 +37,7 @@ class GetJSONArrayTask extends AsyncTask<NameValuePair, Void, JSONArray> {
     //path refers to the URL, excluding the address and the port. "/api/book", for example.
     String path;
     JSONArray jArray;
-    private final String SERVER_ADDRESS = "107.170.7.58:4567";
+    private final String SERVER_ADDRESS = "http://107.170.7.58:4567";
 
     protected JSONArray doInBackground(NameValuePair... params)
     {
@@ -45,13 +45,13 @@ class GetJSONArrayTask extends AsyncTask<NameValuePair, Void, JSONArray> {
 
         try
         {
-            URI uri = new URI(SERVER_ADDRESS);
+            URI uri = new URI(SERVER_ADDRESS+path);
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(uri);
-            if(params.length > 1)
-            {
-                httpPost.addHeader("Authorization", "Token " + params[1]);
-            }
+            //if(params.length > 1)
+            //{
+            //    httpPost.addHeader("Authorization", "Token " + params[1]);
+            //}
 
             //The POST parameters are will be added as NameValuePairs
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();

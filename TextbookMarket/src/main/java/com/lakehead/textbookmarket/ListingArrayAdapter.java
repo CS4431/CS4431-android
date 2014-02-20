@@ -31,7 +31,7 @@ public class ListingArrayAdapter extends ArrayAdapter<Listing> {
 
 
         //TODO gotta figure out best way to grab relevant book. API or use or our own records?
-        //listingTitleView.setText(listings[position].get_book_id());
+        //listingTitleView.setText(listings[position].get_edition_group_id());
         listingTitleView.setText("TEST");
 
 
