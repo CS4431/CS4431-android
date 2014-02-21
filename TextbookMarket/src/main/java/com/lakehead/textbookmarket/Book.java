@@ -1,6 +1,7 @@
 package com.lakehead.textbookmarket;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 /**
  * Created by Master on 2/10/14.
@@ -15,6 +16,7 @@ public class Book {
     private final String _publisher;
     private final String _cover;
     private final String _image_url;//a URL pointing to the image.
+    private Bitmap bitmap;
 
 
     /**
@@ -74,6 +76,16 @@ public class Book {
 
     public String get_title() {
         return _title;
+    }
+
+    public void setBitmap(Bitmap bitmap)
+    {
+        this.bitmap = bitmap;
+    }
+
+    public Bitmap getBitmap()
+    {
+        return bitmap;
     }
 
 }

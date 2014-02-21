@@ -27,6 +27,7 @@ class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
     private int width;
     private int height;
     private String url;
+    private Book book;
 
     public GetImageTask(String url, ImageView imageView, int width, int height)
     {
@@ -34,6 +35,15 @@ class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
         this.imageView=imageView;
         this.width = width;
         this.height = height;
+    }
+
+    public GetImageTask(String url, ImageView imageView, int width, int height, Book book)
+    {
+        this.url = url;
+        this.imageView=imageView;
+        this.width = width;
+        this.height = height;
+        this.book = book;
     }
 
     //Params are of type Void because we never need them for this AsyncTasks
@@ -79,5 +89,11 @@ class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
     {
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bmp, width, height, false);
         imageView.setImageBitmap(scaledBitmap);
+
+        //We may or may not have passed a book into this AsyncTask
+        if(book != null)
+        {
+            book.setBitmap(scaledBitmap);
+        }
     }
 }

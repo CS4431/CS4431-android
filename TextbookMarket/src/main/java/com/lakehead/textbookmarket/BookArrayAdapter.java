@@ -45,7 +45,16 @@ public class BookArrayAdapter extends ArrayAdapter<Book> {
         titleTextView.setText(books.get(position).get_title());
 
         ImageView iconImageView = (ImageView)rowView.findViewById(R.id.icon);
-        new GetImageTask(books.get(position).get_image_url(), iconImageView, THUMBNAIL_SIZE, THUMBNAIL_SIZE).execute();
+
+        //If the book doesn't have a bitmap yet, then fetch it. Otherwise, just display the one we have
+        if(books.get(position).getBitmap() == null)
+        {
+            new GetImageTask(books.get(position).get_image_url(), iconImageView, THUMBNAIL_SIZE, THUMBNAIL_SIZE, books.get(position)).execute();
+        }
+        else
+        {
+            iconImageView.setImageBitmap(books.get(position).getBitmap());
+        }
 
         TextView detailTextView = (TextView)rowView.findViewById(R.id.bookInfo);
         detailTextView.setText(books.get(position).get_author());
