@@ -16,9 +16,15 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.InputStream;
 import java.net.URI;
 
-/**
- * Created by tim on 10/14/13.
- */
+/*
+
+    This AsyncTask grabs a Bitmap from a URL and then puts it inside an ImageView that
+    is passed in though the constructor. Optionally we may maintain a reference to that
+    Bitmap inside a Book object if we choose to pass one in.
+
+    AsyncTasks are more thoroughly explained in GetJSONArrayTask
+
+  */
 
 class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
 
@@ -46,7 +52,7 @@ class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
         this.book = book;
     }
 
-    //Params are of type Void because we never need them for this AsyncTasks
+    //Params are of type Void because we never need them for this AsyncTask
     protected Bitmap doInBackground(Void... params) {
         Bitmap bitmap;
         try
@@ -85,6 +91,7 @@ class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
     }
 
     //Here, we scale the image we got to a desired size, and set the ImageView's bitmap
+    //Note that in this AsyncTask, we don't have a callback to an Activity or Fragment
     protected void onPostExecute(Bitmap bmp)
     {
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bmp, width, height, false);

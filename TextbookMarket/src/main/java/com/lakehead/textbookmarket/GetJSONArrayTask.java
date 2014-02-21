@@ -18,10 +18,35 @@ import org.apache.http.client.HttpClient;
 import android.util.Log;
 import android.os.AsyncTask;
 
+/*
+    The first thing you'll notice is the stuff between the angle brackets. These are:
+    <Param type for doInBackground(),
+    Param type for onProgressUpdate() (We don't use this),
+    Return type of doInBackground() and argument type for onPostExecute()>
+
+    When a new AsyncTask is executed, doInBackground() gets called with any params provided
+    (the params array is variable length). After a value is returned from doInBackground(),
+    onPostExecute() is called, passing in whatever value was returned. Note that the type of
+    argument in onPostExecute() must match the return type of doInBackground(); in this case,
+    it's a JSONArray.
+
+    The OnTaskCompleted is on Object that implements a method called onTaskCompleted(). This
+    interface is used to facilitate a simple observer pattern. This allows us to pass objects
+    back into whatever created this AsyncTask. In this case, we pass the JSONArray we get
+    from the API call back into another object (most likely an Activity or Fragment).
+
+    A NameValuePair is essentially just a group of two strings - one is a key, the other, a value.
+ */
 
 class GetJSONArrayTask extends AsyncTask<NameValuePair, Void, JSONArray> {
 
+    //listener is the object that created this AsyncTask. It implements a callback function.
     private OnTaskCompleted listener;
+
+    //path refers to the URL, excluding the address and the port. "/api/book", for example.
+    String path;
+    JSONArray jArray;
+    private static final String SERVER_ADDRESS = "http://107.170.7.58:4567";
 
     public GetJSONArrayTask(OnTaskCompleted listener)
     {
@@ -34,24 +59,20 @@ class GetJSONArrayTask extends AsyncTask<NameValuePair, Void, JSONArray> {
         this.path = path;
     }
 
-    //path refers to the URL, excluding the address and the port. "/api/book", for example.
-    String path;
-    JSONArray jArray;
-    private final String SERVER_ADDRESS = "http://107.170.7.58:4567";
-
     protected JSONArray doInBackground(NameValuePair... params)
     {
         String result=new String();
 
         try
         {
-            URI uri = new URI(SERVER_ADDRESS+path);
+            /*
+            Note that the URI we use consists of a final String concatenated with the path that
+            is passed in through the constructor
+            */
+            URI uri = new URI(SERVER_ADDRESS + path);
+
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(uri);
-            //if(params.length > 1)
-            //{
-            //    httpPost.addHeader("Authorization", "Token " + params[1]);
-            //}
 
             //The POST parameters are will be added as NameValuePairs
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -65,13 +86,13 @@ class GetJSONArrayTask extends AsyncTask<NameValuePair, Void, JSONArray> {
             //Add all our POST parameters to the request
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-
             //Execute the request and get a response
             HttpResponse response = httpclient.execute(httpPost);
             HttpEntity entity = response.getEntity();
             if(entity != null)
             {
                 //Try to read the result from the HTTP request into a String.
+                //Inside this try/catch, we just build a string from the result of our API call
                 try
                 {
                     InputStream is = entity.getContent();
@@ -90,27 +111,26 @@ class GetJSONArrayTask extends AsyncTask<NameValuePair, Void, JSONArray> {
                     Log.e("Exceptions", "Error converting result " + e.toString());
                 }
 
-                // try parse the string to a JSON Array
+                // try create a JSONArray from the string we just got
                 try
                 {
                     jArray = new JSONArray(result);
                     return jArray;
 
                 }
-                catch (JSONException e)
+                catch (JSONException e) //malformed JSON, not JSON, possibly a null/empty String, etc
                 {
                     Log.d("Debug","Error parsing JSON");
                     Log.e("Exceptions", e.toString());
                 }
             }
-            else
+            else //The HttpEntity was null
             {
                 return null;
             }
         }
-        catch(Exception e)
+        catch(Exception e) //URL can't be reached, bad params, etc
         {
-            //This typically happens if the url can't be reached
             Log.d("Debug","Getting URL failed!");
             Log.e("Exceptions",e.toString());
             e.printStackTrace();
@@ -119,7 +139,8 @@ class GetJSONArrayTask extends AsyncTask<NameValuePair, Void, JSONArray> {
         return null;
     }
 
-    //Callback for the activity. Pass the JSONArray back to it.
+    //Callback for the activity/fragment.
+    //Pass the JSONArray back to whatever created this AsyncTask.
     protected void onPostExecute(JSONArray jArray)
     {
         listener.onTaskCompleted(jArray);

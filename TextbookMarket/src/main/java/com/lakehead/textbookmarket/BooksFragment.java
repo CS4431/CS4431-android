@@ -20,22 +20,19 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
     View rootView;
     JSONArray jArray;
 
-    Book tempBook1;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         rootView = inflater.inflate(R.layout.fragment_books, container, false);
         bookListView = (ListView)rootView.findViewById(R.id.book_list_view);
 
+        //These NameValuePairs are the POST parameters for the API call
         NameValuePair ext = new BasicNameValuePair("ext", "json");
         NameValuePair count = new BasicNameValuePair("count", "10");
         new GetJSONArrayTask(this, "/api/book").execute(ext, count);
 
         return rootView;
     }
-
-
 
     @Override
     public void onTaskCompleted(Object obj)
@@ -44,6 +41,7 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
 
         List<Book> bookList = new ArrayList<Book>();
 
+        //Add all the books in our JSONArray to our bookList
         try
         {
             for(int i = 0; i < jArray.length(); i++)
@@ -65,10 +63,8 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
             e.printStackTrace();
         }
 
-
         final BookArrayAdapter bookAdapter = new BookArrayAdapter(this.getActivity(), bookList);
         bookListView.setAdapter(bookAdapter);
-
     }
 
 }
