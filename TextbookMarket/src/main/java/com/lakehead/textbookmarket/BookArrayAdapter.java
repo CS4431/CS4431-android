@@ -16,6 +16,7 @@ import java.util.List;
 public class BookArrayAdapter extends ArrayAdapter<Book> {
     private final Context context;
     private final List<Book> books;
+    private final int THUMBNAIL_SIZE = 96;
 
     /**
      *
@@ -43,15 +44,13 @@ public class BookArrayAdapter extends ArrayAdapter<Book> {
         TextView titleTextView = (TextView)rowView.findViewById(R.id.bookTitle);
         titleTextView.setText(books.get(position).get_title());
 
-        //ImageView iconImageView = (ImageView)rowView.findViewById(R.id.icon);
-        //iconImageView.setImageDrawable(books[position].get_icon_drawable());
+        ImageView iconImageView = (ImageView)rowView.findViewById(R.id.icon);
+        new GetImageTask(books.get(position).get_image_url(), iconImageView, THUMBNAIL_SIZE, THUMBNAIL_SIZE).execute();
 
         TextView detailTextView = (TextView)rowView.findViewById(R.id.bookInfo);
         detailTextView.setText(books.get(position).get_author());
 
         return rowView;
-
-
     }
 
 }

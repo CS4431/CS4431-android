@@ -15,7 +15,6 @@ public class Book {
     private final String _publisher;
     private final String _cover;
     private final String _image_url;//a URL pointing to the image.
-    //private final Drawable _icon_drawable;
 
 
     /**
@@ -77,7 +76,4 @@ public class Book {
         return _title;
     }
 
-    //public Drawable get_icon_drawable() {
-    //    return _icon_drawable;
-    //}
 }
