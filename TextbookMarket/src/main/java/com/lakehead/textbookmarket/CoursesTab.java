@@ -1,5 +1,6 @@
 package com.lakehead.textbookmarket;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
