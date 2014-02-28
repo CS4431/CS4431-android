@@ -16,15 +16,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.InputStream;
 import java.net.URI;
 
-/*
-
-    This AsyncTask grabs a Bitmap from a URL and then puts it inside an ImageView that
-    is passed in though the constructor. Optionally we may maintain a reference to that
-    Bitmap inside a Book object if we choose to pass one in.
-
-    AsyncTasks are more thoroughly explained in GetJSONArrayTask
-
-  */
+/**
+ * This AsyncTask grabs a Bitmap from a URL and then puts it inside an ImageView that
+ * is passed in though the constructor. Optionally we may maintain a reference to that
+ * Bitmap inside a Book object if we choose to pass one in.
+ * <br/>
+ * AsyncTasks are more thoroughly explained in GetJSONArrayTask
+ */
 
 class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
 
@@ -35,6 +33,14 @@ class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
     private String url;
     private Book book;
 
+    /**
+     * @param url
+     * @param imageView
+     * @param width
+     * @param height
+     * Constructor. url is the url of the image. The image view is the view to which we wish to apply
+     * the image at the url.
+     */
     public GetImageTask(String url, ImageView imageView, int width, int height)
     {
         this.url = url;
@@ -43,6 +49,14 @@ class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
         this.height = height;
     }
 
+    /**
+     * @param url
+     * @param imageView
+     * @param width
+     * @param height
+     * @param book
+     * Constructor. When this constructor is used, the url of the image is also stored in book object.
+     */
     public GetImageTask(String url, ImageView imageView, int width, int height, Book book)
     {
         this.url = url;
@@ -53,6 +67,10 @@ class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
     }
 
     //Params are of type Void because we never need them for this AsyncTask
+    /**
+     * @return A bitmap to be applied to an ImageView
+     * This method executes the request and fetches an image
+     */
     protected Bitmap doInBackground(Void... params) {
         Bitmap bitmap;
         try
@@ -92,6 +110,13 @@ class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
 
     //Here, we scale the image we got to a desired size, and set the ImageView's bitmap
     //Note that in this AsyncTask, we don't have a callback to an Activity or Fragment
+    /**
+     * @param bmp
+     * The Bitmap parameter is received from the doInBackground method on return.
+     * The Bitmap is applied to an ImageView specified in the constructor with dimensions width, height.
+     * If a book object was passed into the constructor, we also store the URL of that image in a
+     * book object.
+     */
     protected void onPostExecute(Bitmap bmp)
     {
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bmp, width, height, false);
