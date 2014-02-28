@@ -14,6 +14,9 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The fragment used in the "Books" tab of MainActivity
+ */
 public class BooksFragment extends Fragment implements OnTaskCompleted {
 
     ListView bookListView;
@@ -34,6 +37,12 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
         return rootView;
     }
 
+    /**
+     * @param obj
+     * Override function for a callback used to receive data from AsyncTasks. The Object passed into
+     * this function is cast to a JSONArray so that the data may be extracted from it. The extracted
+     * data is then passed into a BookArrayAdapter so that it may then be applied to a ListView.
+     */
     @Override
     public void onTaskCompleted(Object obj)
     {

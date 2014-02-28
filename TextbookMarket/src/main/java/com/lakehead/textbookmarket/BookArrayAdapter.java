@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Created by Master on 2/10/14.
+ * Adapter used to fill a ListView with data from a Book object.
  */
 public class BookArrayAdapter extends ArrayAdapter<Book> {
     private final Context context;
