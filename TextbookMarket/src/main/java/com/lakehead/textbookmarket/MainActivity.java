@@ -23,6 +23,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.view.Menu;
 
+/**
+ * Primary Activity Holding the tabs managed by TabsPagerAdapter , it also handles the action bar.
+ */
 public class MainActivity extends FragmentActivity implements
         ActionBar.TabListener {
 

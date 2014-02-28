@@ -1,0 +1,141 @@
+\hypertarget{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity}{\section{com.\-lakehead.\-textbookmarket.\-Add\-Listing\-Activity Class Reference}
+\label{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity}\index{com.\-lakehead.\-textbookmarket.\-Add\-Listing\-Activity@{com.\-lakehead.\-textbookmarket.\-Add\-Listing\-Activity}}
+}
+
+
+Class that handles I\-S\-B\-N Lookup.  
+
+
+Inheritance diagram for com.\-lakehead.\-textbookmarket.\-Add\-Listing\-Activity\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity_aa7a002a9dc6dabc80268d5e9bb6e42d4}{boolean {\bfseries on\-Create\-Options\-Menu} (Menu menu)}\label{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity_aa7a002a9dc6dabc80268d5e9bb6e42d4}
+
+\item 
+\hypertarget{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity_ad50cd19247dbc18ab478239416c9c949}{boolean {\bfseries on\-Options\-Item\-Selected} (Menu\-Item item)}\label{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity_ad50cd19247dbc18ab478239416c9c949}
+
+\item 
+void \hyperlink{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity_a8d5a41204959c78b58c89b8ac351894e}{scan\-Clicked} (View view)
+\begin{DoxyCompactList}\small\item\em Callback for when the scan button is clicked. \end{DoxyCompactList}\item 
+void \hyperlink{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity_a83eac3fe3a33050678d7c6900f3a0886}{on\-Activity\-Result} (int request\-Code, int result\-Code, Intent intent)
+\begin{DoxyCompactList}\small\item\em This is called when the scanner returns, either with data or without. \end{DoxyCompactList}\item 
+void \hyperlink{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity_af603e2686d7c1475438df50815c2010d}{ok\-Clicked} (View view)
+\begin{DoxyCompactList}\small\item\em Callback for the search button being pressed. \end{DoxyCompactList}\item 
+boolean \hyperlink{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity_a02c4ac2f0a5165b0ab7ad836d9ff1e31}{is\-I\-S\-B\-N13\-Valid} (String isbn)
+\begin{DoxyCompactList}\small\item\em Check's whether a string is a valid I\-S\-B\-N13. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity_ac73f344b9e19f9f36dc85491df21b5a2}{void {\bfseries on\-Create} (Bundle saved\-Instance\-State)}\label{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity_ac73f344b9e19f9f36dc85491df21b5a2}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class that handles I\-S\-B\-N Lookup. 
+
+Definition at line 25 of file Add\-Listing\-Activity.\-java.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity_a02c4ac2f0a5165b0ab7ad836d9ff1e31}{\index{com\-::lakehead\-::textbookmarket\-::\-Add\-Listing\-Activity@{com\-::lakehead\-::textbookmarket\-::\-Add\-Listing\-Activity}!is\-I\-S\-B\-N13\-Valid@{is\-I\-S\-B\-N13\-Valid}}
+\index{is\-I\-S\-B\-N13\-Valid@{is\-I\-S\-B\-N13\-Valid}!com::lakehead::textbookmarket::AddListingActivity@{com\-::lakehead\-::textbookmarket\-::\-Add\-Listing\-Activity}}
+\subsubsection[{is\-I\-S\-B\-N13\-Valid}]{\setlength{\rightskip}{0pt plus 5cm}boolean com.\-lakehead.\-textbookmarket.\-Add\-Listing\-Activity.\-is\-I\-S\-B\-N13\-Valid (
+\begin{DoxyParamCaption}
+\item[{String}]{isbn}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity_a02c4ac2f0a5165b0ab7ad836d9ff1e31}
+
+
+Check's whether a string is a valid I\-S\-B\-N13. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em isbn} & The isbn number to check for validity. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+whether or not the scanned barcode is a valid I\-S\-B\-N13 number. 
+\end{DoxyReturn}
+
+
+Definition at line 118 of file Add\-Listing\-Activity.\-java.
+
+\hypertarget{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity_af603e2686d7c1475438df50815c2010d}{\index{com\-::lakehead\-::textbookmarket\-::\-Add\-Listing\-Activity@{com\-::lakehead\-::textbookmarket\-::\-Add\-Listing\-Activity}!ok\-Clicked@{ok\-Clicked}}
+\index{ok\-Clicked@{ok\-Clicked}!com::lakehead::textbookmarket::AddListingActivity@{com\-::lakehead\-::textbookmarket\-::\-Add\-Listing\-Activity}}
+\subsubsection[{ok\-Clicked}]{\setlength{\rightskip}{0pt plus 5cm}void com.\-lakehead.\-textbookmarket.\-Add\-Listing\-Activity.\-ok\-Clicked (
+\begin{DoxyParamCaption}
+\item[{View}]{view}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity_af603e2686d7c1475438df50815c2010d}
+
+
+Callback for the search button being pressed. 
+
+Currently only sets the progress bar spinning. 
+\begin{DoxyParams}{Parameters}
+{\em view} & Generic parameter for on\-Click callback \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 102 of file Add\-Listing\-Activity.\-java.
+
+\hypertarget{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity_a83eac3fe3a33050678d7c6900f3a0886}{\index{com\-::lakehead\-::textbookmarket\-::\-Add\-Listing\-Activity@{com\-::lakehead\-::textbookmarket\-::\-Add\-Listing\-Activity}!on\-Activity\-Result@{on\-Activity\-Result}}
+\index{on\-Activity\-Result@{on\-Activity\-Result}!com::lakehead::textbookmarket::AddListingActivity@{com\-::lakehead\-::textbookmarket\-::\-Add\-Listing\-Activity}}
+\subsubsection[{on\-Activity\-Result}]{\setlength{\rightskip}{0pt plus 5cm}void com.\-lakehead.\-textbookmarket.\-Add\-Listing\-Activity.\-on\-Activity\-Result (
+\begin{DoxyParamCaption}
+\item[{int}]{request\-Code, }
+\item[{int}]{result\-Code, }
+\item[{Intent}]{intent}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity_a83eac3fe3a33050678d7c6900f3a0886}
+
+
+This is called when the scanner returns, either with data or without. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em request\-Code} & The request code originally sent to the scanner \\
+\hline
+{\em result\-Code} & The resulting code from the scanner \\
+\hline
+{\em intent} & the intent returning a result. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 72 of file Add\-Listing\-Activity.\-java.
+
+\hypertarget{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity_a8d5a41204959c78b58c89b8ac351894e}{\index{com\-::lakehead\-::textbookmarket\-::\-Add\-Listing\-Activity@{com\-::lakehead\-::textbookmarket\-::\-Add\-Listing\-Activity}!scan\-Clicked@{scan\-Clicked}}
+\index{scan\-Clicked@{scan\-Clicked}!com::lakehead::textbookmarket::AddListingActivity@{com\-::lakehead\-::textbookmarket\-::\-Add\-Listing\-Activity}}
+\subsubsection[{scan\-Clicked}]{\setlength{\rightskip}{0pt plus 5cm}void com.\-lakehead.\-textbookmarket.\-Add\-Listing\-Activity.\-scan\-Clicked (
+\begin{DoxyParamCaption}
+\item[{View}]{view}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classcom_1_1lakehead_1_1textbookmarket_1_1_add_listing_activity_a8d5a41204959c78b58c89b8ac351894e}
+
+
+Callback for when the scan button is clicked. 
+
+Starts the I\-S\-B\-N Scanner 
+\begin{DoxyParams}{Parameters}
+{\em view} & Generic parameter for on\-Click callback \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 61 of file Add\-Listing\-Activity.\-java.
+
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+C\-:/\-Users/\-Master/\-Documents/\-Git\-Hub/\-C\-S4431-\/android/\-Textbook\-Market/src/main/java/com/lakehead/textbookmarket/Add\-Listing\-Activity.\-java\end{DoxyCompactItemize}

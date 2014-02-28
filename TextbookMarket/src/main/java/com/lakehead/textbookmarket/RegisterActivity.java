@@ -22,6 +22,9 @@ import org.json.JSONObject;
 
 import java.util.regex.Pattern;
 
+/**
+ * Activity used for user Registration.
+ */
 public class RegisterActivity extends Activity /*implements OnTaskCompleted*/ {
     String deptCode;
     JSONArray jArray;

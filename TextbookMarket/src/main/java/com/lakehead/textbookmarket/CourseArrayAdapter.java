@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Created by Master on 2/17/14.
+ * The adapter used to populate the list view for the courses fragment
  */
 public class CourseArrayAdapter extends ArrayAdapter<Course> {
     private final Context context;
@@ -17,7 +17,7 @@ public class CourseArrayAdapter extends ArrayAdapter<Course> {
 
     /**
      *
-     * @param context
+     * @param context Used to get the inflater for the object.
      * @param courses Array of Course objects to display.
      */
     public CourseArrayAdapter(Context context, Course[] courses) {

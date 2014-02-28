@@ -4,6 +4,9 @@ package com.lakehead.textbookmarket;
         import android.support.v4.app.FragmentManager;
         import android.support.v4.app.FragmentPagerAdapter;
 
+/**
+ * Handles the logic of switching between tabs.
+ */
 public class TabsPagerAdapter extends FragmentPagerAdapter {
 
     Fragment booksFragment;

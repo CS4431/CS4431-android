@@ -1,7 +1,7 @@
 package com.lakehead.textbookmarket;
 
 /**
- * Created by Master on 2/17/14.
+ * Class holding all listing information. Each object represents a book for sale by a specific user.
  */
 public class Listing {
     private final int _id;

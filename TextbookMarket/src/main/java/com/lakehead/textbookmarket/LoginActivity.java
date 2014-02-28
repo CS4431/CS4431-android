@@ -24,9 +24,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 
-/*
-This OnTaskCompleted is an interface that Activities receiving callbacks from async tasks should implement.
-There may be another way to do this, but I'll just keep this here for now.
+/**
+ * This OnTaskCompleted is an interface that Activities receiving callbacks from async tasks should implement.
  */
 public class LoginActivity extends Activity /*implements OnTaskCompleted*/ {
     String deptCode;

@@ -19,6 +19,9 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+/**
+ * Class that handles ISBN Lookup.
+ */
 public class AddListingActivity extends Activity {
 
     @Override
@@ -51,11 +54,21 @@ public class AddListingActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Callback for when the scan button is clicked. Starts the ISBN Scanner
+     * @param view Generic parameter for onClick callback
+     */
     public void scanClicked(View view){
         IntentIntegrator scanIntegrator = new IntentIntegrator(this);
         scanIntegrator.initiateScan(IntentIntegrator.BOOK_CODE_TYPES);
     }
 
+    /**
+     * This is called when the scanner returns, either with data or without.
+     * @param requestCode The request code originally sent to the scanner
+     * @param resultCode The resulting code from the scanner
+     * @param intent the intent returning a result.
+     */
     public void onActivityResult(int requestCode, int resultCode,Intent intent){
         try{
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
@@ -82,6 +95,10 @@ public class AddListingActivity extends Activity {
         }catch(Exception e){Log.e("AddListingActivity","Error during reading of scan data: " + e.toString());}
     }
 
+    /**
+     * Callback for the search button being pressed. Currently only sets the progress bar spinning.
+     * @param view Generic parameter for onClick callback
+     */
     public void okClicked(View view){
         TextView isbnTextView = (TextView)findViewById(R.id.isbnText);
         isbnTextView.clearFocus();
@@ -94,8 +111,8 @@ public class AddListingActivity extends Activity {
     }
 
     /**
-     *
-     * @param isbn
+     * Check's whether a string is a valid ISBN13
+     * @param isbn The isbn number to check for validity.
      * @return whether or not the scanned barcode is a valid ISBN13 number.
      */
     public boolean isISBN13Valid(String isbn) {

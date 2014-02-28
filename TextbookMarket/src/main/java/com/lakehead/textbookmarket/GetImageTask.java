@@ -34,12 +34,11 @@ class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
     private Book book;
 
     /**
-     * Constructor. url is the url of the image. The image view is the view to which we wish to apply
-     * the image at the url.
-     * @param url
-     * @param imageView
-     * @param width
-     * @param height
+     *
+     * @param url The URL of the image
+     * @param imageView The actual imageView holding the image
+     * @param width Image Width
+     * @param height Image Height
      */
     public GetImageTask(String url, ImageView imageView, int width, int height)
     {
@@ -51,11 +50,11 @@ class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
 
     /**
      * Constructor. When this constructor is used, the url of the image is also stored in book object.
-     * @param url
-     * @param imageView
-     * @param width
-     * @param height
-     * @param book
+     * @param url The URL of the image
+     * @param imageView The actual imageView holding the image
+     * @param width Image Width
+     * @param height Image Height
+     * @param book the object in which the image is stored.
      */
     public GetImageTask(String url, ImageView imageView, int width, int height, Book book)
     {

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 /**
- * Created by Master on 2/18/14.
+ * The fragment used in the "Books" tab of MainActivity
  */
 public class CoursesFragment extends Fragment{
         @Override
