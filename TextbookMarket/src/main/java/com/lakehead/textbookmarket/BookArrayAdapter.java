@@ -19,7 +19,6 @@ public class BookArrayAdapter extends ArrayAdapter<Book> {
     private final int THUMBNAIL_SIZE = 96;
 
     /**
-     *
      * @param context
      * @param books
      */
@@ -30,7 +29,6 @@ public class BookArrayAdapter extends ArrayAdapter<Book> {
     }
 
     /**
-     *
      * @param position The Array position of the iterable list
      * @param convertView unused
      * @param parent The parent of the current View.

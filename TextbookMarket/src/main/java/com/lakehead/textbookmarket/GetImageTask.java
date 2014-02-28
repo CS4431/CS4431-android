@@ -34,12 +34,12 @@ class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
     private Book book;
 
     /**
+     * Constructor. url is the url of the image. The image view is the view to which we wish to apply
+     * the image at the url.
      * @param url
      * @param imageView
      * @param width
      * @param height
-     * Constructor. url is the url of the image. The image view is the view to which we wish to apply
-     * the image at the url.
      */
     public GetImageTask(String url, ImageView imageView, int width, int height)
     {
@@ -50,12 +50,12 @@ class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
     }
 
     /**
+     * Constructor. When this constructor is used, the url of the image is also stored in book object.
      * @param url
      * @param imageView
      * @param width
      * @param height
      * @param book
-     * Constructor. When this constructor is used, the url of the image is also stored in book object.
      */
     public GetImageTask(String url, ImageView imageView, int width, int height, Book book)
     {
@@ -111,11 +111,11 @@ class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
     //Here, we scale the image we got to a desired size, and set the ImageView's bitmap
     //Note that in this AsyncTask, we don't have a callback to an Activity or Fragment
     /**
-     * @param bmp
      * The Bitmap parameter is received from the doInBackground method on return.
      * The Bitmap is applied to an ImageView specified in the constructor with dimensions width, height.
      * If a book object was passed into the constructor, we also store the URL of that image in a
      * book object.
+     * @param bmp
      */
     protected void onPostExecute(Bitmap bmp)
     {

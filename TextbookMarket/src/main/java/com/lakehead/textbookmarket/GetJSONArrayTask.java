@@ -48,8 +48,8 @@ class GetJSONArrayTask extends AsyncTask<NameValuePair, Void, JSONArray> {
     private static final String SERVER_ADDRESS = "http://107.170.7.58:4567";
 
     /**
-     * @param listener
      * Constructor
+     * @param listener
      */
     public GetJSONArrayTask(OnTaskCompleted listener)
     {
@@ -57,9 +57,9 @@ class GetJSONArrayTask extends AsyncTask<NameValuePair, Void, JSONArray> {
     }
 
     /**
+     * Constructor
      * @param listener
      * @param path
-     * Constructor
      */
     public GetJSONArrayTask(OnTaskCompleted listener, String path)
     {
@@ -68,10 +68,10 @@ class GetJSONArrayTask extends AsyncTask<NameValuePair, Void, JSONArray> {
     }
 
     /**
-     * @param params
-     * @return A JSONArray as a response from the server.
      * This method actually executes the AsyncTask.
      * POST parameters are passed in as NameValuePairs.
+     * @param params
+     * @return A JSONArray as a response from the server.
      */
     protected JSONArray doInBackground(NameValuePair... params)
     {
@@ -157,9 +157,9 @@ class GetJSONArrayTask extends AsyncTask<NameValuePair, Void, JSONArray> {
     //Pass the JSONArray back to whatever created this AsyncTask.
 
     /**
-     * @param jArray
      * This method executes a callback to the listener that originally created this AsyncTask.
      * The callback provides the listener with the JSONArray that was received from the POST request.
+     * @param jArray
      */
     protected void onPostExecute(JSONArray jArray)
     {
