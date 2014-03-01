@@ -122,7 +122,7 @@ class GetJSONArrayTask extends AsyncTask<NameValuePair, Void, JSONArray> {
                 }
                 catch (Exception e) //Couldn't grab the string from HttpEntity for some reason
                 {
-                    Log.e("Exceptions", "Error converting result " + e.toString());
+                    Log.e("Exceptions", "Error converting result -> " + e.toString());
                 }
 
                 // try create a JSONArray from the string we just got
@@ -163,6 +163,7 @@ class GetJSONArrayTask extends AsyncTask<NameValuePair, Void, JSONArray> {
      */
     protected void onPostExecute(JSONArray jArray)
     {
+        Log.i("GetJsonArrayTask", "onPostExecute() Received JSON -> " + jArray.toString());
         listener.onTaskCompleted(jArray);
     }
 }

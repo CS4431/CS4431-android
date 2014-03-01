@@ -2,6 +2,7 @@ package com.lakehead.textbookmarket;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +70,7 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
         }
         catch(JSONException e)
         {
+            Log.e("BooksFragment", "OnTaskCompleted() -> " + e.toString());
             e.printStackTrace();
         }
 

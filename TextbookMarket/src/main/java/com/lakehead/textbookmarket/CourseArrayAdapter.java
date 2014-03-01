@@ -8,19 +8,21 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 /**
  * The adapter used to populate the list view for the courses fragment
  */
 public class CourseArrayAdapter extends ArrayAdapter<Course> {
     private final Context context;
-    private final Course[] courses;
+    private final List<Course> courses;
 
     /**
      *
      * @param context Used to get the inflater for the object.
      * @param courses Array of Course objects to display.
      */
-    public CourseArrayAdapter(Context context, Course[] courses) {
+    public CourseArrayAdapter(Context context, List<Course> courses) {
         super(context, R.layout.books_item_view,  courses);
         this.context = context;
         this.courses = courses;
@@ -39,7 +41,7 @@ public class CourseArrayAdapter extends ArrayAdapter<Course> {
         View rowView = inflater.inflate(R.layout.courses_item_view, parent, false);
 
         TextView titleTextView = (TextView)rowView.findViewById(R.id.courseTitle);
-        titleTextView.setText(courses[position].get_title());
+        titleTextView.setText(courses.get(position).get_title());
 
         //commented out as we currently have no need for an Icon for the class?
         //ImageView iconImageView = (ImageView)rowView.findViewById(R.id.icon);
@@ -47,10 +49,10 @@ public class CourseArrayAdapter extends ArrayAdapter<Course> {
         //iconImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_launcher));
 
         TextView sectionTextView = (TextView)rowView.findViewById(R.id.courseInfo);
-        sectionTextView.setText(courses[position].get_code()+ " " + courses[position].get_section());
+        sectionTextView.setText(courses.get(position).get_code()+ " " + courses.get(position).get_section());
 
         TextView instructorTextView = (TextView)rowView.findViewById(R.id.courseInstructor);
-        instructorTextView.setText(courses[position].get_instructor());
+        instructorTextView.setText(courses.get(position).get_instructor());
 
         return rowView;
 
