@@ -118,13 +118,18 @@ class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
      */
     protected void onPostExecute(Bitmap bmp)
     {
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bmp, width, height, false);
-        imageView.setImageBitmap(scaledBitmap);
+        if(bmp != null){
+            Bitmap scaledBitmap = Bitmap.createScaledBitmap(bmp, width, height, false);
+            imageView.setImageBitmap(scaledBitmap);
 
-        //We may or may not have passed a book into this AsyncTask
-        if(book != null)
-        {
-            book.setBitmap(scaledBitmap);
+            //We may or may not have passed a book into this AsyncTask
+            if(book != null)
+            {
+                book.setBitmap(scaledBitmap);
+            }
+        }else{
+            Log.e("GetImageTask", "onPostExecute() -> " + "Bitmap is null, cannot create BMP. It's possible the URL did not respond or return an image.");
         }
+
     }
 }
