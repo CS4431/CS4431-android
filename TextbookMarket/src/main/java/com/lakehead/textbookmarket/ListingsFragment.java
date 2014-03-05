@@ -20,17 +20,16 @@ import java.util.List;
  * The fragment used in the "Listings" tab of MainActivity
  */
 public class ListingsFragment extends Fragment implements OnTaskCompleted{
-    View rootView;
     ListView listingsListView;
+    View rootView;
     JSONArray jArray;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         rootView = inflater.inflate(R.layout.fragment_listings, container, false);
         listingsListView = (ListView)rootView.findViewById(R.id.listings_list_view);
         NameValuePair ext = new BasicNameValuePair("ext", "json");
-        NameValuePair count = new BasicNameValuePair("count", "10");
+        NameValuePair count = new BasicNameValuePair("count", "20");
         new GetJSONArrayTask(this, "/api/sell").execute(ext, count);
 
 
@@ -43,15 +42,126 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
         List<Listing> listingsList= new ArrayList<Listing>();
         List<Book> temporaryBookList = new ArrayList<Book>();
 
-        JSONObject bookDataNode;
-        JSONObject listingDataNode;
-
-
         jArray = (JSONArray)obj;
-
         Log.i("ListingsFragment","jArray length -> " + jArray.length());
-        int bookStartIndex = jArray.length()/2;
 
+        String nodeType;
+        JSONObject nodeData;
+
+        try{
+            for(int i = 0 ; i < jArray.length(); i++ ){
+
+                nodeType = jArray.getJSONObject(i).getString("kind");
+                nodeData = jArray.getJSONObject(i).getJSONObject("data");
+                Log.i("ListingsFragment", "OnTaskCompleted() -> Kind is: " + nodeType);
+                if(nodeType.equals("sell"))
+                {
+                    Log.i("ListingsFragment", "OnTaskCompleted() -> Sell Data Polled -> " + nodeData.toString());
+                    listingsList.add(generateListingFromJSONNode(nodeData));
+                }
+                else if(nodeType.equals("book"))
+                {
+                    Log.i("ListingsFragment", "OnTaskCompleted() -> Book Data Polled -> " + nodeData.toString());
+                    temporaryBookList.add(generateBookFromJSONNode(nodeData));
+                }
+                else
+                {
+                    Log.e("ListingsFragment", "OnTaskCompleted() -> NODE IS NEITHER BOOK NOR SELL!!!! Node Data is: " + nodeData.toString());
+                }
+            }
+
+            for(Listing current_listing : listingsList){
+                for(Book current_book : temporaryBookList){
+                    if(current_listing.get_book_id() == current_book.get_id()){
+                        Log.i("ListingsFragment", "OnTaskCompleted() -> Associated Book with ID {" + current_book.get_id()
+                                + "} with Listing {" + current_listing.get_id()+"} which was requesting Book with ID {"
+                                + current_listing.get_book_id()+"}");
+                        current_listing.set_book(current_book);
+
+                    }
+                }
+                if(current_listing.get_book() == null){
+                    Log.e("ListingsFragment","OnTaskCompleted() -> Could not associate a book to Listing with ID {"
+                            + current_listing.get_id()+"} as it was requesting Book ID {" + current_listing.get_book_id()
+                            +"} which does not exist in our Temporary Book List. CONTACT API TEAM!!!!");
+                }
+            }
+
+        }catch(Exception e){
+            Log.e("ListingsFragment", "OnTaskCompleted() -> HighLevel Catch -> "+ e.toString());
+            e.printStackTrace();
+        }
+
+        ListingArrayAdapter listingsAdapter = new ListingArrayAdapter(this.getActivity(), listingsList);
+        listingsListView.setAdapter(listingsAdapter);
+
+    }
+
+    /**
+     * Generates a Listing Object based on the JSON Node passed to it.
+     *
+     * @param listingDataNode the associated listing JSON Node pulled from the API.
+     * @return Returns a listing based on the JSON Node information. Returns null if it failed to parse
+     * important data.
+     */
+    public Listing generateListingFromJSONNode(JSONObject listingDataNode){
+
+        //temporary listing variables.
+        int listing_id;
+        int user_id;
+        int edition_id;
+        double price;
+        String start_date;
+        String end_date;
+
+        try{
+            listing_id =  listingDataNode.getInt("id");
+        }catch(Exception e){
+            Log.e("ListingsFragment", "generateListingFromJSONNode() -> Couldn't parse JSON for listing_id!!! Failing: " + e.toString());
+            return null;
+        }
+        try{
+            user_id = listingDataNode.getInt("user_id");
+        }catch(Exception e){
+            Log.e("ListingsFragment", "generateListingFromJSONNode() -> Couldn't parse JSON for user_id!!! Failing: " + e.toString());
+            return null;
+        }
+        try{
+            edition_id =  listingDataNode.getInt("edition_id");
+        }catch(Exception e){
+            Log.e("ListingsFragment", "generateListingFromJSONNode() -> Couldn't parse JSON for edition_id!!! Failing: " + e.toString());
+            return null;
+        }
+        try{
+            price = listingDataNode.getDouble("price");
+        }catch(Exception e){
+            price = 9999.99;
+            Log.e("ListingsFragment", "generateListingFromJSONNode() -> Couldn't parse JSON for price: " + e.toString());
+        }
+        try{
+            start_date = listingDataNode.getString("start_date");
+        }catch(Exception e){
+            start_date = "N/A";
+            Log.e("ListingsFragment", "generateListingFromJSONNode() -> Couldn't parse JSON for start_date: " + e.toString());
+        }
+        try{
+            end_date = listingDataNode.getString("end_date");
+        }catch(Exception e){
+            end_date = "N/A";
+            Log.e("ListingsFragment", "generateListingFromJSONNode() -> Couldn't parse JSON for end_date: " + e.toString());
+        }
+
+        return new Listing(listing_id,user_id,edition_id,price,start_date,end_date);
+
+    }
+
+    /**
+     * Generates a Book Object based on the JSON Node passed to it.
+     *
+     * @param bookDataNode JSON Node grabbed from the API that relates to a book.
+     * @return Returns a Book object, or if it fails to parse important data, returns Null.
+     */
+    public Book generateBookFromJSONNode(JSONObject bookDataNode){
         //temporary book variables
         int edition;
         int book_id;
@@ -63,132 +173,63 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
         String cover;
         String image;
 
-        //temporary listing variables.
-        int listing_id;
-        int user_id;
-        double price;
-        String start_date;
-        String end_date;
-
-
         try{
-            for(int i = 0 ; i < jArray.length() /2; i++ ){
-                bookDataNode = jArray.getJSONObject(bookStartIndex + i).getJSONObject("data");
-                Log.i("ListingsFragment", "Book Data Polled -> " + bookDataNode.toString());
-
-                listingDataNode = jArray.getJSONObject(i).getJSONObject("data");
-                Log.i("ListingsFragment", "Sell Data Polled -> " + listingDataNode.toString());
-
-                //First initialize the Listing's book.
-
-                try{
-                    book_id = bookDataNode.getInt("id");
-                }catch(Exception e){
-                    book_id = 0;
-                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for id: " + e.toString());
-                }
-                try{
-                    title = bookDataNode.getString("title");
-                }catch(Exception e){
-                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for title: " + e.toString());
-                    continue;
-                }
-                try{
-                    isbn = bookDataNode.getString("isbn");
-                }catch(Exception e){
-                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for ISBN: " + e.toString());
-                    continue;
-                }
-                try{
-                    edition_group_id = bookDataNode.getInt("edition_group_id");
-                }catch(Exception e){
-                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for edition_group_id: " + e.toString());
-                    continue;
-                }
-                try{
-                    author = bookDataNode.getString("author");
-                }catch(Exception e){
-                    author = "N/A";
-                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for author: " + e.toString());
-
-                }
-                try{
-                    edition = bookDataNode.getInt("edition");
-                }catch(Exception e){
-                    edition = 0;
-                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for edition: " + e.toString());
-                }
-                try{
-                    publisher = bookDataNode.getString("publisher");
-                }catch(Exception e){
-                    publisher = "N/A";
-                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for publisher: " + e.toString());
-                }
-                try{
-                    cover = bookDataNode.getString("cover");
-                }catch(Exception e){
-                    cover = "N/A";
-                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for cover: " + e.toString());
-                }
-                try{
-                    image = bookDataNode.getString("image");
-                }catch(Exception e){
-                    image = "N/A";
-                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for image: " + e.toString());
-                }
-
-
-                Book temporaryBook = new Book(rootView.getContext(), book_id, title, isbn, edition,
-                                              author, edition, publisher, cover, image);
-
-
-                //Next Initialize the listing, passing it the book.
-                try{
-                    listing_id =  listingDataNode.getInt("id");
-                }catch(Exception e){
-                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for listing_id: " + e.toString());
-                    continue;
-                }
-                try{
-                    user_id = listingDataNode.getInt("user_id");
-                }catch(Exception e){
-                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for user_id: " + e.toString());
-                    continue;
-                }
-                try{
-                    price = listingDataNode.getDouble("price");
-                }catch(Exception e){
-                    price = 9999.99;
-                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for price: " + e.toString());
-                }
-                try{
-                    start_date = listingDataNode.getString("start_date");
-                }catch(Exception e){
-                    start_date = "N/A";
-                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for start_date: " + e.toString());
-                }
-                try{
-                    end_date = listingDataNode.getString("end_date");
-                }catch(Exception e){
-                    end_date = "N/A";
-                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for end_date: " + e.toString());
-                }
-
-                listingsList.add(new Listing(
-                        listing_id,
-                        user_id,
-                        temporaryBook,
-                        price,
-                        start_date,
-                        end_date));
-
-            }
+            book_id = bookDataNode.getInt("id");
         }catch(Exception e){
-            Log.e("ListingsFragment", "OnTaskCompleted() -> "+ e.toString());
-            e.printStackTrace();
+            book_id = 0;
+            Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for id: " + e.toString());
         }
-        ListingArrayAdapter listingsAdapter = new ListingArrayAdapter(this.getActivity(), listingsList);
-        listingsListView.setAdapter(listingsAdapter);
+        try{
+            title = bookDataNode.getString("title");
+        }catch(Exception e){
+            Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for title: " + e.toString());
+            return null;
+        }
+        try{
+            isbn = bookDataNode.getString("isbn");
+        }catch(Exception e){
+            Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for ISBN: " + e.toString());
+            return null;
+        }
+        try{
+            edition_group_id = bookDataNode.getInt("edition_group_id");
+        }catch(Exception e){
+            Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for edition_group_id: " + e.toString());
+            return null;
+        }
+        try{
+            author = bookDataNode.getString("author");
+        }catch(Exception e){
+            author = "N/A";
+            Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for author: " + e.toString());
+        }
+        try{
+            edition = bookDataNode.getInt("edition");
+        }catch(Exception e){
+            edition = 0;
+            Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for edition. Error: : " + e.toString());
+        }
+        try{
+            publisher = bookDataNode.getString("publisher");
+        }catch(Exception e){
+            publisher = "N/A";
+            Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for publisher: " + e.toString());
+        }
+        try{
+            cover = bookDataNode.getString("cover");
+        }catch(Exception e){
+            cover = "N/A";
+            Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for cover: " + e.toString());
+        }
+        try{
+            image = bookDataNode.getString("image");
+        }catch(Exception e){
+            image = "N/A";
+            Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for image: " + e.toString());
+        }
 
+
+        return new Book(rootView.getContext(), book_id, title, isbn, edition,
+                author, edition, publisher, cover, image);
     }
 }
