@@ -4,11 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.database.Cursor;
+import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 /**
  * Created by Master on 2/18/14.
@@ -36,7 +40,35 @@ public class CoursesFragment extends Fragment{
             courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(view.getContext(), Book_Info.class);
+                    Intent intent = new Intent(view.getContext(), Course_Info.class);
+                    Bundle extras = new Bundle();
+                    /*
+                    private final int _id;
+                    private final String _title;
+                    private final String _code;
+                    private final String _section;
+                    private final int _department_id;
+                    private final String _instructor;
+                    private final String _term;
+
+
+                     */
+                    int cid = courseAdapter.getItem(position).get_id();
+                    int departmentid = courseAdapter.getItem(position).get_department_id();
+                    String ctitle = courseAdapter.getItem(position).get_title();
+                    String ccode = courseAdapter.getItem(position).get_code();
+                    String csection = courseAdapter.getItem(position).get_section();
+                    String cinstructor = courseAdapter.getItem(position).get_instructor();
+                    String cterm = courseAdapter.getItem(position).get_term();
+                    Log.d("Debug", "Instructor is: " + cinstructor);
+                    extras.putInt("cid",cid);
+                    extras.putInt("departmentid",departmentid);
+                    extras.putString("ctitle", ctitle);
+                    extras.putString("ccode", ccode);
+                    extras.putString("csection", csection);
+                    extras.putString("cinstructor",cinstructor);
+                    extras.putString("cterm",cterm);
+                    intent.putExtras(extras);
                     startActivity(intent);
                 }});
 

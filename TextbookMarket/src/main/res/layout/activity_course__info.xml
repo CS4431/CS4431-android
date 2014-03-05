@@ -57,24 +57,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Book: Cooking with Allaire"
-        android:id="@+id/bookName"
+        android:id="@+id/courseSection"
         android:paddingTop="10dp"
         android:layout_below="@+id/CCode"
         android:layout_alignLeft="@+id/CCode"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="15dp" />
-    <Button
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Click here to see available listings"
-        android:id="@+id/availableListings"
-        android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/CCode"
-        android:layout_alignEnd="@+id/CCode"
-        android:layout_toRightOf="@+id/image"
-        android:clickable="true"
-        android:visibility="visible"
-        android:onClick="onClick"/>
+        android:text="term"
+        android:id="@+id/courseTerm"
+        android:layout_below="@+id/courseSection"
+        android:layout_alignLeft="@+id/courseSection"
+        android:paddingTop="10dp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp" />
+
 
 </RelativeLayout>

@@ -3,6 +3,8 @@ package com.lakehead.textbookmarket;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
+
 /**
  * Created by Master on 2/10/14.
  */

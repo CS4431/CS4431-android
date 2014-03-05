@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -28,6 +29,8 @@ public class BookArrayAdapter extends ArrayAdapter<Book> {
         this.context = context;
         this.books = books;
     }
+
+
 
     /**
      *

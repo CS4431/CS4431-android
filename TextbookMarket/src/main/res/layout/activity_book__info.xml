@@ -88,6 +88,19 @@
         android:layout_toRightOf="@+id/image"
         android:clickable="true"
         android:visibility="visible"
-        android:onClick="onClick"/>
+        android:onClick="onClick"
+        android:layout_below="@+id/Publisher" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Penguin"
+        android:id="@+id/Publisher"
+        android:layout_alignLeft="@+id/coverType"
+        android:layout_below="@+id/coverType"
+        android:paddingTop="10dp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp" />
 
 </RelativeLayout>
