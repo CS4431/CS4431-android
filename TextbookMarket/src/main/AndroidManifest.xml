@@ -3,6 +3,7 @@
     package="com.lakehead.textbookmarket" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -13,10 +14,10 @@
             android:name="com.lakehead.textbookmarket.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.lakehead.textbookmarket.SettingsActivity"
@@ -44,12 +45,10 @@
         <activity
             android:name="com.lakehead.textbookmarket.Book_Info"
             android:label="@string/title_activity_book__info" >
-
         </activity>
         <activity
             android:name="com.lakehead.textbookmarket.Course_Info"
             android:label="@string/title_activity_course__info" >
-
         </activity>
     </application>
 

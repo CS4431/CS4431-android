@@ -2,7 +2,9 @@ package com.lakehead.textbookmarket;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.app.Activity;
@@ -22,7 +24,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.view.Menu;
-
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 public class MainActivity extends FragmentActivity implements
         ActionBar.TabListener {
 
@@ -31,11 +34,30 @@ public class MainActivity extends FragmentActivity implements
     private ActionBar actionBar;
     // Tab titles
     private String[] tabs = { "Courses", "Listings", "Books" };
-
+    private Handler mHandler;
+    private ConnectivityManager conn;
+    private android.net.NetworkInfo wifi;
+    private android.net.NetworkInfo mobile;
+    private ProgressDialog progress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mHandler = new Handler();
+        conn = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+        wifi =  conn.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        mobile =  conn.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        progress = new ProgressDialog(this);
+        progress.setTitle("No Internet");
+        progress.setMessage("Scanning for Wifi or Cellular Data");
+        progress.setCancelable(false);
+
+        if (!wifi.isAvailable()&&!mobile.isAvailable()) {
+            progress.show();
+            startRepeatingTask();
+        } else {
+
 
         // Initilization
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -74,7 +96,36 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onPageScrollStateChanged(int arg0) {
             }
-        });
+        });}
+    }
+    Runnable mStatusChecker = new Runnable() {
+        @Override
+        public void run() {
+
+            mHandler.postDelayed(mStatusChecker, 5000);
+            progress.show();
+            conn = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            wifi =  conn.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            mobile =  conn.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+            if (!wifi.isAvailable()&&!mobile.isAvailable()) {
+                //Log.d("Debug", "NO INTERNET wifi");
+
+            } else {
+                //Log.d("Debug","WIFI OR DATA DETECTED");
+                Intent goToMain = new Intent(getBaseContext()  , MainActivity.class);
+                startActivity(goToMain);
+                stopRepeatingTask();
+                progress.dismiss();
+            }
+        }
+    };
+
+    void startRepeatingTask() {
+        mStatusChecker.run();
+    }
+
+    void stopRepeatingTask() {
+        mHandler.removeCallbacks(mStatusChecker);
     }
 
     @Override
