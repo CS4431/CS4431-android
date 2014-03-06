@@ -229,7 +229,7 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
         }
 
 
-        return new Book(rootView.getContext(), book_id, title, isbn, edition,
+        return new Book(book_id, title, isbn, edition,
                 author, edition, publisher, cover, image);
     }
 }
