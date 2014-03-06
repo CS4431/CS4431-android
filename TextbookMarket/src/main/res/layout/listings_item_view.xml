@@ -36,6 +36,9 @@
         android:layout_alignWithParentIfMissing="true"
         android:layout_toRightOf="@id/listing_icon"
         android:gravity="center_vertical"
+        android:scrollHorizontally="true"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="Whatever Book"
         android:textSize="16sp" />
 
