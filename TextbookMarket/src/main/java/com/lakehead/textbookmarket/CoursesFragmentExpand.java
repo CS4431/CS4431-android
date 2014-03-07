@@ -50,9 +50,10 @@ public class CoursesFragmentExpand extends Fragment implements OnTaskCompleted
             JSONArray ids = new JSONArray();
             try
             {
-                ids.put(1);
-                ids.put(7);
-                request.put("id", testList.toString());
+                ids.put(new JSONObject().put("dept_id",1));
+
+                ids.put(new JSONObject().put("dept_id",7));
+                request.put("id", ids);
                 request.put("count",testList.size());
 
 
@@ -64,8 +65,8 @@ public class CoursesFragmentExpand extends Fragment implements OnTaskCompleted
 
 
 
-            NameValuePair json = new BasicNameValuePair("json", "{\"count\":1,\"id\":[1,7]}");
-            //NameValuePair json = new BasicNameValuePair("json", request.toString());
+            //NameValuePair json = new BasicNameValuePair("json", "{\"count\":1,\"id\":[1,7]}");
+            NameValuePair json = new BasicNameValuePair("json", request.toString());
             new GetJSONArrayTask(this, "/api/departmentdetail").execute(json);
             //NameValuePair ext = new BasicNameValuePair("ext", "json");
             //NameValuePair count = new BasicNameValuePair("count", "100");
