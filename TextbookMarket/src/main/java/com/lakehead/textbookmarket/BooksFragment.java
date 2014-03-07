@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -31,15 +34,20 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
 
     List<Book> bookList;
     BookArrayAdapter bookAdapter;
+    ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         rootView = inflater.inflate(R.layout.fragment_books, container, false);
         bookListView = (ListView)rootView.findViewById(R.id.book_list_view);
+        progressBar = (ProgressBar)rootView.findViewById(R.id.loading_more_bar);
+        progressBar.setVisibility(View.GONE);
+        //bookListView.setEmptyView(rootView.findViewById(R.id.empty));
         bookList = new ArrayList<Book>();
         bookAdapter = new BookArrayAdapter(this.getActivity(), bookList);
         bookListView.setAdapter(bookAdapter);
+
 
 
         //These NameValuePairs are the POST parameters for the API call
@@ -61,6 +69,7 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
                 if((lastInScreen == totalItemCount) && !(loadingMore)){
                     currentOffset+=10;
                     loadingMore=true;
+                    progressBar.setVisibility(View.VISIBLE);
                     makeAPICall();
                 }
             }
@@ -175,6 +184,7 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
             e.printStackTrace();
         }
         bookAdapter.notifyDataSetChanged();
+        progressBar.setVisibility(View.GONE);
         loadingMore=false;
     }
 
