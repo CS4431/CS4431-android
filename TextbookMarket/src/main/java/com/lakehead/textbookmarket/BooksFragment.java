@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -25,18 +26,54 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
     View rootView;
     JSONArray jArray;
 
+    int currentOffset=0;
+    boolean loadingMore=false;
+
+    List<Book> bookList;
+    BookArrayAdapter bookAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         rootView = inflater.inflate(R.layout.fragment_books, container, false);
         bookListView = (ListView)rootView.findViewById(R.id.book_list_view);
+        bookList = new ArrayList<Book>();
+        bookAdapter = new BookArrayAdapter(this.getActivity(), bookList);
+        bookListView.setAdapter(bookAdapter);
+
 
         //These NameValuePairs are the POST parameters for the API call
-        NameValuePair ext = new BasicNameValuePair("ext", "json");
-        NameValuePair count = new BasicNameValuePair("count", "100");
-        new GetJSONArrayTask(this, "/api/book").execute(ext, count);
+        makeAPICall();
 
+        //Here is where the magic happens
+        bookListView.setOnScrollListener(new AbsListView.OnScrollListener(){
+            //useless here, skip!
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {}
+            //dumdumdum
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                //what is the bottom iten that is visible
+                int lastInScreen = firstVisibleItem + visibleItemCount;
+                Log.d("Debug",""+lastInScreen);
+                //is the bottom item visible & not loading more already ? Load more !
+                if((lastInScreen == totalItemCount) && !(loadingMore)){
+                    currentOffset+=10;
+                    loadingMore=true;
+                    makeAPICall();
+                }
+            }
+        });
         return rootView;
+    }
+
+    private void makeAPICall()
+    {
+        NameValuePair ext = new BasicNameValuePair("ext", "json");
+        NameValuePair count = new BasicNameValuePair("count", "10");
+        NameValuePair offset = new BasicNameValuePair("offset", Integer.toString(currentOffset));
+        new GetJSONArrayTask(this, "/api/book").execute(ext, count, offset);
     }
 
     /**
@@ -59,7 +96,7 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
         String publisher;
         String cover;
         String image;
-        List<Book> bookList = new ArrayList<Book>();
+        //List<Book> bookList = new ArrayList<Book>();
 
         JSONObject bookDataNode;
         //Add all the books in our JSONArray to our bookList
@@ -137,9 +174,8 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
             Log.e("BooksFragment", "OnTaskCompleted() -> " + e.toString());
             e.printStackTrace();
         }
-
-        final BookArrayAdapter bookAdapter = new BookArrayAdapter(this.getActivity(), bookList);
-        bookListView.setAdapter(bookAdapter);
+        bookAdapter.notifyDataSetChanged();
+        loadingMore=false;
     }
 
 }
