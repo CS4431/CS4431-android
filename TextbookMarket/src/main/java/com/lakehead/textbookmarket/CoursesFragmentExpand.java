@@ -12,6 +12,7 @@ import android.widget.ListView;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -36,15 +37,42 @@ public class CoursesFragmentExpand extends Fragment implements OnTaskCompleted
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             rootView = inflater.inflate(R.layout.fragment_courses_expand, container, false);
-            //courseListView = (ListView)rootView.findViewById(R.id.course_list_view);
+            //rootView = inflater.inflate(R.layout.fragment_courses, container, false);
+            courseListView = (ListView)rootView.findViewById(R.id.course_list_view);
+            expListView = (ExpandableListView) rootView.findViewById(R.id.courses_expand_lv);
+
+            JSONObject request = new JSONObject();
+
+            ArrayList<Integer> testList = new ArrayList<Integer>();
+            testList.add(Integer.valueOf(1));
+            testList.add(Integer.valueOf(7));
+
+            JSONArray ids = new JSONArray();
+            try
+            {
+                ids.put(1);
+                ids.put(7);
+                request.put("id", testList.toString());
+                request.put("count",testList.size());
 
 
+            }
+            catch(JSONException e)
+            {
+                e.printStackTrace();
+            }
+
+
+
+            NameValuePair json = new BasicNameValuePair("json", "{\"count\":1,\"id\":[1,7]}");
+            //NameValuePair json = new BasicNameValuePair("json", request.toString());
+            new GetJSONArrayTask(this, "/api/departmentdetail").execute(json);
             //NameValuePair ext = new BasicNameValuePair("ext", "json");
             //NameValuePair count = new BasicNameValuePair("count", "100");
             //new GetJSONArrayTask(this, "/api/course").execute(ext, count);
+            //return rootView;
 
 
-            expListView = (ExpandableListView) rootView.findViewById(R.id.courses_expand_lv);
 
             //prepareListData();
 
@@ -135,9 +163,9 @@ public class CoursesFragmentExpand extends Fragment implements OnTaskCompleted
                     e.printStackTrace();
                 }
 
-                for(int j = 0; j < deptDataNode.getJSONArray("course_array").length(); j++)
+                for(int j = 0; j < deptDataNode.getJSONArray("courses").length(); j++)
                 {
-                    courseDataNode = jArray.getJSONObject(i).getJSONObject("data");
+                    courseDataNode = deptDataNode.getJSONArray("courses").getJSONObject(i);
 
                     try{
                         id = courseDataNode.getInt("id");
