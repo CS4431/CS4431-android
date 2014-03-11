@@ -12,12 +12,14 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
     Fragment booksFragment;
     Fragment coursesFragment;
     Fragment listingsFragment;
+    Fragment myListingsFragment;
 
     public TabsPagerAdapter(FragmentManager fm) {
         super(fm);
         booksFragment = new BooksFragment();
         coursesFragment = new CoursesFragment();
         listingsFragment = new ListingsFragment();
+        myListingsFragment = new MyListingsFragment();
     }
 
 
@@ -29,9 +31,11 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return coursesFragment;
             case 1:
-                return listingsFragment;
-            case 2:
                 return booksFragment;
+            case 2:
+                return listingsFragment;
+            case 3:
+                return myListingsFragment;
         }
 
         return null;
@@ -40,7 +44,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // get item count - equal to number of tabs
-        return 3;
+        return 4;
     }
 
 }
