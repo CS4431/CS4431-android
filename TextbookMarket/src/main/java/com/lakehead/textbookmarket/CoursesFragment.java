@@ -24,19 +24,53 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted{
     JSONArray jArray;
     ListView courseListView;
     View rootView;
+    ArrayList<Course> courseList;
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             rootView = inflater.inflate(R.layout.fragment_courses, container, false);
             courseListView = (ListView)rootView.findViewById(R.id.course_list_view);
 
-
+            if(savedInstanceState != null)
+            {
+                Log.d("CoursesFragment", "onCreateView() -> " + "Found saved instance state. Loading Course list from it...");
+                courseList = savedInstanceState.getParcelableArrayList("courseList");
+                final CourseArrayAdapter courseAdapter = new CourseArrayAdapter(this.getActivity(), courseList);
+                courseListView.setAdapter(courseAdapter);
+            }
+            else
+            {
+            Log.d("CoursesFragment", "onCreateView() -> " + "No Saved Instance state. Loading Course list from API...");
             NameValuePair ext = new BasicNameValuePair("ext", "json");
             NameValuePair count = new BasicNameValuePair("count", "100");
             new GetJSONArrayTask(this, "/api/course").execute(ext, count);
+            }
             return rootView;
         }
 
+
+    @Override
+    public void onPause()
+    {
+        Log.d("CoursesFragment", "onPause() -> " + "paused fragment.");
+        super.onPause();
+    }
+
+    @Override
+    public void onResume()
+    {
+        Log.d("CoursesFragment", "onResume() -> " + "resumed fragment.");
+        super.onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        Log.d("CoursesFragment", "onSaveInstanceState() -> " + "state saved for fragment.");
+        outState.putParcelableArrayList("courseList", courseList);
+        super.onSaveInstanceState(outState);
+
+    }
 
     @Override
     public void onTaskCompleted(Object obj) {
@@ -49,7 +83,7 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted{
         String instructor;
         String term;
         JSONObject courseDataNode;
-        List<Course> courseList = new ArrayList<Course>();
+        courseList = new ArrayList<Course>();
         try{
             for(int i = 0; i < jArray.length(); i++){
                 courseDataNode = jArray.getJSONObject(i).getJSONObject("data");

@@ -24,19 +24,53 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
     ListView bookListView;
     View rootView;
     JSONArray jArray;
+    ArrayList<Book> bookList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         rootView = inflater.inflate(R.layout.fragment_books, container, false);
         bookListView = (ListView)rootView.findViewById(R.id.book_list_view);
+        if(savedInstanceState != null)
+        {
+            Log.i("BooksFragment", "onCreateView() -> " + "Found saved instance state. Loading Book list from it...");
+            bookList = savedInstanceState.getParcelableArrayList("bookList");
+            final BookArrayAdapter bookAdapter = new BookArrayAdapter(this.getActivity(), bookList);
+            bookListView.setAdapter(bookAdapter);
 
+        }
+        else
+        {
         //These NameValuePairs are the POST parameters for the API call
+        Log.i("BooksFragment", "onCreateView() -> " + "No Saved instance state. Loading Book list from API...");
         NameValuePair ext = new BasicNameValuePair("ext", "json");
         NameValuePair count = new BasicNameValuePair("count", "100");
         new GetJSONArrayTask(this, "/api/book").execute(ext, count);
-
+        }
         return rootView;
+    }
+
+    @Override
+    public void onPause()
+    {
+        Log.d("BooksFragment", "onPause() -> " + "paused fragment.");
+        super.onPause();
+    }
+
+    @Override
+    public void onResume()
+    {
+        Log.d("BooksFragment", "onResume() -> " + "resumed fragment.");
+        super.onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        Log.d("BooksFragment", "onSaveInstanceState() -> " + "state saved for fragment.");
+        outState.putParcelableArrayList("bookList", bookList);
+        super.onSaveInstanceState(outState);
+
     }
 
     /**
@@ -59,14 +93,14 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
         String publisher;
         String cover;
         String image;
-        List<Book> bookList = new ArrayList<Book>();
+        bookList = new ArrayList<Book>();
 
         JSONObject bookDataNode;
         //Add all the books in our JSONArray to our bookList
         try{
             for(int i = 0 ; i < jArray.length(); i++ ){
                 bookDataNode = jArray.getJSONObject(i).getJSONObject("data");
-                Log.i("BooksFragment", "Book Data Polled -> " + bookDataNode.toString());
+                Log.v("BooksFragment", "Book Data Polled -> " + bookDataNode.toString());
                 bookList.add(Book.generateBookFromJSONNode(bookDataNode));
             }
         }
