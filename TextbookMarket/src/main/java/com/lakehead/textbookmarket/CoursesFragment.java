@@ -34,7 +34,7 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted{
         {
 
             View rootView = inflater.inflate(R.layout.fragment_courses, container, false);
-            ListView courseListView = (ListView)rootView.findViewById(R.id.course_list_view);
+            courseListView = (ListView)rootView.findViewById(R.id.course_list_view);
 
 
             //rootView = inflater.inflate(R.layout.fragment_courses, container, false);
