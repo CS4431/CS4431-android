@@ -36,28 +36,39 @@ public class BookArrayAdapter extends ArrayAdapter<Book> {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.books_item_view, parent, false);
 
-        TextView titleTextView = (TextView)rowView.findViewById(R.id.bookTitle);
-        titleTextView.setText(books.get(position).get_title());
 
-        ImageView iconImageView = (ImageView)rowView.findViewById(R.id.icon);
-
-        //If the book doesn't have a bitmap yet, then fetch it. Otherwise, just display the one we have
-        if(books.get(position).getBitmap() == null)
+        if(books.get(position).get_id() > -1)
         {
-            new GetImageTask(books.get(position).get_image_url(), iconImageView, THUMBNAIL_SIZE, THUMBNAIL_SIZE, books.get(position)).execute();
+            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View rowView = inflater.inflate(R.layout.books_item_view, parent, false);
+
+            TextView titleTextView = (TextView)rowView.findViewById(R.id.bookTitle);
+            titleTextView.setText(books.get(position).get_title());
+
+            ImageView iconImageView = (ImageView)rowView.findViewById(R.id.icon);
+
+            //If the book doesn't have a bitmap yet, then fetch it. Otherwise, just display the one we have
+            if(books.get(position).getBitmap() == null)
+            {
+                new GetImageTask(books.get(position).get_image_url(), iconImageView, THUMBNAIL_SIZE, THUMBNAIL_SIZE, books.get(position)).execute();
+            }
+            else
+            {
+                iconImageView.setImageBitmap(books.get(position).getBitmap());
+            }
+
+            TextView detailTextView = (TextView)rowView.findViewById(R.id.bookInfo);
+            detailTextView.setText(books.get(position).get_author());
+
+            return rowView;
         }
         else
         {
-            iconImageView.setImageBitmap(books.get(position).getBitmap());
+            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View rowView = inflater.inflate(R.layout.loading_item_view, parent, false);
+            return rowView;
         }
-
-        TextView detailTextView = (TextView)rowView.findViewById(R.id.bookInfo);
-        detailTextView.setText(books.get(position).get_author());
-
-        return rowView;
     }
 
 }

@@ -42,6 +42,22 @@ public class Book {
         _image_url = image_url;
     }
 
+    /**
+     * This constructor must only be used to create sentinel books used to tell the BookArrayAdapter
+     * to insert a "loading" row.
+     */
+    public Book() {
+        _id = -1;
+        _title = null;
+        _isbn = null;
+        _edition_group_id = -1;
+        _author = null;
+        _edition = -1;
+        _publisher = null;
+        _cover = null;
+        _image_url = null;
+    }
+
     public String get_image_url() {
         return _image_url;
     }

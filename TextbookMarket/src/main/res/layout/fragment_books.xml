@@ -9,18 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:id="@+id/book_list_view"
-        android:layout_gravity="center"
-        android:layout_weight="0.1" />
+        android:layout_gravity="center"/>
         <!--tools:listitem="@layout/item_view" -->
-    <ProgressBar
-        style="?android:attr/progressBarStyle"
-        android:id="@+id/loading_more_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center"
-        android:layout_weight="0.9">
-    </ProgressBar>
-
 
 
 </LinearLayout>

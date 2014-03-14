@@ -34,19 +34,21 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
 
     List<Book> bookList;
     BookArrayAdapter bookAdapter;
-    ProgressBar progressBar;
+
+    //A dummy book used to tell the adapter to add a "loading" row
+    Book loadingBook;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         rootView = inflater.inflate(R.layout.fragment_books, container, false);
         bookListView = (ListView)rootView.findViewById(R.id.book_list_view);
-        progressBar = (ProgressBar)rootView.findViewById(R.id.loading_more_bar);
-        progressBar.setVisibility(View.GONE);
         //bookListView.setEmptyView(rootView.findViewById(R.id.empty));
+        loadingBook = new Book();
         bookList = new ArrayList<Book>();
         bookAdapter = new BookArrayAdapter(this.getActivity(), bookList);
         bookListView.setAdapter(bookAdapter);
+
 
 
 
@@ -69,12 +71,27 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
                 if((lastInScreen == totalItemCount) && !(loadingMore)){
                     currentOffset+=10;
                     loadingMore=true;
-                    progressBar.setVisibility(View.VISIBLE);
+                    addLoadingBook();
+                    //progressBar.setVisibility(View.VISIBLE);
                     makeAPICall();
                 }
             }
         });
         return rootView;
+    }
+
+
+    private void addLoadingBook()
+    {
+
+        bookList.add(loadingBook);
+        bookAdapter.notifyDataSetChanged();
+    }
+
+    private void removeLoadingBook()
+    {
+        bookList.remove(loadingBook);
+        bookAdapter.notifyDataSetChanged();
     }
 
     private void makeAPICall()
@@ -183,8 +200,8 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
             Log.e("BooksFragment", "OnTaskCompleted() -> " + e.toString());
             e.printStackTrace();
         }
+        removeLoadingBook();
         bookAdapter.notifyDataSetChanged();
-        progressBar.setVisibility(View.GONE);
         loadingMore=false;
     }
 
