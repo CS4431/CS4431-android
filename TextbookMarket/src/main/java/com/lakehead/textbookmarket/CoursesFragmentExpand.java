@@ -134,6 +134,7 @@ public class CoursesFragmentExpand extends Fragment implements OnTaskCompleted
     public void onTaskCompleted(Object obj) {
         jArray = (JSONArray)obj;
         int id;
+        int numDepts=0;
         String deptTitle;
         String title;
         String code;
@@ -166,7 +167,7 @@ public class CoursesFragmentExpand extends Fragment implements OnTaskCompleted
 
                 for(int j = 0; j < deptDataNode.getJSONArray("courses").length(); j++)
                 {
-                    courseDataNode = deptDataNode.getJSONArray("courses").getJSONObject(i);
+                    courseDataNode = deptDataNode.getJSONArray("courses").getJSONObject(j);
 
                     try{
                         id = courseDataNode.getInt("id");
@@ -217,6 +218,7 @@ public class CoursesFragmentExpand extends Fragment implements OnTaskCompleted
                     courseList.add(new Course(id,title,code,section,department_id,instructor,term));
                 }
                 departmentCourseHash.put(deptTitle, courseList);
+                numDepts++;
             }
         }
         catch(Exception e){
@@ -226,5 +228,9 @@ public class CoursesFragmentExpand extends Fragment implements OnTaskCompleted
 
         final ExpandableListAdapter courseAdapter = new ExpandableListAdapter(this.getActivity(), deptHeaders, departmentCourseHash);
         expListView.setAdapter(courseAdapter);
+        if(numDepts==1)
+        {
+            expListView.expandGroup(0);
+        }
     }
 }

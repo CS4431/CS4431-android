@@ -40,6 +40,35 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
+
+
+        String deptTitle = _listDataHeader.get(groupPosition);
+
+        Course course = _listDataChild.get(deptTitle).get(childPosition);
+
+        LayoutInflater inflater = (LayoutInflater)this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View rowView = inflater.inflate(R.layout.courses_item, parent, false);
+
+        TextView titleTextView = (TextView)rowView.findViewById(R.id.courseTitle);
+        titleTextView.setText(course.get_title());
+
+        //commented out as we currently have no need for an Icon for the class?
+        //ImageView iconImageView = (ImageView)rowView.findViewById(R.id.icon);
+        //this is temp shit until we decide if we want an icon for courselist.
+        //iconImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_launcher));
+
+        TextView sectionTextView = (TextView)rowView.findViewById(R.id.courseInfo);
+        sectionTextView.setText(course.get_code()+ " " + course.get_section());
+
+        TextView instructorTextView = (TextView)rowView.findViewById(R.id.courseInstructor);
+        instructorTextView.setText(course.get_instructor());
+
+        return rowView;
+
+
+        /*
+        // below is old crap
+
         //final String childText = (String) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
@@ -48,10 +77,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.courses_item, null);
         }
 
-        TextView txtListChild = (TextView) convertView.findViewById(R.id.courses_listview_item_textview);
+        TextView txtListChild = (TextView) convertView.findViewById(R.id.courseTitle);
 
         //txtListChild.setText(childText);
-        return convertView;
+        */
+        //return convertView;
     }
 
     @Override
