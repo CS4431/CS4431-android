@@ -36,33 +36,6 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted{
             View rootView = inflater.inflate(R.layout.fragment_courses, container, false);
             ListView courseListView = (ListView)rootView.findViewById(R.id.course_list_view);
 
-            final CourseArrayAdapter courseAdapter = new CourseArrayAdapter(this.getActivity(), courseList);
-            courseListView.setAdapter(courseAdapter);
-
-            courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(view.getContext(), Course_Info.class);
-                    Bundle extras = new Bundle();
-
-                    int cid = courseAdapter.getItem(position).get_id();
-                    int departmentid = courseAdapter.getItem(position).get_department_id();
-                    String ctitle = courseAdapter.getItem(position).get_title();
-                    String ccode = courseAdapter.getItem(position).get_code();
-                    String csection = courseAdapter.getItem(position).get_section();
-                    String cinstructor = courseAdapter.getItem(position).get_instructor();
-                    String cterm = courseAdapter.getItem(position).get_term();
-                    Log.d("Debug", "Instructor is: " + cinstructor);
-                    extras.putInt("cid",cid);
-                    extras.putInt("departmentid",departmentid);
-                    extras.putString("ctitle", ctitle);
-                    extras.putString("ccode", ccode);
-                    extras.putString("csection", csection);
-                    extras.putString("cinstructor",cinstructor);
-                    extras.putString("cterm",cterm);
-                    intent.putExtras(extras);
-                    startActivity(intent);
-                }});
 
             //rootView = inflater.inflate(R.layout.fragment_courses, container, false);
             //courseListView = (ListView)rootView.findViewById(R.id.course_list_view);
@@ -146,6 +119,33 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted{
         }
 
         final CourseArrayAdapter courseAdapter = new CourseArrayAdapter(this.getActivity(), courseList);
+
+
+        courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(view.getContext(), Course_Info.class);
+                Bundle extras = new Bundle();
+
+                int cid = courseAdapter.getItem(position).get_id();
+                int departmentid = courseAdapter.getItem(position).get_department_id();
+                String ctitle = courseAdapter.getItem(position).get_title();
+                String ccode = courseAdapter.getItem(position).get_code();
+                String csection = courseAdapter.getItem(position).get_section();
+                String cinstructor = courseAdapter.getItem(position).get_instructor();
+                String cterm = courseAdapter.getItem(position).get_term();
+                Log.d("Debug", "Instructor is: " + cinstructor);
+                extras.putInt("cid",cid);
+                extras.putInt("departmentid",departmentid);
+                extras.putString("ctitle", ctitle);
+                extras.putString("ccode", ccode);
+                extras.putString("csection", csection);
+                extras.putString("cinstructor",cinstructor);
+                extras.putString("cterm",cterm);
+                intent.putExtras(extras);
+                startActivity(intent);
+            }});
+
         courseListView.setAdapter(courseAdapter);
     }
 }
