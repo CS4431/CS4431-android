@@ -1,9 +1,12 @@
 package com.lakehead.textbookmarket;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Class holding all listing information. Each object represents a book for sale by a specific user.
  */
-public class Listing {
+public class Listing implements Parcelable {
     private final int _id;
     private final int _user_id;
     private Book _book;
@@ -26,6 +29,30 @@ public class Listing {
         _start_date = start_date;
         _end_date = end_date;
     }
+    // Parcelling part
+    public Listing(Parcel in){
+        _id = in.readInt();
+        _user_id = in.readInt();
+        _book_id = in.readInt();
+        _book = (Book)in.readParcelable(ClassLoader.getSystemClassLoader());
+        _price = in.readDouble();
+        _start_date = in.readString();
+        _end_date = in.readString();
+    }
+
+
+    /**
+     * A class necessary for parcelable to work. Handles Creating Parceled Versions of books
+     */
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Listing createFromParcel(Parcel in) {
+            return new Listing(in);
+        }
+
+        public Listing[] newArray(int size) {
+            return new Listing[size];
+        }
+    };
 
     public String get_end_date() {
         return _end_date;
@@ -53,5 +80,21 @@ public class Listing {
 
     public int get_id() {
         return _id;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags){
+        dest.writeInt(this._id);
+        dest.writeInt(this._user_id);
+        dest.writeInt(this._book_id);
+        dest.writeParcelable(this._book,0);
+        dest.writeDouble(this._price);
+        dest.writeString(this._start_date);
+        dest.writeString(this._end_date);
     }
 }
