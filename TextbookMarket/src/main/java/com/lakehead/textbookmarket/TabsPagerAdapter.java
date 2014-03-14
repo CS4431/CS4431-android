@@ -16,7 +16,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
     public TabsPagerAdapter(FragmentManager fm) {
         super(fm);
         booksFragment = new BooksFragment();
-        coursesFragment = new CoursesFragmentExpand();
+        coursesFragment = new CoursesFragment();
         listingsFragment = new ListingsFragment();
     }
 

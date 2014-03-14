@@ -10,24 +10,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
+/**
+ * The adapter used to populate the list view for the courses fragment
+ */
+public class CourseExpandableListAdapter extends BaseExpandableListAdapter {
 
-public class ExpandableListAdapter extends BaseExpandableListAdapter {
+    private Context context;
+    private List<String> departmentHeaders; // header titles
+    private HashMap<String, List<Course>> courses; //courses nested within departments
 
-    private Context _context;
-    private List<String> _listDataHeader; // header titles
-    // child data in format of header title, child title
-    private HashMap<String, List<Course>> _listDataChild;
 
-    public ExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<Course>> listChildData) {
-        this._context = context;
-        this._listDataHeader = listDataHeader;
-        this._listDataChild = listChildData;
+    /**
+     * @param context Used to get the inflater for the object.
+     * @param departmentHeaders An array of department names
+     * @param courses A HashMap where a department name maps to an array of courses
+     */
+    public CourseExpandableListAdapter(Context context, List<String> departmentHeaders,
+                                       HashMap<String, List<Course>> courses) {
+        this.context = context;
+        this.departmentHeaders = departmentHeaders;
+        this.courses = courses;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+        return this.courses.get(this.departmentHeaders.get(groupPosition))
                 .get(childPosititon);
     }
 
@@ -36,19 +43,23 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return childPosition;
     }
 
+    /**
+     *
+     * @param groupPosition The current header position
+     * @param childPosition The current child element position
+     * @param isLastChild Determines whether the current child is that last
+     * @param convertView unused
+     * @param parent The parent of the current View.
+     * @return Returns the now-formulated row of data.
+     */
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-
-
-        String deptTitle = _listDataHeader.get(groupPosition);
-
-        Course course = _listDataChild.get(deptTitle).get(childPosition);
-
-        LayoutInflater inflater = (LayoutInflater)this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        String deptTitle = departmentHeaders.get(groupPosition);
+        Course course = courses.get(deptTitle).get(childPosition);
+        LayoutInflater inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.courses_item, parent, false);
-
         TextView titleTextView = (TextView)rowView.findViewById(R.id.courseTitle);
         titleTextView.setText(course.get_title());
 
@@ -59,45 +70,26 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView sectionTextView = (TextView)rowView.findViewById(R.id.courseInfo);
         sectionTextView.setText(course.get_code()+ " " + course.get_section());
-
         TextView instructorTextView = (TextView)rowView.findViewById(R.id.courseInstructor);
         instructorTextView.setText(course.get_instructor());
-
         return rowView;
 
-
-        /*
-        // below is old crap
-
-        //final String childText = (String) getChild(groupPosition, childPosition);
-
-        if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.courses_item, null);
-        }
-
-        TextView txtListChild = (TextView) convertView.findViewById(R.id.courseTitle);
-
-        //txtListChild.setText(childText);
-        */
-        //return convertView;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+        return this.courses.get(this.departmentHeaders.get(groupPosition))
                 .size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return this._listDataHeader.get(groupPosition);
+        return this.departmentHeaders.get(groupPosition);
     }
 
     @Override
     public int getGroupCount() {
-        return this._listDataHeader.size();
+        return this.departmentHeaders.size();
     }
 
     @Override
@@ -110,7 +102,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                              View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
+            LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.courses_item_group, null);
         }
