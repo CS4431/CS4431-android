@@ -15,6 +15,9 @@
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
         android:gravity="center_vertical"
+        android:scrollHorizontally="true"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="Algorithm Design and Analysis"
         android:textSize="16sp" />
 

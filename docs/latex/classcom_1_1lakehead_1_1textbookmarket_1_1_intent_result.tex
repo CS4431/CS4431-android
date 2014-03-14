@@ -1,0 +1,113 @@
+\hypertarget{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result}{\section{com.\-lakehead.\-textbookmarket.\-Intent\-Result Class Reference}
+\label{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result}\index{com.\-lakehead.\-textbookmarket.\-Intent\-Result@{com.\-lakehead.\-textbookmarket.\-Intent\-Result}}
+}
+
+
+Encapsulates the result of a barcode scan invoked through \hyperlink{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_integrator}{Intent\-Integrator}.  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+String \hyperlink{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result_aa210b538b6d7a1b8c74b7a73ec250149}{get\-Contents} ()
+\item 
+String \hyperlink{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result_aa11b6013b1364a417255dea971affcb1}{get\-Format\-Name} ()
+\item 
+byte\mbox{[}$\,$\mbox{]} \hyperlink{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result_ac96ceeb02b02fe61e282560258be4b4f}{get\-Raw\-Bytes} ()
+\item 
+Integer \hyperlink{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result_acad89f98b88d080e62c1e8b03bc0d131}{get\-Orientation} ()
+\item 
+String \hyperlink{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result_afd7b195f8e172688f59a1ce7da4fd497}{get\-Error\-Correction\-Level} ()
+\item 
+\hypertarget{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result_a4a1784ebcdf0bb6cbcd1b1300732e040}{String {\bfseries to\-String} ()}\label{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result_a4a1784ebcdf0bb6cbcd1b1300732e040}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Encapsulates the result of a barcode scan invoked through \hyperlink{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_integrator}{Intent\-Integrator}. 
+
+Definition at line 7 of file Intent\-Result.\-java.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result_aa210b538b6d7a1b8c74b7a73ec250149}{\index{com\-::lakehead\-::textbookmarket\-::\-Intent\-Result@{com\-::lakehead\-::textbookmarket\-::\-Intent\-Result}!get\-Contents@{get\-Contents}}
+\index{get\-Contents@{get\-Contents}!com::lakehead::textbookmarket::IntentResult@{com\-::lakehead\-::textbookmarket\-::\-Intent\-Result}}
+\subsubsection[{get\-Contents}]{\setlength{\rightskip}{0pt plus 5cm}String com.\-lakehead.\-textbookmarket.\-Intent\-Result.\-get\-Contents (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result_aa210b538b6d7a1b8c74b7a73ec250149}
+\begin{DoxyReturn}{Returns}
+raw content of barcode 
+\end{DoxyReturn}
+
+
+Definition at line 34 of file Intent\-Result.\-java.
+
+\hypertarget{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result_afd7b195f8e172688f59a1ce7da4fd497}{\index{com\-::lakehead\-::textbookmarket\-::\-Intent\-Result@{com\-::lakehead\-::textbookmarket\-::\-Intent\-Result}!get\-Error\-Correction\-Level@{get\-Error\-Correction\-Level}}
+\index{get\-Error\-Correction\-Level@{get\-Error\-Correction\-Level}!com::lakehead::textbookmarket::IntentResult@{com\-::lakehead\-::textbookmarket\-::\-Intent\-Result}}
+\subsubsection[{get\-Error\-Correction\-Level}]{\setlength{\rightskip}{0pt plus 5cm}String com.\-lakehead.\-textbookmarket.\-Intent\-Result.\-get\-Error\-Correction\-Level (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result_afd7b195f8e172688f59a1ce7da4fd497}
+\begin{DoxyReturn}{Returns}
+name of the error correction level used in the barcode, if applicable 
+\end{DoxyReturn}
+
+
+Definition at line 62 of file Intent\-Result.\-java.
+
+\hypertarget{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result_aa11b6013b1364a417255dea971affcb1}{\index{com\-::lakehead\-::textbookmarket\-::\-Intent\-Result@{com\-::lakehead\-::textbookmarket\-::\-Intent\-Result}!get\-Format\-Name@{get\-Format\-Name}}
+\index{get\-Format\-Name@{get\-Format\-Name}!com::lakehead::textbookmarket::IntentResult@{com\-::lakehead\-::textbookmarket\-::\-Intent\-Result}}
+\subsubsection[{get\-Format\-Name}]{\setlength{\rightskip}{0pt plus 5cm}String com.\-lakehead.\-textbookmarket.\-Intent\-Result.\-get\-Format\-Name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result_aa11b6013b1364a417255dea971affcb1}
+\begin{DoxyReturn}{Returns}
+name of format, like \char`\"{}\-Q\-R\-\_\-\-C\-O\-D\-E\char`\"{}, \char`\"{}\-U\-P\-C\-\_\-\-A\char`\"{}. See
+\begin{DoxyCode}
+BarcodeFormat 
+\end{DoxyCode}
+ for more format names. 
+\end{DoxyReturn}
+
+
+Definition at line 41 of file Intent\-Result.\-java.
+
+\hypertarget{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result_acad89f98b88d080e62c1e8b03bc0d131}{\index{com\-::lakehead\-::textbookmarket\-::\-Intent\-Result@{com\-::lakehead\-::textbookmarket\-::\-Intent\-Result}!get\-Orientation@{get\-Orientation}}
+\index{get\-Orientation@{get\-Orientation}!com::lakehead::textbookmarket::IntentResult@{com\-::lakehead\-::textbookmarket\-::\-Intent\-Result}}
+\subsubsection[{get\-Orientation}]{\setlength{\rightskip}{0pt plus 5cm}Integer com.\-lakehead.\-textbookmarket.\-Intent\-Result.\-get\-Orientation (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result_acad89f98b88d080e62c1e8b03bc0d131}
+\begin{DoxyReturn}{Returns}
+rotation of the image, in degrees, which resulted in a successful scan. May be null. 
+\end{DoxyReturn}
+
+
+Definition at line 55 of file Intent\-Result.\-java.
+
+\hypertarget{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result_ac96ceeb02b02fe61e282560258be4b4f}{\index{com\-::lakehead\-::textbookmarket\-::\-Intent\-Result@{com\-::lakehead\-::textbookmarket\-::\-Intent\-Result}!get\-Raw\-Bytes@{get\-Raw\-Bytes}}
+\index{get\-Raw\-Bytes@{get\-Raw\-Bytes}!com::lakehead::textbookmarket::IntentResult@{com\-::lakehead\-::textbookmarket\-::\-Intent\-Result}}
+\subsubsection[{get\-Raw\-Bytes}]{\setlength{\rightskip}{0pt plus 5cm}byte \mbox{[}$\,$\mbox{]} com.\-lakehead.\-textbookmarket.\-Intent\-Result.\-get\-Raw\-Bytes (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classcom_1_1lakehead_1_1textbookmarket_1_1_intent_result_ac96ceeb02b02fe61e282560258be4b4f}
+\begin{DoxyReturn}{Returns}
+raw bytes of the barcode content, if applicable, or null otherwise 
+\end{DoxyReturn}
+
+
+Definition at line 48 of file Intent\-Result.\-java.
+
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+C\-:/\-Users/\-Master/\-Documents/\-Git\-Hub/\-C\-S4431-\/android/\-Textbook\-Market/src/main/java/com/lakehead/textbookmarket/Intent\-Result.\-java\end{DoxyCompactItemize}

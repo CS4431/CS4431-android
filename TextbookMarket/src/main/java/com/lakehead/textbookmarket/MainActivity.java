@@ -5,24 +5,14 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.view.Menu;
 
+/**
+ * Primary Activity Holding the tabs managed by TabsPagerAdapter , it also handles the action bar.
+ */
 public class MainActivity extends FragmentActivity implements
         ActionBar.TabListener {
 
@@ -120,8 +110,8 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void openIsbnSearch() {
-        Intent addListingIntent = new Intent(this, AddListingActivity.class);
-        startActivity(addListingIntent);
+        Intent inputISBNIntent = new Intent(this, InputISBNActivity.class);
+        startActivity(inputISBNIntent);
 
     }
 

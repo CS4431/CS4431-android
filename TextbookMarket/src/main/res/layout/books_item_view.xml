@@ -35,7 +35,9 @@
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
         android:layout_toRightOf="@id/icon"
-        android:singleLine="false"
+        android:scrollHorizontally="true"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:gravity="center_vertical"
         android:text="Example application"
         android:textSize="16sp" />

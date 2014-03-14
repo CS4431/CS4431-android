@@ -38,6 +38,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -63,6 +64,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
       <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 <!-- window showing the filter options -->
@@ -70,7 +72,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -81,12 +83,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>com</b></li><li class="navelem"><b>lakehead</b></li><li class="navelem"><b>textbookmarket</b></li><li class="navelem"><a class="el" href="classcom_1_1lakehead_1_1textbookmarket_1_1_main_activity.html">MainActivity</a></li>  </ul>
+<li class="navelem"><b>com</b></li><li class="navelem"><b>lakehead</b></li><li class="navelem"><a class="el" href="namespacecom_1_1lakehead_1_1textbookmarket.html">textbookmarket</a></li><li class="navelem"><a class="el" href="classcom_1_1lakehead_1_1textbookmarket_1_1_main_activity.html">MainActivity</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classcom_1_1lakehead_1_1textbookmarket_1_1_main_activity-members.html">List of all members</a>  </div>
@@ -94,6 +95,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">com.lakehead.textbookmarket.MainActivity Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Primary Activity Holding the tabs managed by <a class="el" href="classcom_1_1lakehead_1_1textbookmarket_1_1_tabs_pager_adapter.html" title="Handles the logic of switching between tabs. ">TabsPagerAdapter</a> , it also handles the action bar.  
+ <a href="classcom_1_1lakehead_1_1textbookmarket_1_1_main_activity.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for com.lakehead.textbookmarket.MainActivity:</div>
 <div class="dyncontent">
@@ -103,14 +107,17 @@ Inheritance diagram for com.lakehead.textbookmarket.MainActivity:</div>
 </map>
  </div></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>PlaceholderFragment</b></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A placeholder fragment containing a simple view. <br/></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:ab157c4c64c3d3df2ca8037a97eb396ab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab157c4c64c3d3df2ca8037a97eb396ab"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>onTabReselected</b> (Tab tab, FragmentTransaction ft)</td></tr>
+<tr class="separator:ab157c4c64c3d3df2ca8037a97eb396ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8304b9234b265c96b74b222be4ec53e2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8304b9234b265c96b74b222be4ec53e2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>onTabSelected</b> (Tab tab, FragmentTransaction ft)</td></tr>
+<tr class="separator:a8304b9234b265c96b74b222be4ec53e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafe36df32532d34dd53f425c330d192f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aafe36df32532d34dd53f425c330d192f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>onTabUnselected</b> (Tab tab, FragmentTransaction ft)</td></tr>
+<tr class="separator:aafe36df32532d34dd53f425c330d192f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42aad44340fa4dd995cca807512be2bf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a42aad44340fa4dd995cca807512be2bf"></a>
 boolean&#160;</td><td class="memItemRight" valign="bottom"><b>onCreateOptionsMenu</b> (Menu menu)</td></tr>
 <tr class="separator:a42aad44340fa4dd995cca807512be2bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -120,20 +127,48 @@ boolean&#160;</td><td class="memItemRight" valign="bottom"><b>onOptionsItemSelec
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:ab5dc3cecf5c66f0c5e7ab996b6143fe4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab5dc3cecf5c66f0c5e7ab996b6143fe4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>onCreate</b> (Bundle savedInstanceState)</td></tr>
+<tr class="memitem:ab5dc3cecf5c66f0c5e7ab996b6143fe4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1lakehead_1_1textbookmarket_1_1_main_activity.html#ab5dc3cecf5c66f0c5e7ab996b6143fe4">onCreate</a> (Bundle savedInstanceState)</td></tr>
 <tr class="separator:ab5dc3cecf5c66f0c5e7ab996b6143fe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_main_activity_8java_source.html#l00014">14</a> of file <a class="el" href="_main_activity_8java_source.html">MainActivity.java</a>.</p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+<div class="textblock"><p>Primary Activity Holding the tabs managed by <a class="el" href="classcom_1_1lakehead_1_1textbookmarket_1_1_tabs_pager_adapter.html" title="Handles the logic of switching between tabs. ">TabsPagerAdapter</a> , it also handles the action bar. </p>
+
+<p>Definition at line <a class="el" href="_main_activity_8java_source.html#l00029">29</a> of file <a class="el" href="_main_activity_8java_source.html">MainActivity.java</a>.</p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ab5dc3cecf5c66f0c5e7ab996b6143fe4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void com.lakehead.textbookmarket.MainActivity.onCreate </td>
+          <td>(</td>
+          <td class="paramtype">Bundle&#160;</td>
+          <td class="paramname"><em>savedInstanceState</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>on swiping the viewpager make respective tab selected</p>
+
+<p>Definition at line <a class="el" href="_main_activity_8java_source.html#l00039">39</a> of file <a class="el" href="_main_activity_8java_source.html">MainActivity.java</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>C:/Users/Master/Documents/GitHub/CS4431-android/TextbookMarket/src/main/java/com/lakehead/textbookmarket/<a class="el" href="_main_activity_8java_source.html">MainActivity.java</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jan 30 2014 21:56:18 for Book Market by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Feb 27 2014 21:46:15 for Book Market by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

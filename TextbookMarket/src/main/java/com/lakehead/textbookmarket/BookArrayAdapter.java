@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by Master on 2/10/14.
+ * Adapter used to fill a ListView with data from a Book object.
  */
 public class BookArrayAdapter extends ArrayAdapter<Book> {
     private final Context context;
@@ -20,7 +20,6 @@ public class BookArrayAdapter extends ArrayAdapter<Book> {
     private final int THUMBNAIL_SIZE = 96;
 
     /**
-     *
      * @param context
      * @param books
      */
@@ -33,7 +32,6 @@ public class BookArrayAdapter extends ArrayAdapter<Book> {
 
 
     /**
-     *
      * @param position The Array position of the iterable list
      * @param convertView unused
      * @param parent The parent of the current View.

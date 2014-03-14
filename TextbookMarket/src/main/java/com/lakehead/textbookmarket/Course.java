@@ -14,6 +14,16 @@ public class Course {
     private final String _instructor;
     private final String _term;
 
+    /**
+     *
+     * @param id course ID.
+     * @param title Title of the course.
+     * @param code Code, example: BUSI-4423.
+     * @param section WA/FA/FY/etc..
+     * @param department_id //The department that the course belongs to.
+     * @param instructor The person who will be teaching the course
+     * @param term YYYYT -> 2014F. The year and term.
+     */
     public Course(int id, String title, String code, String section, int department_id, String instructor, String term){
         _id = id;
         _title = title;

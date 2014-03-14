@@ -1,22 +1,27 @@
 package com.lakehead.textbookmarket;
 
 /**
- * Created by Master on 2/17/14.
+ * Class holding all listing information. Each object represents a book for sale by a specific user.
  */
 public class Listing {
     private final int _id;
     private final int _user_id;
-    private final int _book_id;
+    private Book _book;
     //TODO honestly we should probably make Price an INT. Makes it much nicer to look at when browsing.
     private final double _price;
     private final String _start_date;
     private final String _end_date;
 
 
+
+    private final int _book_id;
+
+
     public Listing(int id, int user_id, int book_id, double price, String start_date, String end_date) {
         _id = id;
         _user_id = user_id;
         _book_id = book_id;
+        _book = null;
         _price = price;
         _start_date = start_date;
         _end_date = end_date;
@@ -34,9 +39,13 @@ public class Listing {
         return _price;
     }
 
-    public int get_book_id() {
-        return _book_id;
+    public Book get_book() {
+        return _book;
     }
+
+    public int get_book_id() {return _book_id;}
+
+    public void set_book(Book book){if(_book == null)_book = book;}
 
     public int get_user_id() {
         return _user_id;

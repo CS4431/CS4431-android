@@ -34,7 +34,7 @@
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.lakehead.textbookmarket.AddListingActivity"
+            android:name="com.lakehead.textbookmarket.InputISBNActivity"
             android:label="@string/title_activity_add_listing"
             android:parentActivityName="com.lakehead.textbookmarket.MainActivity" >
             <meta-data
@@ -44,12 +44,18 @@
         <activity
             android:name="com.lakehead.textbookmarket.Book_Info"
             android:label="@string/title_activity_book__info" >
-
         </activity>
         <activity
             android:name="com.lakehead.textbookmarket.Course_Info"
             android:label="@string/title_activity_course__info" >
-
+        </activity>
+        <activity
+            android:name="com.lakehead.textbookmarket.AddListingActivity"
+            android:label="@string/title_activity_add_listing"
+            android:parentActivityName="com.lakehead.textbookmarket.InputISBNActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="InputISBNActivity" />
         </activity>
     </application>
 

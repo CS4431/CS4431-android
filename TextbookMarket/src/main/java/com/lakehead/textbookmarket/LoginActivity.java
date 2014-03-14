@@ -24,9 +24,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 
-/*
-This OnTaskCompleted is an interface that Activities receiving callbacks from async tasks should implement.
-There may be another way to do this, but I'll just keep this here for now.
+/**
+ * This OnTaskCompleted is an interface that Activities receiving callbacks from async tasks should implement.
  */
 public class LoginActivity extends Activity /*implements OnTaskCompleted*/ {
     String deptCode;
@@ -75,6 +74,11 @@ public class LoginActivity extends Activity /*implements OnTaskCompleted*/ {
     }
 
     //Get the login info, encode the email address, and then put the info into a String.
+
+    /**
+     * Executes a LoginTask
+     * @param v
+     */
     public void login(View v)
     {
         String emailAddress = emailText.getText().toString();
@@ -173,6 +177,9 @@ public class LoginActivity extends Activity /*implements OnTaskCompleted*/ {
     }
     */
 
+    /**
+     * A simple function used to hide the user interface while executing a background task.
+     */
     private void hideUI()
     {
         emailText.setVisibility(View.INVISIBLE);
@@ -182,6 +189,9 @@ public class LoginActivity extends Activity /*implements OnTaskCompleted*/ {
         bar.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * A simple function used to show the user interface after executing a background task.
+     */
     private void showUI()
     {
         emailText.setVisibility(View.VISIBLE);

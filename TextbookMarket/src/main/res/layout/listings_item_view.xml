@@ -6,7 +6,7 @@
     android:padding="6dip" >
 
     <ImageView
-        android:id="@+id/icon"
+        android:id="@+id/listing_icon"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
@@ -17,7 +17,7 @@
 
 
     <ImageView
-        android:id="@+id/icon2"
+        android:id="@+id/mail_icon"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
@@ -34,8 +34,11 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/icon"
+        android:layout_toRightOf="@id/listing_icon"
         android:gravity="center_vertical"
+        android:scrollHorizontally="true"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="Whatever Book"
         android:textSize="16sp" />
 
@@ -45,8 +48,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/listingTitle"
-        android:layout_toRightOf="@id/icon"
-        android:layout_toLeftOf="@id/icon2"
+        android:layout_toRightOf="@id/listing_icon"
+        android:layout_toLeftOf="@id/mail_icon"
         android:ellipsize="marquee"
         android:singleLine="true"
         android:text="COMP-4431-WA"
@@ -60,8 +63,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/listingCourseInfo"
-        android:layout_toRightOf="@id/icon"
-        android:layout_toLeftOf="@id/icon2"
+        android:layout_toRightOf="@id/listing_icon"
+        android:layout_toLeftOf="@id/mail_icon"
         android:ellipsize="marquee"
         android:singleLine="true"
         android:text="Price: $50"

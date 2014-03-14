@@ -22,6 +22,9 @@ import org.json.JSONObject;
 
 import java.util.regex.Pattern;
 
+/**
+ * Activity used for user Registration.
+ */
 public class RegisterActivity extends Activity /*implements OnTaskCompleted*/ {
     String deptCode;
     JSONArray jArray;
@@ -70,6 +73,10 @@ public class RegisterActivity extends Activity /*implements OnTaskCompleted*/ {
 
     }
 
+    /**
+     * Executes a RegisterTask
+     * @param v
+     */
     public void register(View v)
     {
         email = emailText.getText().toString();
@@ -181,6 +188,9 @@ public class RegisterActivity extends Activity /*implements OnTaskCompleted*/ {
         return pattern.matcher(email).matches();
     }
 
+    /**
+     * A simple function used to hide the user interface while executing a background task.
+     */
     private void hideUI()
     {
         emailText.setVisibility(View.INVISIBLE);
@@ -192,6 +202,9 @@ public class RegisterActivity extends Activity /*implements OnTaskCompleted*/ {
         bar.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * A simple function used to show the user interface after executing a background task.
+     */
     private void showUI()
     {
         emailText.setVisibility(View.VISIBLE);
