@@ -30,7 +30,7 @@ public class MainActivity extends FragmentActivity implements
         // Initilization
         viewPager = (ViewPager) findViewById(R.id.pager);
         //added to constantly keep all fragments in memory.
-        viewPager.setOffscreenPageLimit(2);
+        viewPager.setOffscreenPageLimit(3);
         actionBar = getActionBar();
         mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
