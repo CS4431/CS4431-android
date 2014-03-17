@@ -23,23 +23,61 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
     ListView listingsListView;
     View rootView;
     JSONArray jArray;
+    ArrayList<Listing> listingsList;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         rootView = inflater.inflate(R.layout.fragment_listings, container, false);
         listingsListView = (ListView)rootView.findViewById(R.id.listings_list_view);
-        NameValuePair ext = new BasicNameValuePair("ext", "json");
-        NameValuePair count = new BasicNameValuePair("count", "20");
-        new GetJSONArrayTask(this, "/api/sell").execute(ext, count);
 
+        if(savedInstanceState != null)
+        {
+            Log.d("ListingsFragment", "onCreateView() -> " + "Found Saved Instance state. Loading Course list from it...");
+            listingsList = savedInstanceState.getParcelableArrayList("listingsList");
+            ListingArrayAdapter listingsAdapter = new ListingArrayAdapter(this.getActivity(), listingsList);
+            listingsListView.setAdapter(listingsAdapter);
+        }
+        else
+        {
+            Log.d("ListingsFragment", "onCreateView() -> " + "No Saved Instance state. Loading Course list from API...");
+            NameValuePair ext = new BasicNameValuePair("ext", "json");
+            NameValuePair count = new BasicNameValuePair("count", "20");
+            new GetJSONArrayTask(this, "/api/sell").execute(ext, count);
+        }
 
         return rootView;
     }
 
 
     @Override
+    public void onPause()
+    {
+        Log.d("ListingsFragment", "onPause() -> " + "paused fragment.");
+        super.onPause();
+    }
+
+    @Override
+    public void onResume()
+    {
+        Log.d("ListingsFragment", "onResume() -> " + "resumed fragment.");
+        super.onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        Log.d("ListingsFragment", "onSaveInstanceState() -> " + "state saved for fragment.");
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("listingsList", listingsList);
+
+
+    }
+
+    @Override
     public void onTaskCompleted(Object obj) {
-        List<Listing> listingsList= new ArrayList<Listing>();
+        listingsList= new ArrayList<Listing>();
         List<Book> temporaryBookList = new ArrayList<Book>();
 
         jArray = (JSONArray)obj;
@@ -53,16 +91,16 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
 
                 nodeType = jArray.getJSONObject(i).getString("kind");
                 nodeData = jArray.getJSONObject(i).getJSONObject("data");
-                Log.i("ListingsFragment", "OnTaskCompleted() -> Kind is: " + nodeType);
+                Log.v("ListingsFragment", "OnTaskCompleted() -> Kind is: " + nodeType);
                 if(nodeType.equals("sell"))
                 {
-                    Log.i("ListingsFragment", "OnTaskCompleted() -> Sell Data Polled -> " + nodeData.toString());
+                    Log.v("ListingsFragment", "OnTaskCompleted() -> Sell Data Polled -> " + nodeData.toString());
                     listingsList.add(generateListingFromJSONNode(nodeData));
                 }
                 else if(nodeType.equals("book"))
                 {
-                    Log.i("ListingsFragment", "OnTaskCompleted() -> Book Data Polled -> " + nodeData.toString());
-                    temporaryBookList.add(generateBookFromJSONNode(nodeData));
+                    Log.v("ListingsFragment", "OnTaskCompleted() -> Book Data Polled -> " + nodeData.toString());
+                    temporaryBookList.add(Book.generateBookFromJSONNode(nodeData));
                 }
                 else
                 {
@@ -73,7 +111,7 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
             for(Listing current_listing : listingsList){
                 for(Book current_book : temporaryBookList){
                     if(current_listing.get_book_id() == current_book.get_id()){
-                        Log.i("ListingsFragment", "OnTaskCompleted() -> Associated Book with ID {" + current_book.get_id()
+                        Log.v("ListingsFragment", "OnTaskCompleted() -> Associated Book with ID {" + current_book.get_id()
                                 + "} with Listing {" + current_listing.get_id()+"} which was requesting Book with ID {"
                                 + current_listing.get_book_id()+"}");
                         current_listing.set_book(current_book);
@@ -155,81 +193,4 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
 
     }
 
-    /**
-     * Generates a Book Object based on the JSON Node passed to it.
-     *
-     * @param bookDataNode JSON Node grabbed from the API that relates to a book.
-     * @return Returns a Book object, or if it fails to parse important data, returns Null.
-     */
-    public Book generateBookFromJSONNode(JSONObject bookDataNode){
-        //temporary book variables
-        int edition;
-        int book_id;
-        String title;
-        String isbn;
-        int edition_group_id;
-        String author;
-        String publisher;
-        String cover;
-        String image;
-
-        try{
-            book_id = bookDataNode.getInt("id");
-        }catch(Exception e){
-            book_id = 0;
-            Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for id: " + e.toString());
-        }
-        try{
-            title = bookDataNode.getString("title");
-        }catch(Exception e){
-            Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for title: " + e.toString());
-            return null;
-        }
-        try{
-            isbn = bookDataNode.getString("isbn");
-        }catch(Exception e){
-            Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for ISBN: " + e.toString());
-            return null;
-        }
-        try{
-            edition_group_id = bookDataNode.getInt("edition_group_id");
-        }catch(Exception e){
-            Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for edition_group_id: " + e.toString());
-            return null;
-        }
-        try{
-            author = bookDataNode.getString("author");
-        }catch(Exception e){
-            author = "N/A";
-            Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for author: " + e.toString());
-        }
-        try{
-            edition = bookDataNode.getInt("edition");
-        }catch(Exception e){
-            edition = 0;
-            Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for edition. Error: : " + e.toString());
-        }
-        try{
-            publisher = bookDataNode.getString("publisher");
-        }catch(Exception e){
-            publisher = "N/A";
-            Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for publisher: " + e.toString());
-        }
-        try{
-            cover = bookDataNode.getString("cover");
-        }catch(Exception e){
-            cover = "N/A";
-            Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for cover: " + e.toString());
-        }
-        try{
-            image = bookDataNode.getString("image");
-        }catch(Exception e){
-            image = "N/A";
-            Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for image: " + e.toString());
-        }
-
-
-        return new Book(book_id, title, isbn, edition,
-                author, edition, publisher, cover, image);
-    }
 }

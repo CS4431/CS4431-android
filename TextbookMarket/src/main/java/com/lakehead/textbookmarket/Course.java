@@ -1,11 +1,13 @@
 package com.lakehead.textbookmarket;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by Master on 2/17/14.
  */
-public class Course {
+public class Course implements Parcelable{
     private final int _id;
     private final String _title;
     private final String _code;
@@ -34,6 +36,28 @@ public class Course {
         _term = term;
     }
 
+    public static final Parcelable.Creator<Course> CREATOR
+            = new Parcelable.Creator<Course>() {
+        public Course createFromParcel(Parcel in) {
+            return new Course(in);
+        }
+
+        public Course[] newArray(int size) {
+            return new Course[size];
+        }
+    };
+
+    private Course(Parcel in) {
+        this._id = in.readInt();
+        this._title = in.readString();
+        this._code = in.readString();
+        this._section = in.readString();
+        this._department_id = in.readInt();
+        this._instructor = in.readString();
+        this._term = in.readString();
+    }
+
+
     public int get_id() {return _id; }
 
     public String get_title() {
@@ -54,4 +78,20 @@ public class Course {
 
     public String get_term() { return _term; }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        //public Course(int id, String title, String code, String section, int department_id, String instructor, String term){
+        dest.writeInt(this._id);
+        dest.writeString(this._title);
+        dest.writeString(this._code);
+        dest.writeString(this._section);
+        dest.writeInt(this._department_id);
+        dest.writeString(this._instructor);
+        dest.writeString(this._term);
+    }
 }
