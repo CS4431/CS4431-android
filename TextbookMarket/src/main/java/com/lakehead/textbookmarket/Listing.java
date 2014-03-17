@@ -12,8 +12,6 @@ public class Listing {
     private final String _start_date;
     private final String _end_date;
 
-
-
     private final int _book_id;
 
 
@@ -26,6 +24,22 @@ public class Listing {
         _start_date = start_date;
         _end_date = end_date;
     }
+
+
+    /**
+     * This constructor must only be used to create sentinel listings used to tell the ListingArrayAdapter
+     * to insert a "loading" row.
+     */
+    public Listing() {
+        _id = -1;
+        _user_id = -1;
+        _book_id = -1;
+        _book = null;
+        _price = -1;
+        _start_date = null;
+        _end_date = null;
+    }
+
 
     public String get_end_date() {
         return _end_date;

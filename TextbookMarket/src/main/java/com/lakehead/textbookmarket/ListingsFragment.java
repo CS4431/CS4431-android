@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import org.apache.http.NameValuePair;
@@ -23,23 +24,77 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
     ListView listingsListView;
     View rootView;
     JSONArray jArray;
+    int currentOffset=0;
+    boolean loadingMore=false;
+    List<Listing> listingsList;
+    ListingArrayAdapter listingsAdapter;
+
+    //A dummy listing used to tell the adapter to add a "loading" row
+    Listing loadingListing;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         rootView = inflater.inflate(R.layout.fragment_listings, container, false);
         listingsListView = (ListView)rootView.findViewById(R.id.listings_list_view);
+        loadingListing = new Listing();
+        listingsList= new ArrayList<Listing>();
+        listingsAdapter = new ListingArrayAdapter(this.getActivity(), listingsList);
         NameValuePair ext = new BasicNameValuePair("ext", "json");
-        NameValuePair count = new BasicNameValuePair("count", "20");
+        NameValuePair count = new BasicNameValuePair("count", "10");
         new GetJSONArrayTask(this, "/api/sell").execute(ext, count);
+        makeAPICall();
 
+        listingsListView.setOnScrollListener(new AbsListView.OnScrollListener(){
+            //useless here, skip!
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {}
+            //dumdumdum
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                //what is the bottom iten that is visible
+                int lastInScreen = firstVisibleItem + visibleItemCount;
+                Log.d("Debug",""+lastInScreen);
+                //is the bottom item visible & not loading more already ? Load more !
+                if((lastInScreen == totalItemCount) && !(loadingMore)){
+                    currentOffset+=10;
+                    loadingMore=true;
+                    addLoadingListing();
+                    //progressBar.setVisibility(View.VISIBLE);
+                    makeAPICall();
+                }
+            }
+        });
 
         return rootView;
     }
 
 
+    private void addLoadingListing()
+    {
+
+        listingsList.add(loadingListing);
+        listingsAdapter.notifyDataSetChanged();
+    }
+
+    private void removeLoadingListing()
+    {
+        listingsList.remove(loadingListing);
+        listingsAdapter.notifyDataSetChanged();
+    }
+
+    private void makeAPICall()
+    {
+        NameValuePair ext = new BasicNameValuePair("ext", "json");
+        NameValuePair count = new BasicNameValuePair("count", "10");
+        NameValuePair offset = new BasicNameValuePair("offset", Integer.toString(currentOffset));
+        new GetJSONArrayTask(this, "/api/sell").execute(ext, count, offset);
+    }
+
+
     @Override
     public void onTaskCompleted(Object obj) {
-        List<Listing> listingsList= new ArrayList<Listing>();
+        //List<Listing> listingsList= new ArrayList<Listing>();
         List<Book> temporaryBookList = new ArrayList<Book>();
 
         jArray = (JSONArray)obj;
@@ -92,7 +147,7 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
             e.printStackTrace();
         }
 
-        ListingArrayAdapter listingsAdapter = new ListingArrayAdapter(this.getActivity(), listingsList);
+
         listingsListView.setAdapter(listingsAdapter);
 
     }
@@ -227,7 +282,9 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
             image = "N/A";
             Log.e("ListingsFragment", "generateBookFromJSONNode() -> Couldn't parse JSON for image: " + e.toString());
         }
-
+        removeLoadingListing();
+        listingsAdapter.notifyDataSetChanged();
+        loadingMore=false;
 
         return new Book(rootView.getContext(), book_id, title, isbn, edition,
                 author, edition, publisher, cover, image);
