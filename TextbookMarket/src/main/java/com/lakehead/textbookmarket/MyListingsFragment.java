@@ -35,7 +35,7 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
         {
             Log.d("MyListingsFragment", "onCreateView() -> " + "Found Saved Instance state. Loading Course list from it...");
             listingsList = savedInstanceState.getParcelableArrayList("listingsList");
-            ListingArrayAdapter listingsAdapter = new ListingArrayAdapter(this.getActivity(), listingsList);
+            MyListingsArrayAdapter listingsAdapter = new MyListingsArrayAdapter(this.getActivity(), listingsList);
             listingsListView.setAdapter(listingsAdapter);
         }
         else
@@ -129,7 +129,7 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
             e.printStackTrace();
         }
 
-        ListingArrayAdapter listingsAdapter = new ListingArrayAdapter(this.getActivity(), listingsList);
+        MyListingsArrayAdapter listingsAdapter = new MyListingsArrayAdapter(this.getActivity(), listingsList);
         listingsListView.setAdapter(listingsAdapter);
 
     }
