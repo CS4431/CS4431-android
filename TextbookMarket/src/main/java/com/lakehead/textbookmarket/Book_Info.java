@@ -19,32 +19,15 @@ public class Book_Info extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book__info);
-        /*
-        int bid = bookAdapter.getItem(position).get_id();
-                int bedition = bookAdapter.getItem(position).get_edition();
-                String bTitle = bookAdapter.getItem(position).get_title();
-                String bisbn = bookAdapter.getItem(position).get_isbn();
-                String bauthor = bookAdapter.getItem(position).get_author();
-                String bpublisher = bookAdapter.getItem(position).get_publisher();
-                String bcover = bookAdapter.getItem(position).get_cover();
-                String burl = bookAdapter.getItem(position).get_image_url();
-                */
         Intent intent = getIntent();
-        int bid = intent.getIntExtra("bint",0);
-        int bedition = intent.getIntExtra("bedition",0);
-        String title = intent.getStringExtra("Title");
-        String bisbn = intent.getStringExtra("bisbn");
-        String bauthor = intent.getStringExtra("bauthor");
-        String bpublisher = intent.getStringExtra("bpublisher");
-        String bcover = intent.getStringExtra("bcover");
-        Bitmap myBit = intent.getParcelableExtra("bimage");
-        ((ImageView)findViewById(R.id.image)).setImageBitmap(myBit);
-        ((TextView) findViewById(R.id.BookTitle)).setText("Title: " + title);
-        ((TextView)findViewById(R.id.Author)).setText("Author: " + bauthor);
-        ((TextView)findViewById(R.id.ISBN)).setText("ISBN: " + bisbn);
-        ((TextView)findViewById(R.id.edition)).setText("Edition: " + Integer.toString(bedition));
-        ((TextView)findViewById(R.id.coverType)).setText("Cover Style: " + bcover);
-        ((TextView)findViewById(R.id.Publisher)).setText("Publisher: " + bpublisher);
+        Book myBook = intent.getParcelableExtra("books");
+        ((ImageView)findViewById(R.id.image)).setImageBitmap(myBook.getBitmap());
+        ((TextView) findViewById(R.id.BookTitle)).setText("Title: " + myBook.get_title());
+        ((TextView)findViewById(R.id.Author)).setText("Author: " + myBook.get_author());
+        ((TextView)findViewById(R.id.ISBN)).setText("ISBN: " + myBook.get_isbn());
+        ((TextView)findViewById(R.id.edition)).setText("Edition: " + Integer.toString(myBook.get_edition()));
+        ((TextView)findViewById(R.id.coverType)).setText("Cover Style: " + myBook.get_cover());
+        ((TextView)findViewById(R.id.Publisher)).setText("Publisher: " + myBook.get_publisher());
 
 
 

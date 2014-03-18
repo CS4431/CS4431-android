@@ -127,24 +127,7 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(view.getContext(), Book_Info.class);
                 Bundle extras = new Bundle();
-                int bid = bookAdapter.getItem(position).get_id();
-                int bedition = bookAdapter.getItem(position).get_edition();
-                String btitle = bookAdapter.getItem(position).get_title();
-                String bisbn = bookAdapter.getItem(position).get_isbn();
-                String bauthor = bookAdapter.getItem(position).get_author();
-                String bpublisher = bookAdapter.getItem(position).get_publisher();
-                String bcover = bookAdapter.getItem(position).get_cover();
-                Bitmap bbitmap = bookAdapter.getItem(position).getBitmap();
-
-                extras.putInt("bid",bid);
-                extras.putInt("bedition",bedition);
-                extras.putString("Title", btitle);
-
-                extras.putString("bisbn",bisbn);
-                extras.putString("bauthor",bauthor);
-                extras.putString("bpublisher",bpublisher);
-                extras.putString("bcover",bcover);
-                intent.putExtra("bimage",bbitmap);
+                extras.putParcelable("books",bookAdapter.getItem(position));
                 intent.putExtras(extras);
                 startActivity(intent);
             }});
