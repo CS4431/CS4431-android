@@ -106,8 +106,8 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted
     public void onSaveInstanceState(Bundle outState)
     {
         Log.d("CoursesFragment", "onSaveInstanceState() -> " + "state saved for fragment.");
-        outState.putParcelableArrayList("courseList", courseList);
-        super.onSaveInstanceState(outState);
+        //outState.putParcelableArrayList("courseList", courseList);
+        //super.onSaveInstanceState(outState);
 
     }
 
