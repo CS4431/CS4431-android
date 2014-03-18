@@ -17,31 +17,14 @@ public class Course_Info extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course__info);
 
-        /*
-                    int cid = courseAdapter.getItem(position).get_id();
-                    int departmentid = courseAdapter.getItem(position).get_department_id();
-                    String ctitle = courseAdapter.getItem(position).get_title();
-                    String ccode = courseAdapter.getItem(position).get_code();
-                    String csection = courseAdapter.getItem(position).get_section();
-                    String cinstructor = courseAdapter.getItem(position).get_instructor();
-                    String cterm = courseAdapter.getItem(position).get_term();
-
-         */
-
-
         Intent intent = getIntent();
-        int cid = intent.getIntExtra("cid", 0);
-        int departmentid = intent.getIntExtra("deparmentid", 0);
-        String ctitle = intent.getStringExtra("ctitle");
-        String ccode = intent.getStringExtra("ccode");
-        String csection = intent.getStringExtra("csection");
-        String cinstructor = intent.getStringExtra("cinstructor");
-        String cterm = intent.getStringExtra("cterm");
-        ((TextView)findViewById(R.id.Title)).setText("Title: " + ctitle);
-        ((TextView)findViewById(R.id.CCode)).setText("Course Code: " + ccode);
-        ((TextView)findViewById(R.id.Professor)).setText("Instructor: " + cinstructor);
-        ((TextView)findViewById(R.id.courseSection)).setText("Section: " + csection);
-        ((TextView)findViewById(R.id.courseTerm)).setText("Term: " + cterm);
+        Course thisCourse = intent.getParcelableExtra("course");
+
+        ((TextView)findViewById(R.id.Title)).setText("Title: " + thisCourse.get_title());
+        ((TextView)findViewById(R.id.CCode)).setText("Course Code: " + thisCourse.get_code());
+        ((TextView)findViewById(R.id.Professor)).setText("Instructor: " + thisCourse.get_instructor());
+        ((TextView)findViewById(R.id.courseSection)).setText("Section: " + thisCourse.get_section());
+        ((TextView)findViewById(R.id.courseTerm)).setText("Term: " + thisCourse.get_term());
     }
 
 

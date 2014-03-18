@@ -157,24 +157,6 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(view.getContext(), Course_Info.class);
                 Bundle extras = new Bundle();
-
-                //TODO remove from here until the next TODO.
-                int cid = courseAdapter.getItem(position).get_id();
-                int departmentid = courseAdapter.getItem(position).get_department_id();
-                String ctitle = courseAdapter.getItem(position).get_title();
-                String ccode = courseAdapter.getItem(position).get_code();
-                String csection = courseAdapter.getItem(position).get_section();
-                String cinstructor = courseAdapter.getItem(position).get_instructor();
-                String cterm = courseAdapter.getItem(position).get_term();
-                Log.d("Debug", "Instructor is: " + cinstructor);
-                extras.putInt("cid", cid);
-                extras.putInt("departmentid",departmentid);
-                extras.putString("ctitle", ctitle);
-                extras.putString("ccode", ccode);
-                extras.putString("csection", csection);
-                extras.putString("cinstructor",cinstructor);
-                extras.putString("cterm",cterm);
-                //TODO remove all the other stuff. The following line replaces the above instances.
                 extras.putParcelable("course", courseAdapter.getItem(position));
                 intent.putExtras(extras);
                 startActivity(intent);
