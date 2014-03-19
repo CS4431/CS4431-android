@@ -48,3 +48,7 @@ gradlew
 *.ipr
 *~
 *.swp
+*.properties
+*.gradle
+gradle/wrapper/gradle-wrapper.properties
+build.gradle
