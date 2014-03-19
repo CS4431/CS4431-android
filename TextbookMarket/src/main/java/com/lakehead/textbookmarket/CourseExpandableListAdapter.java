@@ -1,5 +1,7 @@
 package com.lakehead.textbookmarket;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,8 +18,8 @@ import android.widget.TextView;
 public class CourseExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private List<String> departmentHeaders; // header titles
-    private HashMap<String, List<Course>> courses; //courses nested within departments
+    private ArrayList<String> departmentHeaders; // header titles
+    private HashMap<String, ArrayList<Course>> courses; //courses nested within departments
 
 
     /**
@@ -25,8 +27,8 @@ public class CourseExpandableListAdapter extends BaseExpandableListAdapter {
      * @param departmentHeaders An array of department names
      * @param courses A HashMap where a department name maps to an array of courses
      */
-    public CourseExpandableListAdapter(Context context, List<String> departmentHeaders,
-                                       HashMap<String, List<Course>> courses) {
+    public CourseExpandableListAdapter(Context context, ArrayList<String> departmentHeaders,
+                                       HashMap<String, ArrayList<Course>> courses) {
         this.context = context;
         this.departmentHeaders = departmentHeaders;
         this.courses = courses;
