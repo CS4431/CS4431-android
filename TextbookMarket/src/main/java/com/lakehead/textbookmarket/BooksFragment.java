@@ -7,9 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.LinearLayout;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+
 import android.widget.TextView;
 import android.widget.Toast;
 import android.graphics.Bitmap;
@@ -33,13 +37,55 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
     ListView bookListView;
     View rootView;
     JSONArray jArray;
+    //ArrayList<Book> bookList;
+
+    int currentOffset=0;
+    boolean loadingMore=false;
+
     ArrayList<Book> bookList;
+    BookArrayAdapter bookAdapter;
+
+    //A dummy book used to tell the adapter to add a "loading" row
+    Book loadingBook;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         rootView = inflater.inflate(R.layout.fragment_books, container, false);
         bookListView = (ListView)rootView.findViewById(R.id.book_list_view);
+        //bookListView.setEmptyView(rootView.findViewById(R.id.empty));
+        loadingBook = new Book();
+        bookList = new ArrayList<Book>();
+        bookAdapter = new BookArrayAdapter(this.getActivity(), bookList);
+        bookListView.setAdapter(bookAdapter);
+
+        //These NameValuePairs are the POST parameters for the API call
+        //makeAPICall();
+
+        //Here is where the magic happens
+        bookListView.setOnScrollListener(new AbsListView.OnScrollListener(){
+            //useless here, skip!
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {}
+            //dumdumdum
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                //what is the bottom iten that is visible
+                int lastInScreen = firstVisibleItem + visibleItemCount;
+                Log.d("Debug",""+lastInScreen);
+                //is the bottom item visible & not loading more already ? Load more !
+                if((lastInScreen == totalItemCount) && !(loadingMore)){
+                    currentOffset+=10;
+                    loadingMore=true;
+                    addLoadingBook();
+                    //progressBar.setVisibility(View.VISIBLE);
+                    makeAPICall();
+                }
+            }
+        });
+
+
         if(savedInstanceState != null)
         {
             Log.i("BooksFragment", "onCreateView() -> " + "Found saved instance state. Loading Book list from it...");
@@ -50,13 +96,35 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
         }
         else
         {
-        //These NameValuePairs are the POST parameters for the API call
-        Log.i("BooksFragment", "onCreateView() -> " + "No Saved instance state. Loading Book list from API...");
-        NameValuePair ext = new BasicNameValuePair("ext", "json");
-        NameValuePair count = new BasicNameValuePair("count", "100");
-        new GetJSONArrayTask(this, "/api/book").execute(ext, count);
+            //These NameValuePairs are the POST parameters for the API call
+            Log.i("BooksFragment", "onCreateView() -> " + "No Saved instance state. Loading Book list from API...");
+            makeAPICall();
         }
+
+
         return rootView;
+    }
+
+
+    private void addLoadingBook()
+    {
+
+        bookList.add(loadingBook);
+        bookAdapter.notifyDataSetChanged();
+    }
+
+    private void removeLoadingBook()
+    {
+        bookList.remove(loadingBook);
+        bookAdapter.notifyDataSetChanged();
+    }
+
+    private void makeAPICall()
+    {
+        NameValuePair ext = new BasicNameValuePair("ext", "json");
+        NameValuePair count = new BasicNameValuePair("count", "10");
+        NameValuePair offset = new BasicNameValuePair("offset", Integer.toString(currentOffset));
+        new GetJSONArrayTask(this, "/api/book").execute(ext, count, offset);
     }
 
     @Override
@@ -102,15 +170,78 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
         String publisher;
         String cover;
         String image;
-        bookList = new ArrayList<Book>();
+        //List<Book> bookList = new ArrayList<Book>();
+        //bookList = new ArrayList<Book>();
 
         JSONObject bookDataNode;
         //Add all the books in our JSONArray to our bookList
         try{
             for(int i = 0 ; i < jArray.length(); i++ ){
                 bookDataNode = jArray.getJSONObject(i).getJSONObject("data");
-                Log.v("BooksFragment", "Book Data Polled -> " + bookDataNode.toString());
-                bookList.add(Book.generateBookFromJSONNode(bookDataNode));
+                Log.i("BooksFragment", "Book Data Polled -> " + bookDataNode.toString());
+
+
+                //First initialize the Listing's book.
+
+                try{
+                    book_id = bookDataNode.getInt("id");
+                }catch(Exception e){
+                    book_id = 0;
+                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for id: " + e.toString());
+                }
+                try{
+                    title = bookDataNode.getString("title");
+                }catch(Exception e){
+                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for title: " + e.toString());
+                    continue;
+                }
+                try{
+                    isbn = bookDataNode.getString("isbn");
+                }catch(Exception e){
+                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for ISBN: " + e.toString());
+                    continue;
+                }
+                try{
+                    edition_group_id = bookDataNode.getInt("edition_group_id");
+                }catch(Exception e){
+                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for edition_group_id: " + e.toString());
+                    continue;
+                }
+                try{
+                    author = bookDataNode.getString("author");
+                }catch(Exception e){
+                    author = "N/A";
+                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for author: " + e.toString());
+
+                }
+                try{
+                    edition = bookDataNode.getInt("edition");
+                }catch(Exception e){
+                    edition = 0;
+                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for edition: " + e.toString());
+                }
+                try{
+                    publisher = bookDataNode.getString("publisher");
+                }catch(Exception e){
+                    publisher = "N/A";
+                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for publisher: " + e.toString());
+                }
+                try{
+                    cover = bookDataNode.getString("cover");
+                }catch(Exception e){
+                    cover = "N/A";
+                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for cover: " + e.toString());
+                }
+                try{
+                    image = bookDataNode.getString("image");
+                }catch(Exception e){
+                    image = "N/A";
+                    Log.e("ListingsFragment", "OnTaskCompleted() -> Couldn't parse JSON for image: " + e.toString());
+                }
+
+
+                bookList.add(new Book(book_id, title, isbn, edition,
+                        author, edition, publisher, cover, image));
             }
         }
         catch(JSONException e)
@@ -118,11 +249,11 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
             Log.e("BooksFragment", "OnTaskCompleted() -> " + e.toString());
             e.printStackTrace();
         }
-
-        final BookArrayAdapter bookAdapter = new BookArrayAdapter(this.getActivity(), bookList);
-        bookListView.setAdapter(bookAdapter);
-
+        removeLoadingBook();
+        bookAdapter.notifyDataSetChanged();
+        loadingMore=false;
         bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(view.getContext(), Book_Info.class);
