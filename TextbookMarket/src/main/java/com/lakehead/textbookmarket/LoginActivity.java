@@ -132,21 +132,22 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
             showUI();
             passText.setText("");
         }
-        else if(obj.getClass() == JSONObject.class)
+        else if(obj.getClass() == JSONArray.class)
         {
             this.jArray = (JSONArray)obj;
             String token = "";
             String emailAddress = "";
             try
             {
-                if(jArray.getJSONObject(0).getString("kind") == "error") //login failed
+                String kind = jArray.getJSONObject(0).getString("kind");
+                if(kind.equals("error")) //login failed
                 {
                     Toast toast = Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_SHORT);
                     toast.show();
                     showUI();
                     passText.setText("");
                 }
-                else if(jArray.getJSONObject(0).getString("kind") == "token") //login success
+                else if(kind.equals("token")) //login success
                 {
                     emailAddress = emailText.getText().toString();
 
@@ -162,7 +163,6 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
             }
         }
     }
-
 
     /**
      * A simple function used to hide the user interface while executing a background task.
