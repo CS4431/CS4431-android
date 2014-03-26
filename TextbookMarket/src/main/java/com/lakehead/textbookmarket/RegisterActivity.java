@@ -16,6 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +27,7 @@ import java.util.regex.Pattern;
 /**
  * Activity used for user Registration.
  */
-public class RegisterActivity extends Activity /*implements OnTaskCompleted*/ {
+public class RegisterActivity extends Activity implements OnTaskCompleted {
     String deptCode;
     JSONArray jArray;
 
@@ -73,6 +75,7 @@ public class RegisterActivity extends Activity /*implements OnTaskCompleted*/ {
 
     }
 
+
     /**
      * Executes a RegisterTask
      * @param v
@@ -80,7 +83,6 @@ public class RegisterActivity extends Activity /*implements OnTaskCompleted*/ {
     public void register(View v)
     {
         email = emailText.getText().toString();
-        user = userText.getText().toString();
         pass = passText.getText().toString();
         passConfirm = passConfText.getText().toString();
 
@@ -95,11 +97,6 @@ public class RegisterActivity extends Activity /*implements OnTaskCompleted*/ {
             Toast toast = Toast.makeText(getApplicationContext(), "Please enter a valid email address", Toast.LENGTH_SHORT);
             toast.show();
         }
-        else if(!user.matches("[A-Za-z0-9_-]*"))
-        {
-            Toast toast = Toast.makeText(getApplicationContext(), "Valid username characters include letters, numbers, _, and -", Toast.LENGTH_SHORT);
-            toast.show();
-        }
         else if(!pass.equals(passConfirm))
         {
             Toast toast = Toast.makeText(getApplicationContext(), "Passwords must match", Toast.LENGTH_SHORT);
@@ -109,8 +106,10 @@ public class RegisterActivity extends Activity /*implements OnTaskCompleted*/ {
         }
         else
         {
-            String url = "http://lakehead-books.herokuapp.com/api/v1/register";
             //new RegisterTask(this).execute(url, email, user, pass, passConfirm);
+            NameValuePair ext = new BasicNameValuePair("email", email);
+            NameValuePair count = new BasicNameValuePair("password", pass);
+            new GetJSONArrayTask(this, "/api/user/create").execute(ext, count);
             hideUI();
         }
     }
@@ -157,12 +156,12 @@ public class RegisterActivity extends Activity /*implements OnTaskCompleted*/ {
         }
         else
         {
-            this.rememberToken = (JSONObject)obj;
+            this.jArray = (JSONObject)obj;
             String token = "";
 
             try
             {
-                token = rememberToken.getString("token");
+                token = jArray.getString("token");
             }
             catch(JSONException e)
             {
@@ -219,5 +218,10 @@ public class RegisterActivity extends Activity /*implements OnTaskCompleted*/ {
 
     private void goToAccount()
     {
+    }
+
+    public void onTaskCompleted(Object obj)
+    {
+
     }
 }
