@@ -3,6 +3,8 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
+import android.app.SearchableInfo;
+import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.SearchView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Primary Activity Holding the tabs managed by TabsPagerAdapter , it also handles the action bar.
@@ -101,26 +104,35 @@ public class MainActivity extends FragmentActivity implements
         getMenuInflater().inflate(R.menu.main_activity_actions, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        Log.i("MainActivity", "OnCreateOptionsMenu() ->" + " Found search item: " + searchItem.toString());
+
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                Log.i("MainActivity", "SEARCH EXPANDED.");
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                Log.i("MainActivity", "SEARCH COLLAPSED");
+                return true;
+            }
+        });
+
         SearchView searchView = (SearchView)searchItem.getActionView();
         SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
 
         if(searchManager != null){
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName("com.lakehead.textbookmarket", "com.lakehead.textbookmarket.SearchResultsActivity")));
+            searchView.setQueryHint("Book/Course");
+            searchView.setIconifiedByDefault(true);
         }
-        searchView.setIconifiedByDefault(true);
+
+
+
         return true;
     }
-    @Override
-    protected void onNewIntent(Intent intent) {
-        //setIntent(intent);
-        //Intent current_intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            Log.i("MainActivity", "onNewIntent() ->  " + "Search Query Found: " + query.toString());
-            mAdapter.executeSearch(query);
-        }
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

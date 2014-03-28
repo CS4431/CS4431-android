@@ -38,10 +38,6 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted, Expand
     ArrayList<String> deptHeaders;
     HashMap<String, ArrayList<Course>> departmentCourseHash;
 
-    public void executeSearch(String query)
-    {
-        Log.i("CoursesFragment", "executeSearch() -> Query Received: " + query);
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_courses_expand, container, false);
@@ -79,6 +75,7 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted, Expand
                 ids.put(new JSONObject().put("dept_id", 7));
                 request.put("id", ids);
                 request.put("count", testList.size());
+                Log.i("CoursesFragment","Request going out: "+ request.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -108,29 +105,30 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted, Expand
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Log.d("CoursesFragment", "onSaveInstanceState() -> " + "state saved for fragment.");
-        outState.putInt("numDepts", deptHeaders.size());
-        outState.putStringArrayList("deptHeaders", deptHeaders);
-        for (String key : departmentCourseHash.keySet()) {
-            outState.putParcelableArrayList(key, departmentCourseHash.get(key));
-        }
-        super.onSaveInstanceState(outState);
+        if(deptHeaders != null){
+            outState.putInt("numDepts", deptHeaders.size());
+            outState.putStringArrayList("deptHeaders", deptHeaders);
+            for (String key : departmentCourseHash.keySet()) {
+                outState.putParcelableArrayList(key, departmentCourseHash.get(key));
+            }
+            super.onSaveInstanceState(outState);
+    }
 
     }
 
     @Override
     public void onTaskCompleted(Object obj) {
         jArray = (JSONArray) obj;
-        int id;
+        if(jArray == null){
+            Log.e("CoursesFragment", "onTaskCompleted() -> Received nothing from the API call!");
+        }
+        else{
+            Log.i("CoursesFragment", "onTaskCompleted() -> Received jArray: " + jArray.toString());
+        }
         int numDepts = 0;
-        String deptTitle;
-        String title;
-        String code;
-        String section;
-        int department_id;
-        String instructor;
-        String term;
         JSONObject courseDataNode;
         JSONObject deptDataNode;
+        String deptTitle;
         ArrayList<Course> courseList = new ArrayList<Course>();
 
         deptHeaders = new ArrayList<String>();
@@ -153,54 +151,8 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted, Expand
 
                 for (int j = 0; j < deptDataNode.getJSONArray("courses").length(); j++) {
                     courseDataNode = deptDataNode.getJSONArray("courses").getJSONObject(j);
+                    courseList.add(Course.generateCourseFromJSONNode(courseDataNode));
 
-                    try {
-                        id = courseDataNode.getInt("id");
-                    } catch (Exception e) {
-                        id = 0;
-                        Log.e("CoursesFragment", "OnTaskCompleted() -> Couldn't parse JSON for id: " + e.toString());
-                        continue;
-                    }
-                    try {
-                        title = courseDataNode.getString("title");
-                    } catch (Exception e) {
-                        Log.e("CoursesFragment", "OnTaskCompleted() -> Couldn't parse JSON for title: " + e.toString());
-                        continue;
-                    }
-                    try {
-                        code = courseDataNode.getString("code");
-                    } catch (Exception e) {
-                        code = "N/A";
-                        Log.e("CoursesFragment", "OnTaskCompleted() -> Couldn't parse JSON for code: " + e.toString());
-                    }
-                    try {
-                        section = courseDataNode.getString("section");
-                    } catch (Exception e) {
-                        section = "N/A";
-                        Log.e("CoursesFragment", "OnTaskCompleted() -> Couldn't parse JSON for section: " + e.toString());
-                    }
-                    try {
-                        department_id = courseDataNode.getInt("department_id");
-                    } catch (Exception e) {
-                        //maybe we should hold some uncategorized classes?
-                        department_id = -1;
-                        Log.e("CoursesFragment", "OnTaskCompleted() -> Couldn't parse JSON for department_id: " + e.toString());
-                    }
-                    try {
-                        instructor = courseDataNode.getString("instructor");
-                    } catch (Exception e) {
-                        //maybe we should hold some uncategorized classes?
-                        instructor = "N/A";
-                        Log.e("CoursesFragment", "OnTaskCompleted() -> Couldn't parse JSON for instructor: " + e.toString());
-                    }
-                    try {
-                        term = courseDataNode.getString("term");
-                    } catch (Exception e) {
-                        term = "N/A";
-                        Log.e("CoursesFragment", "OnTaskCompleted() -> Couldn't parse JSON for term: " + e.toString());
-                    }
-
-                    courseList.add(new Course(id, title, code, section, department_id, instructor, term));
                 }
                 departmentCourseHash.put(deptTitle, courseList);
                 numDepts++;

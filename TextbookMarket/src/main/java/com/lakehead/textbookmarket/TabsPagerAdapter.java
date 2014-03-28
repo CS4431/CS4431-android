@@ -23,13 +23,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
         myListingsFragment = new MyListingsFragment();
     }
 
-    public void executeSearch(String query){
-        ((BooksFragment)booksFragment).executeSearch(query);
-        ((CoursesFragment)coursesFragment).executeSearch(query);
-        ((ListingsFragment)listingsFragment).executeSearch(query);
-        ((MyListingsFragment)myListingsFragment).executeSearch(query);
 
-    }
 
 
 

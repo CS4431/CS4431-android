@@ -1,9 +1,7 @@
 package com.lakehead.textbookmarket;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -61,7 +59,9 @@ public class CourseExpandableListAdapter extends BaseExpandableListAdapter {
         String deptTitle = departmentHeaders.get(groupPosition);
         Course course = courses.get(deptTitle).get(childPosition);
         LayoutInflater inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.courses_item, parent, false);
+        View rowView = inflater.inflate(R.layout.courses_item_view, parent, false);
+
+
         TextView titleTextView = (TextView)rowView.findViewById(R.id.courseTitle);
         titleTextView.setText(course.get_title());
 
