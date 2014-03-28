@@ -4,11 +4,12 @@ package com.lakehead.textbookmarket;
         import android.support.v4.app.FragmentManager;
         import android.support.v4.app.FragmentPagerAdapter;
 
+        import java.util.ArrayList;
+
 /**
  * Handles the logic of switching between tabs.
  */
 public class TabsPagerAdapter extends FragmentPagerAdapter {
-
     Fragment booksFragment;
     Fragment coursesFragment;
     Fragment listingsFragment;
@@ -21,6 +22,16 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
         listingsFragment = new ListingsFragment();
         myListingsFragment = new MyListingsFragment();
     }
+
+    public void executeSearch(String query){
+        ((BooksFragment)booksFragment).executeSearch(query);
+        ((CoursesFragment)coursesFragment).executeSearch(query);
+        ((ListingsFragment)listingsFragment).executeSearch(query);
+        ((MyListingsFragment)myListingsFragment).executeSearch(query);
+
+    }
+
+
 
 
 

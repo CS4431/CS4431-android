@@ -38,6 +38,10 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted, Expand
     ArrayList<String> deptHeaders;
     HashMap<String, ArrayList<Course>> departmentCourseHash;
 
+    public void executeSearch(String query)
+    {
+        Log.i("CoursesFragment", "executeSearch() -> Query Received: " + query);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_courses_expand, container, false);
@@ -226,5 +230,6 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted, Expand
         startActivity(intent);
         return true;
     }
+
 }
 

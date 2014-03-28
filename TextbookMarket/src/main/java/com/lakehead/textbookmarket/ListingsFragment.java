@@ -31,6 +31,11 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
 
     //A dummy listing used to tell the adapter to add a "loading" row
     Listing loadingListing;
+
+    public void executeSearch(String query)
+    {
+        Log.i("ListingsFragment", "executeSearch() -> Query Received: " + query);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -322,4 +327,6 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
         return new Book(book_id, title, isbn, edition,
                 author, edition, publisher, cover, image);
     }
+
+
 }

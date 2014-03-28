@@ -192,4 +192,9 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
 
     }
 
+    public void executeSearch(String query)
+    {
+        Log.i("MyListingsFragment", "executeSearch() -> Query Received: " + query);
+    }
+
 }

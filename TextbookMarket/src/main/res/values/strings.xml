@@ -12,7 +12,8 @@
     <string name="title_activity_book__info">Book_Info</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_course__info">Course_Info</string>
-
+    <string name="app_label">Test1</string>
+    <string name="search_hint">CS4431</string>
 
 
 </resources>
