@@ -21,7 +21,7 @@
         <activity
             android:name="com.lakehead.textbookmarket.LoginActivity"
             android:label="Login"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +32,7 @@
         <activity
             android:name="com.lakehead.textbookmarket.RegisterActivity"
             android:label="Register"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="com.lakehead.textbookmarket.InputISBNActivity"
