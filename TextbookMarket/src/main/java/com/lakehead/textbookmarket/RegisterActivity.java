@@ -107,7 +107,7 @@ public class RegisterActivity extends Activity implements OnTaskCompleted {
             //new RegisterTask(this).execute(url, email, user, pass, passConfirm);
             NameValuePair ext = new BasicNameValuePair("email", email);
             NameValuePair count = new BasicNameValuePair("password", pass);
-            new GetJSONArrayTask(this, "/api/user/create").execute(ext, count);
+            new GetJSONArrayTask(this, "/api/create/user").execute(ext, count);
             hideUI();
         }
     }
@@ -132,7 +132,7 @@ public class RegisterActivity extends Activity implements OnTaskCompleted {
             Toast toast = Toast.makeText(getApplicationContext(), "Server Error. Could not register.", Toast.LENGTH_SHORT);
             toast.show();
             showUI();
-            showUI();
+            //showUI();
         }
         else if(obj.getClass() == JSONArray.class)
         {
@@ -156,6 +156,7 @@ public class RegisterActivity extends Activity implements OnTaskCompleted {
 
                     //prefs.edit().putString("remember_token", token).commit();
                     //prefs.edit().putString("email_address", emailAddress).commit();
+                    Toast.makeText(getApplicationContext(), "Registration Successful. Check your email address for a confirmation link.", Toast.LENGTH_LONG).show();
                     bar.setVisibility(View.GONE);
                     finishActivity();
                 }
