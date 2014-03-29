@@ -146,7 +146,6 @@ public class SearchResultsExpandableListAdapter extends BaseExpandableListAdapte
             //getting the listing's book for future usage.
             Book relatedBook = listing.get_book();
             if(relatedBook != null)
-
             Log.i(TAG,"getChildView() -> " + "Book Found for listing {" + listing.get_id()+"} : " + relatedBook.toString());
 
             //populating XML elements

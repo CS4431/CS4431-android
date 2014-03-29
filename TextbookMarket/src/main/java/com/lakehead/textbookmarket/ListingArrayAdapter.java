@@ -42,22 +42,21 @@ public class ListingArrayAdapter extends ArrayAdapter<Listing> {
 
             //getting the listing's book for future usage.
             Book relatedBook = listingList.get(position).get_book();
-
-            //populating XML elements
-            listingTitleView.setText(relatedBook.get_title());
-            listingPriceView.setText("Price: $" + listingList.get(position).get_price());
-            listingCourseView.setText(listingList.get(position).get_start_date());
-
-            //If the book doesn't have a bitmap yet, then fetch it. Otherwise, just display the one we have
-            if(listingList.get(position).get_book().getBitmap() == null)
+            if(relatedBook != null)
             {
-                new GetImageTask(relatedBook.get_image_url(), bookIconImageView, THUMBNAIL_SIZE, THUMBNAIL_SIZE,relatedBook).execute();
-            }
-            else
-            {
-                bookIconImageView.setImageBitmap(relatedBook.getBitmap());
-            }
 
+                //populating XML elements
+                listingTitleView.setText(relatedBook.get_title());
+                listingPriceView.setText("Price: $" + listingList.get(position).get_price());
+                listingCourseView.setText(listingList.get(position).get_start_date());
+
+                //If the book doesn't have a bitmap yet, then fetch it. Otherwise, just display the one we have
+                if (listingList.get(position).get_book().getBitmap() == null) {
+                    new GetImageTask(relatedBook.get_image_url(), bookIconImageView, THUMBNAIL_SIZE, THUMBNAIL_SIZE, relatedBook).execute();
+                } else {
+                    bookIconImageView.setImageBitmap(relatedBook.getBitmap());
+                }
+            }
             return rowView;
 
         }

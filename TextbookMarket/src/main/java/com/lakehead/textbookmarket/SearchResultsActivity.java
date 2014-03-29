@@ -135,6 +135,7 @@ public class SearchResultsActivity extends Activity implements OnTaskCompleted {
 
         }
         listingList = Listing.associateBooksToListings(listingList, bookList);
+
         resultHash.put("Book", bookList);
         resultHash.put("Course", courseList);
         resultHash.put("Listing", listingList);
