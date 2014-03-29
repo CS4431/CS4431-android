@@ -2,6 +2,7 @@ package com.lakehead.textbookmarket;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import java.util.HashMap;
  */
 public class SearchResultsExpandableListAdapter extends BaseExpandableListAdapter{
 
+    private static final String TAG = "SearchResultsExpandableListAdapter";
     private Context context;
     private HashMap<String, ArrayList> resultsHash;
     private ArrayList<String> groupHeaders;
@@ -92,6 +94,7 @@ public class SearchResultsExpandableListAdapter extends BaseExpandableListAdapte
         Object childElement = resultsHash.get(groupHeaders.get(groupPosition)).get(childPosition);
         if(groupPosition == groupHeaders.indexOf("Book"))
         {
+            Log.i(TAG,"getChildView() -> " + "Type of Node is Book, populating row...");
               Book book = (Book)childElement;
               rowView = inflater.inflate(R.layout.books_item_view, parent, false);
             TextView titleTextView = (TextView)rowView.findViewById(R.id.bookTitle);
@@ -115,6 +118,7 @@ public class SearchResultsExpandableListAdapter extends BaseExpandableListAdapte
         }
         else if(groupPosition == groupHeaders.indexOf("Course"))
         {
+            Log.i(TAG,"getChildView() -> " + "Type of Node is Course, populating row...");
             Course course = (Course)childElement;
             rowView = inflater.inflate(R.layout.courses_item_view, parent, false);
             TextView titleTextView = (TextView)rowView.findViewById(R.id.courseTitle);
@@ -130,6 +134,7 @@ public class SearchResultsExpandableListAdapter extends BaseExpandableListAdapte
         else if(groupPosition == groupHeaders.indexOf("Listing"))
         {
             Listing listing = (Listing)childElement;
+            Log.i(TAG,"getChildView() -> " + "Type of Node is Listing, populating row...");
             rowView = inflater.inflate(R.layout.listings_item_view, parent, false);
 
             //grabbing XML elements
@@ -140,6 +145,9 @@ public class SearchResultsExpandableListAdapter extends BaseExpandableListAdapte
 
             //getting the listing's book for future usage.
             Book relatedBook = listing.get_book();
+            if(relatedBook != null)
+
+            Log.i(TAG,"getChildView() -> " + "Book Found for listing {" + listing.get_id()+"} : " + relatedBook.toString());
 
             //populating XML elements
             listingTitleView.setText(relatedBook.get_title());

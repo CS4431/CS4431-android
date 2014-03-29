@@ -26,6 +26,7 @@ import java.net.URI;
 
 class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
 
+    public static final String TAG = "GetImageTask";
     //This ImageView is the one whose bitmap we want to set
     private ImageView imageView;
     private int width;
@@ -128,7 +129,7 @@ class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
                 book.setBitmap(scaledBitmap);
             }
         }else{
-            Log.e("GetImageTask", "onPostExecute() -> " + "Bitmap is null, cannot create BMP. It's possible the URL did not respond or return an image.");
+            Log.e(TAG, "onPostExecute() -> " + "Bitmap is null, cannot create BMP. It's possible the URL did not respond or return an image.");
         }
 
     }

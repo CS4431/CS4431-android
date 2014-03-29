@@ -25,6 +25,7 @@ import java.util.List;
 public class MainActivity extends FragmentActivity implements
         ActionBar.TabListener {
 
+    public static final String TAG = "MainActivity";
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
@@ -108,13 +109,13 @@ public class MainActivity extends FragmentActivity implements
         searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                Log.i("MainActivity", "SEARCH EXPANDED.");
+                Log.i(TAG, "SEARCH EXPANDED.");
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                Log.i("MainActivity", "SEARCH COLLAPSED");
+                Log.i(TAG, "SEARCH COLLAPSED");
                 return true;
             }
         });
@@ -145,7 +146,7 @@ public class MainActivity extends FragmentActivity implements
             return true;
         }
         else if(id == R.id.action_search){
-            Log.i("MainActivity", "onOptionsItemSelected: " + "Search Selected!");
+            Log.i(TAG, "onOptionsItemSelected: " + "Search Selected!");
         }
         else if(id == R.id.action_new_listing){
             openIsbnSearch();

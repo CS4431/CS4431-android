@@ -18,6 +18,8 @@ import org.w3c.dom.Text;
 
 public class AddListingActivity extends Activity {
 
+    public static final String TAG = "AddListingActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +27,7 @@ public class AddListingActivity extends Activity {
 
         Bundle bundle = getIntent().getExtras();
         Book selected_book = bundle.getParcelable("book");
-        Log.i("AddListingActivity", "OnCreate() -> Received Parcelable book with title: " + selected_book.get_title());
+        Log.i(TAG, "OnCreate() -> Received Parcelable book with title: " + selected_book.get_title());
 
         TextView titleTextView = (TextView)findViewById(R.id.textViewBookTitle);
         TextView authorTextView = (TextView)findViewById(R.id.textViewAuthor);

@@ -55,6 +55,10 @@ public class SearchResultsActivity extends Activity implements OnTaskCompleted {
         searchResultsListView = (ListView)findViewById(R.id.search_results_list_view);
         expListView = (ExpandableListView)findViewById(R.id.search_results_expand_lv);
 
+        bookList = new ArrayList<Book>();
+        courseList = new ArrayList<Course>();
+        listingList = new ArrayList<Listing>();
+
         Log.i(TAG, "onCreateView() -> " + "Loading Search Results from API.");
 
         makeAPICall();
@@ -123,16 +127,22 @@ public class SearchResultsActivity extends Activity implements OnTaskCompleted {
                 else if(nodeType.equals("sell"))
                 {
                     Log.i(TAG,"onTaskCompleted() -> " + "Found Sell Node. Parsing...");
+                    listingList.add(Listing.generateListingFromJSONNode(dataNode));
                 }
             }catch(Exception e){
-
+                Log.e(TAG, "FAILED TO ADD SOME DATA TO LIST: " + e.toString());
             }
 
         }
-
+        listingList = Listing.associateBooksToListings(listingList, bookList);
         resultHash.put("Book", bookList);
         resultHash.put("Course", courseList);
         resultHash.put("Listing", listingList);
+
+        Log.i(TAG, "bookList -> " + bookList);
+        Log.i(TAG, "courseList -> " + courseList);
+        Log.i(TAG, "listingList -> " + listingList);
+
         ArrayList<String> headers = new ArrayList<String>();
         headers.add("Book");
         headers.add("Course");

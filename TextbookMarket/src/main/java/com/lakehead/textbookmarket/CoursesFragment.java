@@ -29,6 +29,7 @@ import java.util.List;
  * The fragment used in the "Books" tab of MainActivity
  */
 public class CoursesFragment extends Fragment implements OnTaskCompleted, ExpandableListView.OnChildClickListener {
+    public static final String TAG = "CoursesFragment";
     JSONArray jArray;
     ListView courseListView;
     View rootView;
@@ -45,7 +46,7 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted, Expand
         expListView = (ExpandableListView) rootView.findViewById(R.id.courses_expand_lv);
 
         if (savedInstanceState != null) {
-            Log.d("CoursesFragment", "onCreateView() -> " + "Found saved instance state. Loading Course list from it...");
+            Log.d(TAG, "onCreateView() -> " + "Found saved instance state. Loading Course list from it...");
             deptHeaders = savedInstanceState.getStringArrayList("deptHeaders");
             departmentCourseHash = new HashMap<String, ArrayList<Course>>();
             ArrayList<Course> temporary;
@@ -61,7 +62,7 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted, Expand
                 expListView.expandGroup(0);
             }
         } else {
-            Log.d("CoursesFragment", "onCreateView() -> " + "No Saved Instance state. Loading Course list from API...");
+            Log.d(TAG, "onCreateView() -> " + "No Saved Instance state. Loading Course list from API...");
 
             JSONObject request = new JSONObject();
 
@@ -75,7 +76,7 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted, Expand
                 ids.put(new JSONObject().put("dept_id", 7));
                 request.put("id", ids);
                 request.put("count", testList.size());
-                Log.i("CoursesFragment","Request going out: "+ request.toString());
+                Log.i(TAG, "Request going out: " + request.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -92,19 +93,19 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted, Expand
 
     @Override
     public void onPause() {
-        Log.d("CoursesFragment", "onPause() -> " + "paused fragment.");
+        Log.d(TAG, "onPause() -> " + "paused fragment.");
         super.onPause();
     }
 
     @Override
     public void onResume() {
-        Log.d("CoursesFragment", "onResume() -> " + "resumed fragment.");
+        Log.d(TAG, "onResume() -> " + "resumed fragment.");
         super.onResume();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.d("CoursesFragment", "onSaveInstanceState() -> " + "state saved for fragment.");
+        Log.d(TAG, "onSaveInstanceState() -> " + "state saved for fragment.");
         if(deptHeaders != null){
             outState.putInt("numDepts", deptHeaders.size());
             outState.putStringArrayList("deptHeaders", deptHeaders);
@@ -120,10 +121,10 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted, Expand
     public void onTaskCompleted(Object obj) {
         jArray = (JSONArray) obj;
         if(jArray == null){
-            Log.e("CoursesFragment", "onTaskCompleted() -> Received nothing from the API call!");
+            Log.e(TAG, "onTaskCompleted() -> Received nothing from the API call!");
         }
         else{
-            Log.i("CoursesFragment", "onTaskCompleted() -> Received jArray: " + jArray.toString());
+            Log.i(TAG, "onTaskCompleted() -> Received jArray: " + jArray.toString());
         }
         int numDepts = 0;
         JSONObject courseDataNode;
@@ -158,7 +159,7 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted, Expand
                 numDepts++;
             }
         } catch (Exception e) {
-            Log.e("CoursesFragment", "onTaskCompleted() -> " + e.toString());
+            Log.e(TAG, "onTaskCompleted() -> " + e.toString());
             e.printStackTrace();
         }
 

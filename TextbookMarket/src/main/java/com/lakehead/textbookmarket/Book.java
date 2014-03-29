@@ -15,6 +15,7 @@ import java.io.Serializable;
  * Created by Master on 2/10/14.
  */
 public class Book implements Parcelable{
+    public static final String TAG = "Book";
     private final int _id;
     private final String _title;
     private final String _isbn;
@@ -177,60 +178,60 @@ public class Book implements Parcelable{
         String cover;
         String image;
 
-        Log.i("Book", "Book Data Polled -> " + bookDataNode.toString());
+        Log.i(TAG, "Book Data Polled -> " + bookDataNode.toString());
         try{
             book_id = bookDataNode.getInt("id");
         }catch(Exception e){
             book_id = 0;
-            Log.e("Book", "generateBookFromJSONNode() -> Couldn't parse JSON for id: " + e.toString());
+            Log.e(TAG, "generateBookFromJSONNode() -> Couldn't parse JSON for id: " + e.toString());
         }
         try{
             title = bookDataNode.getString("title");
         }catch(Exception e){
-            Log.e("Book", "generateBookFromJSONNode() -> Couldn't parse JSON for title: " + e.toString());
+            Log.e(TAG, "generateBookFromJSONNode() -> Couldn't parse JSON for title: " + e.toString());
             return null;
         }
         try{
             isbn = bookDataNode.getString("isbn");
         }catch(Exception e){
-            Log.e("Book", "generateBookFromJSONNode() -> Couldn't parse JSON for ISBN: " + e.toString());
+            Log.e(TAG, "generateBookFromJSONNode() -> Couldn't parse JSON for ISBN: " + e.toString());
             return null;
         }
         try{
             edition_group_id = bookDataNode.getInt("edition_group_id");
         }catch(Exception e){
-            Log.e("Book", "generateBookFromJSONNode() -> Couldn't parse JSON for edition_group_id: " + e.toString());
+            Log.e(TAG, "generateBookFromJSONNode() -> Couldn't parse JSON for edition_group_id: " + e.toString());
             return null;
         }try{
             author = bookDataNode.getString("author");
         }catch(Exception e){
             author = "N/A";
-            Log.e("Book", "generateBookFromJSONNode() -> Couldn't parse JSON for author: " + e.toString());
+            Log.e(TAG, "generateBookFromJSONNode() -> Couldn't parse JSON for author: " + e.toString());
 
         }
         try{
             edition = bookDataNode.getInt("edition");
         }catch(Exception e){
             edition = 0;
-            Log.e("Book", "generateBookFromJSONNode() -> Couldn't parse JSON for edition: " + e.toString());
+            Log.e(TAG, "generateBookFromJSONNode() -> Couldn't parse JSON for edition: " + e.toString());
         }
         try{
             publisher = bookDataNode.getString("publisher");
         }catch(Exception e){
             publisher = "N/A";
-            Log.e("Book", "generateBookFromJSONNode() -> Couldn't parse JSON for publisher: " + e.toString());
+            Log.e(TAG, "generateBookFromJSONNode() -> Couldn't parse JSON for publisher: " + e.toString());
         }
         try{
             cover = bookDataNode.getString("cover");
         }catch(Exception e){
             cover = "N/A";
-            Log.e("Book", "generateBookFromJSONNode() -> Couldn't parse JSON for cover: " + e.toString());
+            Log.e(TAG, "generateBookFromJSONNode() -> Couldn't parse JSON for cover: " + e.toString());
         }
         try{
             image = bookDataNode.getString("image");
         }catch(Exception e){
             image = "N/A";
-            Log.e("Book", "generateBookFromJSONNode() -> Couldn't parse JSON for image: " + e.toString());
+            Log.e(TAG, "generateBookFromJSONNode() -> Couldn't parse JSON for image: " + e.toString());
         }
 
 

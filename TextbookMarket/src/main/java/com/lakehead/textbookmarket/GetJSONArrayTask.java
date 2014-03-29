@@ -39,6 +39,7 @@ import android.os.AsyncTask;
  */
 class GetJSONArrayTask extends AsyncTask<NameValuePair, Void, JSONArray> {
 
+    public static final String TAG = "GetJsonArrayTask";
     //listener is the object that created this AsyncTask. It implements a callback function.
     private OnTaskCompleted listener;
 
@@ -101,7 +102,7 @@ class GetJSONArrayTask extends AsyncTask<NameValuePair, Void, JSONArray> {
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
             //Execute the request and get a response
-            Log.i("GetJsonArrayTask", "doInBackground() -> " + "Sending out request: " + httpPost.toString());
+            Log.i(TAG, "doInBackground() -> " + "Sending out request: " + httpPost.toString());
             HttpResponse response = httpclient.execute(httpPost);
             HttpEntity entity = response.getEntity();
             if(entity != null)
@@ -166,11 +167,11 @@ class GetJSONArrayTask extends AsyncTask<NameValuePair, Void, JSONArray> {
     {
         if(jArray == null)
         {
-            Log.e("GetJsonArrayTask", "onPostExecute() -> No Data found from API? jArray is null");
+            Log.e(TAG, "onPostExecute() -> No Data found from API? jArray is null");
         }
         else
         {
-            Log.i("GetJsonArrayTask", "onPostExecute() Received JSON -> " + jArray.toString());
+            Log.i(TAG, "onPostExecute() Received JSON -> " + jArray.toString());
             listener.onTaskCompleted(jArray);
         }
     }

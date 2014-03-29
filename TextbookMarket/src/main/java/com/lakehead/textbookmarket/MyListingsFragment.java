@@ -20,6 +20,7 @@ import java.util.List;
  * The fragment used in the "My Listings" tab of MainActivity
  */
 public class MyListingsFragment extends Fragment implements OnTaskCompleted{
+    public static final String TAG = "MyListingsFragment";
     ListView listingsListView;
     View rootView;
     JSONArray jArray;
@@ -33,14 +34,14 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
 
         if(savedInstanceState != null)
         {
-            Log.d("MyListingsFragment", "onCreateView() -> " + "Found Saved Instance state. Loading Course list from it...");
+            Log.d(TAG, "onCreateView() -> " + "Found Saved Instance state. Loading Course list from it...");
             listingsList = savedInstanceState.getParcelableArrayList("listingsList");
             MyListingsArrayAdapter listingsAdapter = new MyListingsArrayAdapter(this.getActivity(), listingsList);
             listingsListView.setAdapter(listingsAdapter);
         }
         else
         {
-            Log.d("MyListingsFragment", "onCreateView() -> " + "No Saved Instance state. Loading Course list from API...");
+            Log.d(TAG, "onCreateView() -> " + "No Saved Instance state. Loading Course list from API...");
             NameValuePair ext = new BasicNameValuePair("ext", "json");
             NameValuePair count = new BasicNameValuePair("count", "20");
             new GetJSONArrayTask(this, "/api/sell").execute(ext, count);
@@ -53,21 +54,21 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
     @Override
     public void onPause()
     {
-        Log.d("MyListingsFragment", "onPause() -> " + "paused fragment.");
+        Log.d(TAG, "onPause() -> " + "paused fragment.");
         super.onPause();
     }
 
     @Override
     public void onResume()
     {
-        Log.d("MyListingsFragment", "onResume() -> " + "resumed fragment.");
+        Log.d(TAG, "onResume() -> " + "resumed fragment.");
         super.onResume();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState)
     {
-        Log.d("MyListingsFragment", "onSaveInstanceState() -> " + "state saved for fragment.");
+        Log.d(TAG, "onSaveInstanceState() -> " + "state saved for fragment.");
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList("listingsList", listingsList);
 
@@ -80,7 +81,7 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
         List<Book> temporaryBookList = new ArrayList<Book>();
 
         jArray = (JSONArray)obj;
-        Log.i("MyListingsFragment","jArray length -> " + jArray.length());
+        Log.i(TAG,"jArray length -> " + jArray.length());
 
         String nodeType;
         JSONObject nodeData;
@@ -90,27 +91,27 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
 
                 nodeType = jArray.getJSONObject(i).getString("kind");
                 nodeData = jArray.getJSONObject(i).getJSONObject("data");
-                Log.v("MyListingsFragment", "OnTaskCompleted() -> Kind is: " + nodeType);
+                Log.v(TAG, "OnTaskCompleted() -> Kind is: " + nodeType);
                 if(nodeType.equals("sell"))
                 {
-                    Log.v("MyListingsFragment", "OnTaskCompleted() -> Sell Data Polled -> " + nodeData.toString());
+                    Log.v(TAG, "OnTaskCompleted() -> Sell Data Polled -> " + nodeData.toString());
                     listingsList.add(generateListingFromJSONNode(nodeData));
                 }
                 else if(nodeType.equals("book"))
                 {
-                    Log.v("MyListingsFragment", "OnTaskCompleted() -> Book Data Polled -> " + nodeData.toString());
+                    Log.v(TAG, "OnTaskCompleted() -> Book Data Polled -> " + nodeData.toString());
                     temporaryBookList.add(Book.generateBookFromJSONNode(nodeData));
                 }
                 else
                 {
-                    Log.e("MyListingsFragment", "OnTaskCompleted() -> NODE IS NEITHER BOOK NOR SELL!!!! Node Data is: " + nodeData.toString());
+                    Log.e(TAG, "OnTaskCompleted() -> NODE IS NEITHER BOOK NOR SELL!!!! Node Data is: " + nodeData.toString());
                 }
             }
 
             for(Listing current_listing : listingsList){
                 for(Book current_book : temporaryBookList){
                     if(current_listing.get_book_id() == current_book.get_id()){
-                        Log.v("MyListingsFragment", "OnTaskCompleted() -> Associated Book with ID {" + current_book.get_id()
+                        Log.v(TAG, "OnTaskCompleted() -> Associated Book with ID {" + current_book.get_id()
                                 + "} with Listing {" + current_listing.get_id()+"} which was requesting Book with ID {"
                                 + current_listing.get_book_id()+"}");
                         current_listing.set_book(current_book);
@@ -118,14 +119,14 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
                     }
                 }
                 if(current_listing.get_book() == null){
-                    Log.e("MyListingsFragment","OnTaskCompleted() -> Could not associate a book to Listing with ID {"
+                    Log.e(TAG,"OnTaskCompleted() -> Could not associate a book to Listing with ID {"
                             + current_listing.get_id()+"} as it was requesting Book ID {" + current_listing.get_book_id()
                             +"} which does not exist in our Temporary Book List. CONTACT API TEAM!!!!");
                 }
             }
 
         }catch(Exception e){
-            Log.e("MyListingsFragment", "OnTaskCompleted() -> HighLevel Catch -> "+ e.toString());
+            Log.e(TAG, "OnTaskCompleted() -> HighLevel Catch -> "+ e.toString());
             e.printStackTrace();
         }
 
@@ -154,38 +155,38 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
         try{
             listing_id =  listingDataNode.getInt("id");
         }catch(Exception e){
-            Log.e("MyListingsFragment", "generateListingFromJSONNode() -> Couldn't parse JSON for listing_id!!! Failing: " + e.toString());
+            Log.e(TAG, "generateListingFromJSONNode() -> Couldn't parse JSON for listing_id!!! Failing: " + e.toString());
             return null;
         }
         try{
             user_id = listingDataNode.getInt("user_id");
         }catch(Exception e){
-            Log.e("MyListingsFragment", "generateListingFromJSONNode() -> Couldn't parse JSON for user_id!!! Failing: " + e.toString());
+            Log.e(TAG, "generateListingFromJSONNode() -> Couldn't parse JSON for user_id!!! Failing: " + e.toString());
             return null;
         }
         try{
             edition_id =  listingDataNode.getInt("edition_id");
         }catch(Exception e){
-            Log.e("MyListingsFragment", "generateListingFromJSONNode() -> Couldn't parse JSON for edition_id!!! Failing: " + e.toString());
+            Log.e(TAG, "generateListingFromJSONNode() -> Couldn't parse JSON for edition_id!!! Failing: " + e.toString());
             return null;
         }
         try{
             price = listingDataNode.getDouble("price");
         }catch(Exception e){
             price = 9999.99;
-            Log.e("MyListingsFragment", "generateListingFromJSONNode() -> Couldn't parse JSON for price: " + e.toString());
+            Log.e(TAG, "generateListingFromJSONNode() -> Couldn't parse JSON for price: " + e.toString());
         }
         try{
             start_date = listingDataNode.getString("start_date");
         }catch(Exception e){
             start_date = "N/A";
-            Log.e("MyListingsFragment", "generateListingFromJSONNode() -> Couldn't parse JSON for start_date: " + e.toString());
+            Log.e(TAG, "generateListingFromJSONNode() -> Couldn't parse JSON for start_date: " + e.toString());
         }
         try{
             end_date = listingDataNode.getString("end_date");
         }catch(Exception e){
             end_date = "N/A";
-            Log.e("MyListingsFragment", "generateListingFromJSONNode() -> Couldn't parse JSON for end_date: " + e.toString());
+            Log.e(TAG, "generateListingFromJSONNode() -> Couldn't parse JSON for end_date: " + e.toString());
         }
 
         return new Listing(listing_id,user_id,edition_id,price,start_date,end_date);
@@ -194,7 +195,7 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
 
     public void executeSearch(String query)
     {
-        Log.i("MyListingsFragment", "executeSearch() -> Query Received: " + query);
+        Log.i(TAG, "executeSearch() -> Query Received: " + query);
     }
 
 }
