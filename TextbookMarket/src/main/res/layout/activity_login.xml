@@ -32,7 +32,7 @@
         android:id="@+id/email_field"
         android:layout_below="@id/title_layout"
         android:inputType="textEmailAddress"
-        android:hint="Username" />
+        android:hint="Email Address" />
 
     <EditText
         android:layout_width="fill_parent"

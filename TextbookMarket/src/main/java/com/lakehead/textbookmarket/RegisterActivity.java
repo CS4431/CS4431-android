@@ -32,7 +32,6 @@ public class RegisterActivity extends Activity implements OnTaskCompleted {
     JSONArray jArray;
 
     EditText emailText;
-    EditText userText;
     EditText passText;
     EditText passConfText;
     Button registerButton;
@@ -57,7 +56,6 @@ public class RegisterActivity extends Activity implements OnTaskCompleted {
 
 
         emailText = (EditText) findViewById(R.id.email_register_field);
-        userText = (EditText) findViewById(R.id.user_register_field);
         passText = (EditText) findViewById(R.id.register_pass_field);
         passText.setTypeface(Typeface.DEFAULT);
         passText.setTransformationMethod(new PasswordTransformationMethod());
@@ -124,57 +122,51 @@ public class RegisterActivity extends Activity implements OnTaskCompleted {
         finishActivity();
     }
 
-    /*
 
     @Override
     public void onTaskCompleted(Object obj)
     {
+
         if(obj == null)
         {
             Toast toast = Toast.makeText(getApplicationContext(), "Server Error. Could not register.", Toast.LENGTH_SHORT);
             toast.show();
             showUI();
-            //passText.setText("");
-            //passConfText.setText("");
             showUI();
         }
-        else if(obj.getClass() == String.class)
+        else if(obj.getClass() == JSONArray.class)
         {
-            if(obj.equals(RegisterTask.USER_OR_EMAIL_ALREADY_EXISTS))
-            {
-                Toast toast = Toast.makeText(getApplicationContext(), "A user with that email address or username already exists.", Toast.LENGTH_SHORT);
-                toast.show();
-                showUI();
-            }
-            if(obj.equals(RegisterTask.MESSAGE_CONNECTION_PROBLEM))
-            {
-                Toast toast = Toast.makeText(getApplicationContext(), "Internet connection problem", Toast.LENGTH_SHORT);
-                toast.show();
-                showUI();
-            }
-
-        }
-        else
-        {
-            this.jArray = (JSONObject)obj;
+            this.jArray = (JSONArray)obj;
             String token = "";
-
+            String emailAddress = "";
             try
             {
-                token = jArray.getString("token");
+                String kind = jArray.getJSONObject(0).getString("kind");
+                if(kind.equals("error")) //login failed
+                {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Registration Error", Toast.LENGTH_SHORT);
+                    toast.show();
+                    showUI();
+                    passText.setText("");
+                    passConfText.setText("");
+                }
+                else if(kind.equals("user")) //Register success
+                {
+                    //emailAddress = emailText.getText().toString();
+
+                    //prefs.edit().putString("remember_token", token).commit();
+                    //prefs.edit().putString("email_address", emailAddress).commit();
+                    bar.setVisibility(View.GONE);
+                    finishActivity();
+                }
+
             }
             catch(JSONException e)
             {
                 Log.d("Exceptions", e.toString());
             }
-
-            prefs.edit().putString("remember_token", token).commit();
-            prefs.edit().putString("email_address", email).commit();
-            bar.setVisibility(View.GONE);
-            goToAccount();
         }
     }
-    */
 
     private void finishActivity()
     {
@@ -194,7 +186,6 @@ public class RegisterActivity extends Activity implements OnTaskCompleted {
     {
         emailText.setVisibility(View.INVISIBLE);
         passText.setVisibility(View.INVISIBLE);
-        userText.setVisibility(View.INVISIBLE);
         passConfText.setVisibility(View.INVISIBLE);
         toLoginButton.setVisibility(View.INVISIBLE);
         registerButton.setVisibility(View.INVISIBLE);
@@ -208,20 +199,10 @@ public class RegisterActivity extends Activity implements OnTaskCompleted {
     {
         emailText.setVisibility(View.VISIBLE);
         passText.setVisibility(View.VISIBLE);
-        userText.setVisibility(View.VISIBLE);
         passConfText.setVisibility(View.VISIBLE);
         toLoginButton.setVisibility(View.VISIBLE);
         registerButton.setVisibility(View.VISIBLE);
 
         bar.setVisibility(View.GONE);
-    }
-
-    private void goToAccount()
-    {
-    }
-
-    public void onTaskCompleted(Object obj)
-    {
-
     }
 }

@@ -29,20 +29,10 @@
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/user_register_field"
-        android:maxLines="1"
-        android:inputType="text"
-        android:layout_below="@id/title_layout"
-        android:hint="Username" />
-
-
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/email_register_field"
-        android:layout_below="@id/user_register_field"
+        android:layout_below="@id/title_layout"
         android:inputType="textEmailAddress"
-        android:hint="Email address" />
+        android:hint="Email Address" />
 
     <EditText
         android:layout_width="fill_parent"
