@@ -21,7 +21,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SearchResultsActivity extends Activity implements OnTaskCompleted {
+public class SearchResultsActivity extends Activity implements OnTaskCompleted, ExpandableListView.OnChildClickListener {
 
     JSONArray jArray;
     ListView searchResultsListView;
@@ -37,6 +37,8 @@ public class SearchResultsActivity extends Activity implements OnTaskCompleted {
     ArrayList<Book> bookList;
     ArrayList<Course> courseList;
     ArrayList<Listing> listingList;
+    //holds the names of nonzero headers.
+    ArrayList<String> headers;
 
 
     private static final String TAG = "SearchResultsActivity";
@@ -54,6 +56,7 @@ public class SearchResultsActivity extends Activity implements OnTaskCompleted {
         //initializing all the views we need
         searchResultsListView = (ListView)findViewById(R.id.search_results_list_view);
         expListView = (ExpandableListView)findViewById(R.id.search_results_expand_lv);
+        expListView.setOnChildClickListener(this);
 
         bookList = new ArrayList<Book>();
         courseList = new ArrayList<Course>();
@@ -136,21 +139,58 @@ public class SearchResultsActivity extends Activity implements OnTaskCompleted {
         }
         listingList = Listing.associateBooksToListings(listingList, bookList);
 
-        resultHash.put("Book", bookList);
-        resultHash.put("Course", courseList);
-        resultHash.put("Listing", listingList);
+        headers = new ArrayList<String>();
+        if(bookList.size() > 0){
+            resultHash.put("Books", bookList);
+            headers.add("Books");
+        }
+        if(courseList.size()>0){
+            resultHash.put("Courses", courseList);
+            headers.add("Courses");
+        }
+        if(listingList.size()>0){
+            resultHash.put("Listings", listingList);
+            headers.add("Listings");
+        }
+
 
         Log.i(TAG, "bookList -> " + bookList);
         Log.i(TAG, "courseList -> " + courseList);
         Log.i(TAG, "listingList -> " + listingList);
 
-        ArrayList<String> headers = new ArrayList<String>();
-        headers.add("Book");
-        headers.add("Course");
-        headers.add("Listing");
+
+
+
+
         final SearchResultsExpandableListAdapter searchAdapter = new SearchResultsExpandableListAdapter(this, headers, resultHash);
         expListView.setAdapter(searchAdapter);
 
 
+    }
+
+    @Override
+    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+        if(groupPosition == headers.indexOf("Books")){
+            Book relatedObject = (Book)resultHash.get("Books").get(childPosition);
+            Intent bookDetail = new Intent(v.getContext(), Book_Info.class);
+            Bundle extras = new Bundle();
+            bookDetail.putExtra("books", relatedObject);
+            startActivity(bookDetail);
+        }
+        else if(groupPosition == headers.indexOf("Courses")){
+            Course relatedObject = (Course)resultHash.get("Courses").get(childPosition);
+            Intent courseDetail = new Intent(v.getContext(), Course_Info.class);
+            Bundle extras = new Bundle();
+            courseDetail.putExtra("course", relatedObject);
+            startActivity(courseDetail);
+        }
+        else if(groupPosition == headers.indexOf("Listings")){
+            Listing relatedObject = (Listing)resultHash.get("Listings").get(childPosition);
+            Intent listingDetail = new Intent(v.getContext(), Book_Info.class);
+            Bundle extras = new Bundle();
+            listingDetail.putExtra("books", relatedObject);
+            startActivity(listingDetail);
+        }
+        return true;
     }
 }

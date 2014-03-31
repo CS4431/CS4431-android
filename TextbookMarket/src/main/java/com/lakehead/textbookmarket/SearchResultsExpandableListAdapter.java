@@ -3,6 +3,7 @@ package com.lakehead.textbookmarket;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,6 +83,9 @@ public class SearchResultsExpandableListAdapter extends BaseExpandableListAdapte
 
         TextView headerTextView = (TextView) convertView.findViewById(R.id.headers_textview);
         headerTextView.setTypeface(null, Typeface.BOLD);
+        headerTextView.setTextSize(30);
+        headerTextView.setGravity(Gravity.CENTER_VERTICAL);
+        headerTextView.setGravity(Gravity.CENTER);
         headerTextView.setText(headerTitle);
 
         return convertView;
@@ -92,7 +96,7 @@ public class SearchResultsExpandableListAdapter extends BaseExpandableListAdapte
         LayoutInflater inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView;
         Object childElement = resultsHash.get(groupHeaders.get(groupPosition)).get(childPosition);
-        if(groupPosition == groupHeaders.indexOf("Book"))
+        if(groupPosition == groupHeaders.indexOf("Books"))
         {
             Log.i(TAG,"getChildView() -> " + "Type of Node is Book, populating row...");
               Book book = (Book)childElement;
@@ -116,7 +120,7 @@ public class SearchResultsExpandableListAdapter extends BaseExpandableListAdapte
             detailTextView.setText(book.get_author());
 
         }
-        else if(groupPosition == groupHeaders.indexOf("Course"))
+        else if(groupPosition == groupHeaders.indexOf("Courses"))
         {
             Log.i(TAG,"getChildView() -> " + "Type of Node is Course, populating row...");
             Course course = (Course)childElement;
@@ -131,7 +135,7 @@ public class SearchResultsExpandableListAdapter extends BaseExpandableListAdapte
 
 
         }
-        else if(groupPosition == groupHeaders.indexOf("Listing"))
+        else if(groupPosition == groupHeaders.indexOf("Listings"))
         {
             Listing listing = (Listing)childElement;
             Log.i(TAG,"getChildView() -> " + "Type of Node is Listing, populating row...");
@@ -146,21 +150,23 @@ public class SearchResultsExpandableListAdapter extends BaseExpandableListAdapte
             //getting the listing's book for future usage.
             Book relatedBook = listing.get_book();
             if(relatedBook != null)
-            Log.i(TAG,"getChildView() -> " + "Book Found for listing {" + listing.get_id()+"} : " + relatedBook.toString());
-
-            //populating XML elements
-            listingTitleView.setText(relatedBook.get_title());
-            listingPriceView.setText("Price: $" + listing.get_price());
-            listingCourseView.setText(listing.get_start_date());
-
-            //If the book doesn't have a bitmap yet, then fetch it. Otherwise, just display the one we have
-            if(listing.get_book().getBitmap() == null)
             {
-                new GetImageTask(relatedBook.get_image_url(), bookIconImageView, THUMBNAIL_SIZE, THUMBNAIL_SIZE,relatedBook).execute();
-            }
-            else
-            {
-                bookIconImageView.setImageBitmap(relatedBook.getBitmap());
+                Log.i(TAG," getChildView() -> " + "Book Found for listing {" + listing.get_id()+"} : " + relatedBook.toString());
+
+                //populating XML elements
+                listingTitleView.setText(relatedBook.get_title());
+                listingPriceView.setText("Price: $" + listing.get_price());
+                listingCourseView.setText(listing.get_start_date());
+
+                //If the book doesn't have a bitmap yet, then fetch it. Otherwise, just display the one we have
+                if(listing.get_book().getBitmap() == null)
+                {
+                    new GetImageTask(relatedBook.get_image_url(), bookIconImageView, THUMBNAIL_SIZE, THUMBNAIL_SIZE,relatedBook).execute();
+                }
+                else
+                {
+                    bookIconImageView.setImageBitmap(relatedBook.getBitmap());
+                }
             }
         }
         else
@@ -173,6 +179,6 @@ public class SearchResultsExpandableListAdapter extends BaseExpandableListAdapte
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        return true;
     }
 }
