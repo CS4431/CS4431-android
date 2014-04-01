@@ -1,11 +1,13 @@
 package com.lakehead.textbookmarket;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.apache.http.NameValuePair;
@@ -129,9 +131,19 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
             e.printStackTrace();
         }
 
-        MyListingsArrayAdapter listingsAdapter = new MyListingsArrayAdapter(this.getActivity(), listingsList);
+        final MyListingsArrayAdapter listingsAdapter = new MyListingsArrayAdapter(this.getActivity(), listingsList);
         listingsListView.setAdapter(listingsAdapter);
 
+        listingsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(view.getContext(), Listing_Info.class);
+                Bundle extras = new Bundle();
+                extras.putParcelable("listings",listingsAdapter.getItem(position));
+                intent.putExtras(extras);
+                startActivity(intent);
+            }});
     }
 
     /**

@@ -12,7 +12,8 @@
     <string name="title_activity_book__info">Book_Info</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_course__info">Course_Info</string>
-    <string name="title_activity_listing__info">Course_Info</string>
+    <string name="title_activity_listing__info">Listing_Info</string>
+    <string name="title_activity_mylistings__info">MyListings_Info</string>
 
 
 </resources>

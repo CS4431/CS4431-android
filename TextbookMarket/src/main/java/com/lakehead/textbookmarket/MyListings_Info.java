@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
-public class Listing_Info extends Activity {
+public class MyListings_Info extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
