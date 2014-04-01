@@ -50,6 +50,10 @@
             android:label="@string/title_activity_course__info" >
         </activity>
         <activity
+            android:name="com.lakehead.textbookmarket.Listing_Info"
+            android:label="@string/title_activity_listing__info" >
+        </activity>
+        <activity
             android:name="com.lakehead.textbookmarket.AddListingActivity"
             android:label="@string/title_activity_add_listing"
             android:parentActivityName="com.lakehead.textbookmarket.InputISBNActivity" >

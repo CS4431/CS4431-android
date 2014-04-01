@@ -1,5 +1,6 @@
 package com.lakehead.textbookmarket;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.apache.http.NameValuePair;
@@ -24,13 +26,16 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
     ListView listingsListView;
     View rootView;
     JSONArray jArray;
+
     int currentOffset=0;
     boolean loadingMore=false;
+
     ArrayList<Listing> listingsList;
     ListingArrayAdapter listingsAdapter;
 
     //A dummy listing used to tell the adapter to add a "loading" row
     Listing loadingListing;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -185,6 +190,16 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
         removeLoadingListing();
         listingsAdapter.notifyDataSetChanged();
         loadingMore=false;
+        listingsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(view.getContext(), Listing_Info.class);
+                Bundle extras = new Bundle();
+                extras.putParcelable("listings",listingsAdapter.getItem(position));
+                intent.putExtras(extras);
+                startActivity(intent);
+            }});
     }
 
     /**
