@@ -72,5 +72,9 @@ public class AddListingActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void submitSellClicked(View view){
+        Log.i(TAG,"submitSellClicked() -> " + "Found Submit Clicked. ");
+    }
+
 
 }

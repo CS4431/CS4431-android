@@ -3,7 +3,7 @@
     android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:columnCount="5"
-    android:rowCount="10"
+    android:rowCount="13"
     android:clickable="false"
     android:columnOrderPreserved="true">
 
@@ -83,5 +83,15 @@
         android:layout_column="1"
         android:editable="true"
         android:textSize="55dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="191dp"
+        android:text="Submit"
+        android:id="@+id/submit_sell_button"
+        android:layout_row="12"
+        android:layout_column="0"
+        android:textSize="70dp"
+        android:onClick="submitSellClicked" />
 
 </GridLayout>
