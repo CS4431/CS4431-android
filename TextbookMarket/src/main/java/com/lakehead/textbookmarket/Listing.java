@@ -171,19 +171,21 @@ public class Listing implements Parcelable {
 
     static public ArrayList<Listing> associateBooksToListings(ArrayList<Listing> listingsList, ArrayList<Book>temporaryBookList){
         for(Listing current_listing : listingsList){
-            for(Book current_book : temporaryBookList){
-                if(current_listing.get_book_id() == current_book.get_id()){
-                    Log.v(TAG, "OnTaskCompleted() -> Associated Book with ID {" + current_book.get_id()
-                            + "} with Listing {" + current_listing.get_id()+"} which was requesting Book with ID {"
-                            + current_listing.get_book_id()+"}");
-                    current_listing.set_book(current_book);
+            if(current_listing._id > 0){ //this is here to handle the dummy listings. 
+                for(Book current_book : temporaryBookList){
+                    if(current_listing.get_book_id() == current_book.get_id()){
+                        Log.v(TAG, "OnTaskCompleted() -> Associated Book with ID {" + current_book.get_id()
+                                + "} with Listing {" + current_listing.get_id()+"} which was requesting Book with ID {"
+                                + current_listing.get_book_id()+"}");
+                        current_listing.set_book(current_book);
 
+                    }
                 }
-            }
-            if(current_listing.get_book() == null){
-                Log.e(TAG,"OnTaskCompleted() -> Could not associate a book to Listing with ID {"
-                        + current_listing.get_id()+"} as it was requesting Book ID {" + current_listing.get_book_id()
-                        +"} which does not exist in our Temporary Book List. CONTACT API TEAM!!!!");
+                if(current_listing.get_book() == null){
+                    Log.e(TAG,"OnTaskCompleted() -> Could not associate a book to Listing with ID {"
+                            + current_listing.get_id()+"} as it was requesting Book ID {" + current_listing.get_book_id()
+                            +"} which does not exist in our Temporary Book List. CONTACT API TEAM!!!!");
+                }
             }
         }
         return listingsList;
