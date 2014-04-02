@@ -32,7 +32,7 @@ public class Listing implements Parcelable {
         _id = in.readInt();
         _user_id = in.readInt();
         _book_id = in.readInt();
-        _book = (Book)in.readValue(ClassLoader.getSystemClassLoader());
+        _book = (Book)in.readParcelable(Book.class.getClassLoader());
         _price = in.readDouble();
         _start_date = in.readString();
         _end_date = in.readString();
@@ -106,7 +106,7 @@ public class Listing implements Parcelable {
         dest.writeInt(this._id);
         dest.writeInt(this._user_id);
         dest.writeInt(this._book_id);
-        dest.writeValue(this._book);
+        dest.writeParcelable(this._book,0);
         dest.writeDouble(this._price);
         dest.writeString(this._start_date);
         dest.writeString(this._end_date);
