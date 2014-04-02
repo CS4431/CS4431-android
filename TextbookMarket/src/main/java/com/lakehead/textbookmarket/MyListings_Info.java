@@ -18,9 +18,9 @@ public class MyListings_Info extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listing__info);
+        setContentView(R.layout.activity_mylistings__info);
         Intent intent = getIntent();
-        //Listing myListing = intent.getParcelableExtra("listings");
+        Listing myListing =intent.getParcelableExtra("listings");
         /*
         String get_end_date()
         String get_start_date()
@@ -30,8 +30,18 @@ public class MyListings_Info extends Activity {
         int get_user_id()
         int get_id()
          */
+
+        /*
+        Book info
+        listing price
+        date listed
+        date expired
+        change listing price(button)
+        remove listings(button)
+         */
+
         //((ImageView)findViewById(R.id.image)).setImageBitmap(myListing.get_book().getBitmap());
-        ((TextView) findViewById(R.id.BookTitle)).setText("Title: ");// + myListing.get_price());
+        //((TextView) findViewById(R.id.BookTitle)).setText("Title: ");// + myListing.get_price());
 
 
 
@@ -42,7 +52,7 @@ public class MyListings_Info extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.listing__info, menu);
+        getMenuInflater().inflate(R.menu.mylistings__info, menu);
         return true;
     }
 

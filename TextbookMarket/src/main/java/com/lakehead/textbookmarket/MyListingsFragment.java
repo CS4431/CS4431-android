@@ -110,19 +110,21 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
             }
 
             for(Listing current_listing : listingsList){
-                for(Book current_book : temporaryBookList){
-                    if(current_listing.get_book_id() == current_book.get_id()){
-                        Log.v("MyListingsFragment", "OnTaskCompleted() -> Associated Book with ID {" + current_book.get_id()
-                                + "} with Listing {" + current_listing.get_id()+"} which was requesting Book with ID {"
-                                + current_listing.get_book_id()+"}");
-                        current_listing.set_book(current_book);
+                if(current_listing.get_id() >=0) {
+                    for (Book current_book : temporaryBookList) {
+                        if (current_listing.get_book_id() == current_book.get_id()) {
+                            Log.v("MyListingsFragment", "OnTaskCompleted() -> Associated Book with ID {" + current_book.get_id()
+                                    + "} with Listing {" + current_listing.get_id() + "} which was requesting Book with ID {"
+                                    + current_listing.get_book_id() + "}");
+                            current_listing.set_book(current_book);
 
+                        }
                     }
-                }
-                if(current_listing.get_book() == null){
-                    Log.e("MyListingsFragment","OnTaskCompleted() -> Could not associate a book to Listing with ID {"
-                            + current_listing.get_id()+"} as it was requesting Book ID {" + current_listing.get_book_id()
-                            +"} which does not exist in our Temporary Book List. CONTACT API TEAM!!!!");
+                    if (current_listing.get_book() == null) {
+                        Log.e("MyListingsFragment", "OnTaskCompleted() -> Could not associate a book to Listing with ID {"
+                                + current_listing.get_id() + "} as it was requesting Book ID {" + current_listing.get_book_id()
+                                + "} which does not exist in our Temporary Book List. CONTACT API TEAM!!!!");
+                    }
                 }
             }
 
@@ -138,7 +140,7 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(view.getContext(), Listing_Info.class);
+                Intent intent = new Intent(view.getContext(), MyListings_Info.class);
                 Bundle extras = new Bundle();
                 extras.putParcelable("listings",listingsAdapter.getItem(position));
                 intent.putExtras(extras);

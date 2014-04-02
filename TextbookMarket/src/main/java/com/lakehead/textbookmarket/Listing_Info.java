@@ -20,7 +20,7 @@ public class Listing_Info extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listing__info);
         Intent intent = getIntent();
-        //Listing myListing = intent.getParcelableExtra("listings");
+        Listing myListing = intent.getParcelableExtra("listings");
         /*
         String get_end_date()
         String get_start_date()
@@ -30,8 +30,17 @@ public class Listing_Info extends Activity {
         int get_user_id()
         int get_id()
          */
+
+        /*
+        Book info
+        listing price
+        date listed
+        date expired
+        message seller(button)
+         */
+
         //((ImageView)findViewById(R.id.image)).setImageBitmap(myListing.get_book().getBitmap());
-        ((TextView) findViewById(R.id.BookTitle)).setText("Title: ");// + myListing.get_price());
+        //((TextView) findViewById(R.id.BookTitle)).setText("Title: ");// + myListing.get_price());
 
 
 

@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.lakehead.textbookmarket.Listing_Info" >
+    tools:context="com.lakehead.textbookmarket.MyListings_Info" >
 
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
