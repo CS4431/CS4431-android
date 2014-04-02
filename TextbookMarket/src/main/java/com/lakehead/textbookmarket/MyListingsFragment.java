@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -27,12 +28,17 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
     ListView listingsListView;
     View rootView;
     JSONArray jArray;
-    ArrayList<Listing> listingsList;
 
     SharedPreferences prefs;
     String tokenString;
     int currentOffset=0;
     boolean loadingMore=false;
+
+    ArrayList<Listing> listingsList;
+    MyListingsArrayAdapter listingsAdapter;
+
+    //A dummy listing used to tell the adapter to add a "loading" row
+    Listing loadingListing;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -40,7 +46,31 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
         rootView = inflater.inflate(R.layout.fragment_listings, container, false);
         listingsListView = (ListView)rootView.findViewById(R.id.listings_list_view);
         prefs = this.getActivity().getSharedPreferences("com.lakehead.textbookmarket", Context.MODE_PRIVATE);
-        tokenString = prefs.getString("remember_token","");
+        tokenString = prefs.getString("remember_token", "");
+        loadingListing = new Listing();
+        listingsList= new ArrayList<Listing>();
+        listingsAdapter = new MyListingsArrayAdapter(this.getActivity(), listingsList);
+        listingsListView.setAdapter(listingsAdapter);
+
+        listingsListView.setOnScrollListener(new AbsListView.OnScrollListener(){
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {}
+            //dumdumdum
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                int lastInScreen = firstVisibleItem + visibleItemCount;
+                Log.d("Debug",""+lastInScreen);
+                //is the bottom item visible & not loading more already? Load more!
+                if((lastInScreen == totalItemCount) && !(loadingMore)){
+                    currentOffset+=10;
+                    loadingMore=true;
+                    addLoadingListing();
+                    //progressBar.setVisibility(View.VISIBLE);
+                    makeAPICall();
+                }
+            }
+        });
 
         if(savedInstanceState != null)
         {
@@ -56,6 +86,7 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
             {
                 //this call is just to test whether the token is valid/not expired. We don't actually care about sells.
                 //new GetJSONArrayTask(this, "/api/sell").execute(ext, count);
+
                 makeAPICall();
             }
             else
@@ -79,6 +110,18 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
     }
 
 
+    private void addLoadingListing()
+    {
+
+        listingsList.add(loadingListing);
+        listingsAdapter.notifyDataSetChanged();
+    }
+
+    private void removeLoadingListing()
+    {
+        listingsList.remove(loadingListing);
+        listingsAdapter.notifyDataSetChanged();
+    } 
     @Override
     public void onPause()
     {
@@ -105,7 +148,6 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
 
     @Override
     public void onTaskCompleted(Object obj) {
-        listingsList= new ArrayList<Listing>();
         List<Book> temporaryBookList = new ArrayList<Book>();
 
         jArray = (JSONArray)obj;
@@ -158,9 +200,10 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
             e.printStackTrace();
         }
 
-        final MyListingsArrayAdapter listingsAdapter = new MyListingsArrayAdapter(this.getActivity(), listingsList);
-        listingsListView.setAdapter(listingsAdapter);
 
+        removeLoadingListing();
+        listingsAdapter.notifyDataSetChanged();
+        loadingMore=false;
         listingsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
