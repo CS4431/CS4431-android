@@ -1,6 +1,8 @@
 package com.lakehead.textbookmarket;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -27,28 +29,53 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
     JSONArray jArray;
     ArrayList<Listing> listingsList;
 
+    SharedPreferences prefs;
+    String tokenString;
+    int currentOffset=0;
+    boolean loadingMore=false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         rootView = inflater.inflate(R.layout.fragment_listings, container, false);
         listingsListView = (ListView)rootView.findViewById(R.id.listings_list_view);
+        prefs = this.getActivity().getSharedPreferences("com.lakehead.textbookmarket", Context.MODE_PRIVATE);
+        tokenString = prefs.getString("remember_token","");
 
         if(savedInstanceState != null)
         {
-            Log.d("MyListingsFragment", "onCreateView() -> " + "Found Saved Instance state. Loading Course list from it...");
+            Log.d("ListingsFragment", "onCreateView() -> " + "Found Saved Instance state. Loading Course list from it...");
             listingsList = savedInstanceState.getParcelableArrayList("listingsList");
-            MyListingsArrayAdapter listingsAdapter = new MyListingsArrayAdapter(this.getActivity(), listingsList);
+            ListingArrayAdapter listingsAdapter = new ListingArrayAdapter(this.getActivity(), listingsList);
             listingsListView.setAdapter(listingsAdapter);
         }
         else
         {
-            Log.d("MyListingsFragment", "onCreateView() -> " + "No Saved Instance state. Loading Course list from API...");
-            NameValuePair ext = new BasicNameValuePair("ext", "json");
-            NameValuePair count = new BasicNameValuePair("count", "20");
-            new GetJSONArrayTask(this, "/api/sell").execute(ext, count);
-        }
+            Log.d("ListingsFragment", "onCreateView() -> " + "No Saved Instance state. Loading Course list from API...");
+            if(!tokenString.equals(""))
+            {
+                //this call is just to test whether the token is valid/not expired. We don't actually care about sells.
+                //new GetJSONArrayTask(this, "/api/sell").execute(ext, count);
+                makeAPICall();
+            }
+            else
+            {
+                //If you have an invalid token, but you've somehow gotten this far, just bring you back to the login screen
+                this.getActivity().finish();
+            }
 
+        }
         return rootView;
+    }
+
+
+    private void makeAPICall()
+    {
+        NameValuePair userID = new BasicNameValuePair("user_id", tokenString);
+        NameValuePair count = new BasicNameValuePair("count", "10");
+        NameValuePair ext = new BasicNameValuePair("ext", "json");
+        NameValuePair offset = new BasicNameValuePair("offset", Integer.toString(currentOffset));
+        new GetJSONArrayTask(this, "/api/sell").execute(ext, count, offset, userID);
     }
 
 
