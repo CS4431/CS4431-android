@@ -55,18 +55,24 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
 
         loginButton = (Button) findViewById(R.id.login_button);
         toRegButton = (Button) findViewById(R.id.no_account_button);
+        bar = (ProgressBar) findViewById(R.id.loader);
 
         prefs = this.getSharedPreferences("com.lakehead.textbookmarket", Context.MODE_PRIVATE);
 
         // Keep this here for testing logging in and registering
         //prefs.edit().clear().commit();
 
-        //tokenString = prefs.getString("remember_token","");
-        //if(!tokenString.equals(""))
-        //{
-        //    goToMainActivity();
-        //}
-        bar = (ProgressBar) findViewById(R.id.loader);
+        tokenString = prefs.getString("remember_token","");
+
+        if(!tokenString.equals(""))
+        {
+            hideUI();
+            NameValuePair ext = new BasicNameValuePair("user_id", tokenString);
+            NameValuePair count = new BasicNameValuePair("count", "1");
+
+            //this call is just to test whether the token is valid/not expired. We don't actually care about sells.
+            new GetJSONArrayTask(this, "/api/sell").execute(ext, count);
+        }
         bar.setVisibility(View.INVISIBLE);
 
 
@@ -142,17 +148,23 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
                 String kind = jArray.getJSONObject(0).getString("kind");
                 if(kind.equals("error")) //login failed
                 {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT);
                     toast.show();
                     showUI();
                     passText.setText("");
                 }
                 else if(kind.equals("token")) //login success
                 {
+                    token = jArray.getJSONObject(0).getJSONObject("data").getString("token");
                     emailAddress = emailText.getText().toString();
 
                     prefs.edit().putString("remember_token", token).commit();
                     prefs.edit().putString("email_address", emailAddress).commit();
+                    bar.setVisibility(View.GONE);
+                    goToMainActivity();
+                }
+                else //You have a valid token already
+                {
                     bar.setVisibility(View.GONE);
                     goToMainActivity();
                 }
