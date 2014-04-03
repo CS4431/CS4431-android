@@ -46,6 +46,8 @@ public class AddListingActivity extends Activity implements OnTaskCompleted {
         TextView msrpTextView = (TextView)findViewById(R.id.textViewMSRP);
         TextView publisherTextView = (TextView)findViewById(R.id.textViewPublisher);
         ImageView iconImageView = (ImageView)findViewById(R.id.bookImageIcon);
+        TextView priceTextView = (TextView)findViewById(R.id.editTextPrice);
+        priceTextView.setText("0");
 
         titleTextView.setText(selected_book.get_title());
         authorTextView.setText(selected_book.get_author());
@@ -89,15 +91,24 @@ public class AddListingActivity extends Activity implements OnTaskCompleted {
         EditText priceView = (EditText)findViewById(R.id.editTextPrice);
         Button submitButton = (Button)findViewById(R.id.submit_sell_button);
         ProgressBar pBar = (ProgressBar)findViewById(R.id.submitSellProgressBar);
-        pBar.setVisibility(View.VISIBLE);
-        submitButton.setEnabled(false);
+
         String priceText = priceView.getText().toString();
-
-        NameValuePair user_id = new BasicNameValuePair("user_id", "6852c1c5-1d83-4029-9b7c-b2537c7ec540");
-        NameValuePair edition_id = new BasicNameValuePair("edition_id", String.valueOf(selected_book.get_id()));
-        NameValuePair price = new BasicNameValuePair("price", priceText);
-
-        new GetJSONArrayTask(this, "/api/create/sell").execute(user_id,edition_id,price);
+        if(Float.valueOf(priceText) > 0)
+        {
+            pBar.setVisibility(View.VISIBLE);
+            submitButton.setEnabled(false);
+            NameValuePair user_id = new BasicNameValuePair("user_id", "316d3e20-9456-41c2-b934-a973e60f6055");
+            NameValuePair edition_id = new BasicNameValuePair("edition_id", String.valueOf(selected_book.get_id()));
+            NameValuePair price = new BasicNameValuePair("price", priceText);
+            new GetJSONArrayTask(this, "/api/create/sell").execute(user_id,edition_id,price);
+        }
+        else
+        {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "You must enter a price greater than zero.", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER,0,0);
+            toast.show();
+        }
     }
 
 
@@ -108,17 +119,42 @@ public class AddListingActivity extends Activity implements OnTaskCompleted {
         ProgressBar pBar = (ProgressBar)findViewById(R.id.submitSellProgressBar);
         pBar.setVisibility(View.INVISIBLE);
         Button submitButton = (Button)findViewById(R.id.submit_sell_button);
-        submitButton.setVisibility(View.INVISIBLE);
+
 
         //change this later to ensure that the listing was created. Once they return meaningful messages.
         if(jArray != null)
         {
-            ImageView checkMark = (ImageView)findViewById(R.id.greenCheckImageView);
-            checkMark.setVisibility(View.VISIBLE);
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Your book has been listed. It should show up under the My Listings heading shortly.", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER,0,0);
-            toast.show();
+            try
+            {
+                String returnType = jArray.getJSONObject(0).getString("kind");
+                if(returnType.equalsIgnoreCase("sell"))
+                {
+                    Log.i(TAG, "onTaskCompleted() -> Kind found: " + returnType);
+                    Log.i(TAG, "onTaskCompleted() -> " + "Received jArray -> " + jArray.toString());
+                    ImageView checkMark = (ImageView)findViewById(R.id.greenCheckImageView);
+
+                    submitButton.setVisibility(View.INVISIBLE);
+                    checkMark.setVisibility(View.VISIBLE);
+
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Your book has been listed. It should show up under the My Listings heading shortly.", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER,0,0);
+                    toast.show();
+                }
+                else
+                {
+                    Log.e(TAG, "onTaskCompleted() -> " + "return Type seems to not be a sell? : Return Type = " + returnType);
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "There was an error listing your book. Please ensure you are logged in.", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER,0,0);
+                    toast.show();
+                }
+            }
+            catch(Exception e )
+            {
+                Log.e(TAG, "onTaskCompleted() -> " + "unable to parse jsonObject. -> " + e.toString());
+            }
+
         }
         else
         {
