@@ -12,11 +12,6 @@
         <activity
             android:name="com.lakehead.textbookmarket.MainActivity"
             android:label="@string/app_name" >
-            <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
         </activity>
         <activity
             android:name="com.lakehead.textbookmarket.SettingsActivity"
@@ -26,12 +21,18 @@
         <activity
             android:name="com.lakehead.textbookmarket.LoginActivity"
             android:label="Login"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.lakehead.textbookmarket.RegisterActivity"
             android:label="Register"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="com.lakehead.textbookmarket.InputISBNActivity"
