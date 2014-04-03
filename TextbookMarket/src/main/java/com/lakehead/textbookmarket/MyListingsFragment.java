@@ -1,11 +1,16 @@
 package com.lakehead.textbookmarket;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.apache.http.NameValuePair;
@@ -24,13 +29,49 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
     ListView listingsListView;
     View rootView;
     JSONArray jArray;
+
+    SharedPreferences prefs;
+    String tokenString;
+    int currentOffset=0;
+    boolean loadingMore=false;
+
     ArrayList<Listing> listingsList;
+    MyListingsArrayAdapter listingsAdapter;
+
+    //A dummy listing used to tell the adapter to add a "loading" row
+    Listing loadingListing;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         rootView = inflater.inflate(R.layout.fragment_listings, container, false);
         listingsListView = (ListView)rootView.findViewById(R.id.listings_list_view);
+        prefs = this.getActivity().getSharedPreferences("com.lakehead.textbookmarket", Context.MODE_PRIVATE);
+        tokenString = prefs.getString("remember_token", "");
+        loadingListing = new Listing();
+        listingsList= new ArrayList<Listing>();
+        listingsAdapter = new MyListingsArrayAdapter(this.getActivity(), listingsList);
+        listingsListView.setAdapter(listingsAdapter);
+
+        listingsListView.setOnScrollListener(new AbsListView.OnScrollListener(){
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {}
+            //dumdumdum
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                int lastInScreen = firstVisibleItem + visibleItemCount;
+                Log.d("Debug",""+lastInScreen);
+                //is the bottom item visible & not loading more already? Load more!
+                if((lastInScreen == totalItemCount) && !(loadingMore)){
+                    currentOffset+=10;
+                    loadingMore=true;
+                    addLoadingListing();
+                    //progressBar.setVisibility(View.VISIBLE);
+                    makeAPICall();
+                }
+            }
+        });
 
         if(savedInstanceState != null)
         {
@@ -45,12 +86,45 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
             NameValuePair ext = new BasicNameValuePair("ext", "json");
             NameValuePair count = new BasicNameValuePair("count", "20");
             new GetJSONArrayTask(this, "/api/sell").execute(ext, count);
-        }
+            if(!tokenString.equals(""))
+            {
+                //this call is just to test whether the token is valid/not expired. We don't actually care about sells.
+                //new GetJSONArrayTask(this, "/api/sell").execute(ext, count);
 
+                makeAPICall();
+            }
+            else
+            {
+                //If you have an invalid token, but you've somehow gotten this far, just bring you back to the login screen
+                this.getActivity().finish();
+            }
+        }
         return rootView;
     }
 
 
+    private void makeAPICall()
+    {
+        NameValuePair userID = new BasicNameValuePair("user_id", tokenString);
+        NameValuePair count = new BasicNameValuePair("count", "10");
+        NameValuePair ext = new BasicNameValuePair("ext", "json");
+        NameValuePair offset = new BasicNameValuePair("offset", Integer.toString(currentOffset));
+        new GetJSONArrayTask(this, "/api/sell").execute(ext, count, offset, userID);
+    }
+
+
+    private void addLoadingListing()
+    {
+
+        listingsList.add(loadingListing);
+        listingsAdapter.notifyDataSetChanged();
+    }
+
+    private void removeLoadingListing()
+    {
+        listingsList.remove(loadingListing);
+        listingsAdapter.notifyDataSetChanged();
+    } 
     @Override
     public void onPause()
     {
@@ -77,7 +151,6 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
 
     @Override
     public void onTaskCompleted(Object obj) {
-        listingsList= new ArrayList<Listing>();
         List<Book> temporaryBookList = new ArrayList<Book>();
 
         jArray = (JSONArray)obj;
@@ -130,9 +203,20 @@ public class MyListingsFragment extends Fragment implements OnTaskCompleted{
             e.printStackTrace();
         }
 
-        MyListingsArrayAdapter listingsAdapter = new MyListingsArrayAdapter(this.getActivity(), listingsList);
-        listingsListView.setAdapter(listingsAdapter);
 
+        removeLoadingListing();
+        listingsAdapter.notifyDataSetChanged();
+        loadingMore=false;
+        listingsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(view.getContext(), MyListings_Info.class);
+                Bundle extras = new Bundle();
+                extras.putParcelable("listings",listingsAdapter.getItem(position));
+                intent.putExtras(extras);
+                startActivity(intent);
+            }});
     }
 
     /**

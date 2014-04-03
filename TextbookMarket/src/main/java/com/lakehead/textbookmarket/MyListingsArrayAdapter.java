@@ -29,34 +29,43 @@ public class MyListingsArrayAdapter extends ArrayAdapter<Listing> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.mylistings_item_view, parent, false);
-
-        //grabbing XML elements
-        TextView listingTitleView = (TextView)rowView.findViewById(R.id.listingTitle);
-        TextView listingCourseView = (TextView)rowView.findViewById(R.id.listingCourseInfo);
-        TextView listingPriceView = (TextView)rowView.findViewById(R.id.listingPrice);
-        ImageView bookIconImageView = (ImageView)rowView.findViewById(R.id.listing_icon);
-
-        //getting the listing's book for future usage.
-        Book relatedBook = listingList.get(position).get_book();
-
-        //populating XML elements
-        listingTitleView.setText(relatedBook.get_title());
-        listingPriceView.setText("Price: $" + listingList.get(position).get_price());
-        listingCourseView.setText(listingList.get(position).get_start_date());
-
-        //If the book doesn't have a bitmap yet, then fetch it. Otherwise, just display the one we have
-        if(listingList.get(position).get_book().getBitmap() == null)
+        if(listingList.get(position).get_id() > -1)
         {
-            new GetImageTask(relatedBook.get_image_url(), bookIconImageView, THUMBNAIL_SIZE, THUMBNAIL_SIZE,relatedBook).execute();
+            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View rowView = inflater.inflate(R.layout.mylistings_item_view, parent, false);
+
+            //grabbing XML elements
+            TextView listingTitleView = (TextView)rowView.findViewById(R.id.listingTitle);
+            TextView listingCourseView = (TextView)rowView.findViewById(R.id.listingCourseInfo);
+            TextView listingPriceView = (TextView)rowView.findViewById(R.id.listingPrice);
+            ImageView bookIconImageView = (ImageView)rowView.findViewById(R.id.listing_icon);
+
+            //getting the listing's book for future usage.
+            Book relatedBook = listingList.get(position).get_book();
+
+            //populating XML elements
+            listingTitleView.setText(relatedBook.get_title());
+            listingPriceView.setText("Price: $" + listingList.get(position).get_price());
+            listingCourseView.setText(listingList.get(position).get_start_date());
+
+            //If the book doesn't have a bitmap yet, then fetch it. Otherwise, just display the one we have
+            if(listingList.get(position).get_book().getBitmap() == null)
+            {
+                new GetImageTask(relatedBook.get_image_url(), bookIconImageView, THUMBNAIL_SIZE, THUMBNAIL_SIZE,relatedBook).execute();
+            }
+            else
+            {
+                bookIconImageView.setImageBitmap(relatedBook.getBitmap());
+            }
+
+            return rowView;
         }
         else
         {
-            bookIconImageView.setImageBitmap(relatedBook.getBitmap());
+            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View rowView = inflater.inflate(R.layout.loading_item_view, parent, false);
+            return rowView;
         }
-
-        return rowView;
 
     }
 

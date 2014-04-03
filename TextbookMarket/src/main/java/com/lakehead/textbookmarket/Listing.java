@@ -38,7 +38,7 @@ public class Listing implements Parcelable {
         _id = in.readInt();
         _user_id = in.readInt();
         _book_id = in.readInt();
-        _book = (Book)in.readParcelable(ClassLoader.getSystemClassLoader());
+        _book = (Book)in.readParcelable(Book.class.getClassLoader());
         _price = in.readDouble();
         _start_date = in.readString();
         _end_date = in.readString();
