@@ -38,11 +38,14 @@ public class Book_Info extends Activity implements OnTaskCompleted {
     private Button stockButton;
     private AlertDialog alertDialogStores;
     ArrayList<Listing> listingsList;
+    ListView listViewItems;
+    SpecificListingArrayAdapter adapter;
+    private int bid =0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book__info);
-
+        listingsList = new ArrayList<Listing>();
         ObjectItem[] ObjectItemData = new ObjectItem[20];
 
         ObjectItemData[0] = new ObjectItem(91, "Mercury");
@@ -65,13 +68,15 @@ public class Book_Info extends Activity implements OnTaskCompleted {
         ObjectItemData[17] = new ObjectItem(108, "Fat Chicken 2");
         ObjectItemData[18] = new ObjectItem(109, "Master Siomai 2");
         ObjectItemData[19] = new ObjectItem(110, "Mang Inasal 2");
-/*
+
         // our adapter instance
-        SpecificListingArrayAdapter adapter = new SpecificListingArrayAdapter(Book_Info.this, listingsList);
+        adapter = new SpecificListingArrayAdapter(Book_Info.this, listingsList);
 
         // create a new ListView, set the adapter and item click listener
-        final ListView listViewItems = new ListView(this);
+        listViewItems = new ListView(this);
         listViewItems.setAdapter(adapter);
+
+        /*
         listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -80,7 +85,7 @@ public class Book_Info extends Activity implements OnTaskCompleted {
             }
 
         });
-*/
+        */
 
         getActionBar().setTitle("Book Information");
 
@@ -100,7 +105,7 @@ public class Book_Info extends Activity implements OnTaskCompleted {
             public void onClick(View v) {
                 if(inStock){
                 Log.d("debug","There is a listing for the book and we would go to the listing here");
-                //alertDialogStores = new AlertDialog.Builder(Book_Info.this).setView(listViewItems).setTitle("Stores").show();
+                alertDialogStores = new AlertDialog.Builder(Book_Info.this).setView(listViewItems).setTitle("Listings").show();
 
 
                 }else{
@@ -109,7 +114,7 @@ public class Book_Info extends Activity implements OnTaskCompleted {
             }
         });
 
-
+        bid = myBook.get_id();
         ((ImageView)findViewById(R.id.image)).setImageBitmap(myBook.getBitmap());
         ((TextView) findViewById(R.id.BookTitle)).setText("Title: " + myBook.get_title());
         ((TextView)findViewById(R.id.Author)).setText("Author: " + myBook.get_author());
@@ -118,7 +123,7 @@ public class Book_Info extends Activity implements OnTaskCompleted {
         ((TextView)findViewById(R.id.coverType)).setText("Cover Style: " + myBook.get_cover());
         ((TextView)findViewById(R.id.Publisher)).setText("Publisher: " + myBook.get_publisher());
         makeAPICall();
-
+        makeAPICall2();
 
     }
 
@@ -129,6 +134,12 @@ public class Book_Info extends Activity implements OnTaskCompleted {
         NameValuePair title = new BasicNameValuePair("title", name);
         new GetJSONArrayTask(this, "/api/book").execute(ext, title );
 
+    }
+    private  void makeAPICall2(){
+        Log.d("debug","check 1 called api 2");
+        NameValuePair ext = new BasicNameValuePair("ext","json");
+        NameValuePair id = new BasicNameValuePair("id",Integer.toString(bid));
+        new GetJSONArrayTask(this, "/api/sell").execute(ext,id);
     }
 
     public void onTaskCompleted(Object obj)
@@ -141,86 +152,78 @@ public class Book_Info extends Activity implements OnTaskCompleted {
         JSONObject bookData;
         List<Book> temporaryBookList = new ArrayList<Book>();
 
-        try {
-            bookData = jArray.getJSONObject(0).getJSONObject("data");
-            numOfListings = bookData.getInt("for_sale");
-            for(int i = 0 ; i < jArray.length(); i++ ){
-                nodeType = jArray.getJSONObject(i).getString("kind");
-                bookData = jArray.getJSONObject(i).getJSONObject("data");
-                if(nodeType.equals("book")){
-                    Log.d("debug","number of listings ,,,,nodeType is equal to sell adding to listing");
-                    listingsList.add(generateListingFromJSONNode(bookData));
+        try{
+        nodeType = jArray.getJSONObject(0).getString("kind");
+        Log.d("debug","check 1 nodetype is " + nodeType);
+        if(jArray.getJSONObject(0).getString("kind").equals("book")) {
+            try {
+                bookData = jArray.getJSONObject(0).getJSONObject("data");
+                numOfListings = bookData.getInt("for_sale");
+                for (int i = 0; i < jArray.length(); i++) {
+                    nodeType = jArray.getJSONObject(i).getString("kind");
+                    bookData = jArray.getJSONObject(i).getJSONObject("data");
+                    if (nodeType.equals("book")) {
+
+                    }
+                    Log.d("debug", "number of listings the node type is " + nodeType);
                 }
-                Log.d("debug","number of listings the node type is " + nodeType);
+                Log.d("debug", "the number of listings for this book is " + numOfListings + " the length of the list is " + listingsList.size());
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            Log.d("debug","the number of listings for this book is "+ numOfListings + " the length of the list is " + listingsList.size());
+            if (numOfListings != 0) {
+                stockImage.setBackgroundResource(R.drawable.instock);
+                inStock = true;
+                stockButton.setBackgroundResource(R.drawable.bluebuttonviewlisting);
+                stockButton.setClickable(true);
+            } else {
+                stockImage.setBackgroundResource(R.drawable.outstock);
+                inStock = false;
+                stockButton.setBackgroundResource(R.drawable.bluebuttonwishlist);
+                stockButton.setClickable(false);
+            }
+        }else if(jArray.getJSONObject(0).getString("kind").equals("sell")){
+            for (int i = 0; i < jArray.length();i++){
+                if(jArray.getJSONObject(i).getString("kind").equals("sell")){
+                    try {
+                        bookData = jArray.getJSONObject(i).getJSONObject("data");
+                        listingsList.add(generateListingFromJSONNode(bookData));
+                    }catch (Exception e){
+
+                    }
+                }
+            }
+            adapter = new SpecificListingArrayAdapter(Book_Info.this, listingsList);
+            listViewItems.setAdapter(adapter);
+        }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        if(numOfListings != 0){
-            stockImage.setBackgroundResource(R.drawable.instock);
-            inStock = true;
-            stockButton.setBackgroundResource(R.drawable.bluebuttonviewlisting);
-            stockButton.setClickable(true);
-        }else{
-            stockImage.setBackgroundResource(R.drawable.outstock);
-            inStock = false;
-            stockButton.setBackgroundResource(R.drawable.bluebuttonwishlist);
-            stockButton.setClickable(false);
-        }
     }
 
-    public Listing generateListingFromJSONNode(JSONObject listingDataNode){
+    public Listing generateListingFromJSONNode(JSONObject listingDataNode) {
 
-        //temporary listing variables.
-        int listing_id;
-        int user_id;
-        int edition_id;
-        double price;
-        String start_date;
-        String end_date;
+                    int id =0;
+                    int user_id =0;
+                    int book_id=0;
+                    double price=0;
+                    String start_date="";
+                    String end_date="";
 
         try{
-            listing_id =  listingDataNode.getInt("id");
-        }catch(Exception e){
-            Log.e("MyListingsFragment", "generateListingFromJSONNode() -> Couldn't parse JSON for listing_id!!! Failing: " + e.toString());
-            return null;
-        }
-        try{
+            id = listingDataNode.getInt("id");
             user_id = listingDataNode.getInt("user_id");
-        }catch(Exception e){
-            Log.e("MyListingsFragment", "generateListingFromJSONNode() -> Couldn't parse JSON for user_id!!! Failing: " + e.toString());
-            return null;
-        }
-        try{
-            edition_id =  listingDataNode.getInt("edition_id");
-        }catch(Exception e){
-            Log.e("MyListingsFragment", "generateListingFromJSONNode() -> Couldn't parse JSON for edition_id!!! Failing: " + e.toString());
-            return null;
-        }
-        try{
+            book_id = listingDataNode.getInt("book_id");
             price = listingDataNode.getDouble("price");
-        }catch(Exception e){
-            price = 9999.99;
-            Log.e("MyListingsFragment", "generateListingFromJSONNode() -> Couldn't parse JSON for price: " + e.toString());
-        }
-        try{
             start_date = listingDataNode.getString("start_date");
-        }catch(Exception e){
-            start_date = "N/A";
-            Log.e("MyListingsFragment", "generateListingFromJSONNode() -> Couldn't parse JSON for start_date: " + e.toString());
-        }
-        try{
             end_date = listingDataNode.getString("end_date");
-        }catch(Exception e){
-            end_date = "N/A";
-            Log.e("MyListingsFragment", "generateListingFromJSONNode() -> Couldn't parse JSON for end_date: " + e.toString());
-        }
 
-        return new Listing(listing_id,user_id,edition_id,price,start_date,end_date);
+        }catch (Exception e){
+
+        }
+        return new Listing(id,user_id,book_id,price,start_date,end_date);
 
     }
-
     public void onClick(View view) {
 
     }

@@ -34,7 +34,7 @@ public class Course_Info extends Activity implements OnTaskCompleted {
     ArrayList<Book> associatedBooks;
     private JSONArray jArray;
     private AlertDialog alertDialogStores;
-    SpecificListingArrayAdapter adapter;
+    RequisiteBooksArrayAdapter adapter;
     ListView listViewItems;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,7 @@ public class Course_Info extends Activity implements OnTaskCompleted {
         //associatedBooks.add(tempBook);
 
         // our adapter instance
-        adapter = new SpecificListingArrayAdapter(Course_Info.this, associatedBooks);
+        adapter = new RequisiteBooksArrayAdapter(Course_Info.this, associatedBooks);
 
         // create a new ListView, set the adapter and item click listener
         listViewItems = new ListView(this);
@@ -149,7 +149,7 @@ public class Course_Info extends Activity implements OnTaskCompleted {
                     continue;
                 }
             }
-            adapter = new SpecificListingArrayAdapter(Course_Info.this, associatedBooks);
+            adapter = new RequisiteBooksArrayAdapter(Course_Info.this, associatedBooks);
             listViewItems.setAdapter(adapter);
             Log.d("debug", "check 1 jarray leng is " + jArray.length());
         } catch (JSONException e) {

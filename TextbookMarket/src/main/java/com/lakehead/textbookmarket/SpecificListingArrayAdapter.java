@@ -19,13 +19,13 @@ import java.util.List;
 public class SpecificListingArrayAdapter extends ArrayAdapter {
     Context mContext;
     int layoutResourceId;
-    ArrayList<Book> myBooks;
+    ArrayList<Listing> mylisting;
 
-    public SpecificListingArrayAdapter(Context mContext,ArrayList<Book> myBooks) {
+    public SpecificListingArrayAdapter(Context mContext,ArrayList<Listing> myBooks) {
         super(mContext, R.layout.activity_specific_listing_fragment, myBooks);
         this.layoutResourceId = R.layout.activity_specific_listing_fragment;
         this.mContext = mContext;
-        this.myBooks = myBooks;
+        this.mylisting = myBooks;
     }
 
     @Override
@@ -39,11 +39,11 @@ public class SpecificListingArrayAdapter extends ArrayAdapter {
 
         // object item based on the position
 
-        Book tempBook = myBooks.get(position);
+        Listing tempListing = mylisting.get(position);
         // get the TextView and then set the text (item name) and tag (item ID) values
         TextView textViewItem = (TextView) convertView.findViewById(R.id.textViewItem);
-        textViewItem.setText(tempBook.get_title());
-        textViewItem.setTag(tempBook.get_id());
+        textViewItem.setText(Double.toString(tempListing.get_price()));
+        textViewItem.setTag(tempListing.get_id());
 
         return convertView;
 
