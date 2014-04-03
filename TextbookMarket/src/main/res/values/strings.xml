@@ -15,5 +15,9 @@
     <string name="app_label">Test1</string>
     <string name="search_hint">CS4431</string>
     <string name="title_activity_search_results">SearchResultsActivity</string>
+    <string name="title_activity_new_settings">NewSettings</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Save">Save</string>
+    <string name="Logout">Logout</string>
 
 </resources>

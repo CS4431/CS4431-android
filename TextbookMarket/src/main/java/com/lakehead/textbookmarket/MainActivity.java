@@ -3,11 +3,9 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
-import android.app.SearchableInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.content.Intent;
@@ -15,9 +13,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Primary Activity Holding the tabs managed by TabsPagerAdapter , it also handles the action bar.
@@ -109,13 +104,11 @@ public class MainActivity extends FragmentActivity implements
         searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                Log.i(TAG, "SEARCH EXPANDED.");
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                Log.i(TAG, "SEARCH COLLAPSED");
                 return true;
             }
         });
@@ -128,9 +121,6 @@ public class MainActivity extends FragmentActivity implements
             searchView.setQueryHint("Book/Course");
             searchView.setIconifiedByDefault(true);
         }
-
-
-
         return true;
     }
 
@@ -147,9 +137,15 @@ public class MainActivity extends FragmentActivity implements
         }
         else if(id == R.id.action_search){
             Log.i(TAG, "onOptionsItemSelected: " + "Search Selected!");
+            return true;
         }
         else if(id == R.id.action_new_listing){
             openIsbnSearch();
+            return true;
+        }
+        else if(id == R.id.action_logout){
+            logout();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -161,16 +157,17 @@ public class MainActivity extends FragmentActivity implements
     }
 
     /**
-     * A placeholder fragment containing a simple view.
-     */
-
-
-    /**
      * Method is called when the Settings button is selected from the optionMenu; Starts new SettingsActivity.
      */
     private void openSettings(){
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
+    }
+
+    private void logout(){
+        Log.i(TAG, "logout() -> Logout requested.");
+        //wipe out token.
+        //send user back to Login Screen.
     }
 
 }
