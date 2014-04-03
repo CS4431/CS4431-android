@@ -3,6 +3,8 @@ package com.lakehead.textbookmarket;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
 import android.opengl.Visibility;
 import android.os.Bundle;
@@ -30,6 +32,8 @@ public class AddListingActivity extends Activity implements OnTaskCompleted {
 
     public static final String TAG = "AddListingActivity";
     Book selected_book;
+    SharedPreferences prefs;
+    String tokenString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,8 @@ public class AddListingActivity extends Activity implements OnTaskCompleted {
         Bundle bundle = getIntent().getExtras();
         selected_book = bundle.getParcelable("book");
         Log.i(TAG, "OnCreate() -> Received Parcelable book with title: " + selected_book.get_title());
+        prefs = this.getSharedPreferences("com.lakehead.textbookmarket", Context.MODE_PRIVATE);
+        tokenString = prefs.getString("remember_token","");
 
         TextView titleTextView = (TextView)findViewById(R.id.textViewBookTitle);
         TextView authorTextView = (TextView)findViewById(R.id.textViewAuthor);
@@ -97,7 +103,7 @@ public class AddListingActivity extends Activity implements OnTaskCompleted {
         {
             pBar.setVisibility(View.VISIBLE);
             submitButton.setEnabled(false);
-            NameValuePair user_id = new BasicNameValuePair("user_id", "316d3e20-9456-41c2-b934-a973e60f6055");
+            NameValuePair user_id = new BasicNameValuePair("user_id", tokenString);
             NameValuePair edition_id = new BasicNameValuePair("edition_id", String.valueOf(selected_book.get_id()));
             NameValuePair price = new BasicNameValuePair("price", priceText);
             new GetJSONArrayTask(this, "/api/create/sell").execute(user_id,edition_id,price);
