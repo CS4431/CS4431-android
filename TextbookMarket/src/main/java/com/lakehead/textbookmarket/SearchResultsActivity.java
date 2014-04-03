@@ -71,12 +71,9 @@ public class SearchResultsActivity extends Activity implements OnTaskCompleted, 
 
     public void makeAPICall()
     {
-        NameValuePair searchQuery = new BasicNameValuePair("query", this.query);
-        //new GetJSONArrayTask(this, "/api/search").execute(searchQuery);
-        NameValuePair count = new BasicNameValuePair("count", "10");
-        new GetJSONArrayTask(this, "/api/book").execute(count);
-        new GetJSONArrayTask(this, "/api/course").execute(count);
-        new GetJSONArrayTask(this, "/api/sell").execute(count);
+        NameValuePair searchQuery = new BasicNameValuePair("searchstring", this.query);
+        new GetJSONArrayTask(this, "/api/search/book").execute(searchQuery);
+        new GetJSONArrayTask(this, "/api/search/course").execute(searchQuery);
     }
 
 
