@@ -39,10 +39,17 @@ public class Listing_Info extends Activity {
         message seller(button)
          */
 
-        //((ImageView)findViewById(R.id.image)).setImageBitmap(myListing.get_book().getBitmap());
-        //((TextView) findViewById(R.id.BookTitle)).setText("Title: ");// + myListing.get_price());
-
-
+        ((ImageView)findViewById(R.id.image)).setImageBitmap(myListing.get_book().getBitmap());
+        ((TextView) findViewById(R.id.BookTitle)).setText(myListing.get_book().get_title());
+        ((TextView)findViewById(R.id.Author)).setText("Author: " + myListing.get_book().get_author());
+        ((TextView)findViewById(R.id.ISBN)).setText("ISBN: " + myListing.get_book().get_isbn());
+        ((TextView)findViewById(R.id.edition)).setText("Edition: " + Integer.toString(myListing.get_book().get_edition()));
+        ((TextView)findViewById(R.id.coverType)).setText("Cover Style: " + myListing.get_book().get_cover());
+        ((TextView)findViewById(R.id.Publisher)).setText("Publisher: " + myListing.get_book().get_publisher());
+        ((TextView)findViewById(R.id.ListingPrice)).setText("Listing Price: $" + myListing.get_price() + "0");
+        ((TextView)findViewById(R.id.DateListed)).setText("Date Listed: " + myListing.get_start_date().substring(8,10) + "/" + myListing.get_start_date().substring(5,7) + "/" + myListing.get_start_date().substring(0,4));
+        ((TextView)findViewById(R.id.DateExpires)).setText("Date Expires: " + myListing.get_end_date().substring(8,10) + "/" + myListing.get_end_date().substring(5,7) + "/" + myListing.get_end_date().substring(0,4));
+        //((TextView)findViewById(R.id.Seller)).setText("Seller: " + myListing.get_user_id());
 
     }
 

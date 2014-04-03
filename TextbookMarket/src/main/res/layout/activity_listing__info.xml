@@ -7,7 +7,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.lakehead.textbookmarket.Book_Info"
-    android:background="#000000">
+    android:background="#191919">
 
     <ImageView
         android:id="@+id/image"
@@ -22,11 +22,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Title: Allaire's Book of Magic"
+        android:text="Allaire's Book of Magic"
         android:id="@+id/BookTitle"
-        android:textColor="#FFFFFF"
+        android:textColor="#33B5E5"
         android:textStyle="bold"
-        android:textSize="15dp"
+        android:textSize="18dp"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/coverType"
         android:layout_alignEnd="@+id/coverType" />
@@ -38,8 +42,7 @@
         android:id="@+id/Author"
         android:layout_below="@+id/BookTitle"
         android:paddingTop="10dp"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
+        android:textColor="#33B5E5"
         android:textSize="15dp"
         android:layout_toRightOf="@+id/image" />
 
@@ -52,20 +55,18 @@
         android:layout_alignLeft="@+id/Author"
         android:singleLine="false"
         android:paddingTop="10dp"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
+        android:textColor="#33b5e5"
         android:textSize="15dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edition 45"
+        android:text="Edition: 45"
         android:id="@+id/edition"
         android:paddingTop="10dp"
         android:layout_below="@+id/ISBN"
         android:layout_alignLeft="@+id/ISBN"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
+        android:textColor="#33B5E5"
         android:textSize="15dp" />
 
     <TextView
@@ -76,20 +77,94 @@
         android:paddingTop="10dp"
         android:layout_below="@+id/edition"
         android:layout_alignLeft="@+id/edition"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
+        android:textColor="#33B5E5"
         android:textSize="15dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Penguin"
+        android:text="Publisher: Penguin"
         android:id="@+id/Publisher"
         android:layout_alignLeft="@+id/coverType"
         android:layout_below="@+id/coverType"
         android:paddingTop="10dp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
+        android:textColor="#33B5E5"
         android:textSize="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Listing Price: $50"
+        android:id="@+id/ListingPrice"
+        android:textColor="#33B5E5"
+        android:textStyle="bold"
+        android:textSize="25dp"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date Listed: XX/XX/XXXX"
+        android:id="@+id/DateListed"
+        android:textColor="#33B5E5"
+        android:textStyle="bold"
+        android:textSize="25dp"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        android:layout_below="@+id/ListingPrice"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/ListingPrice"
+        android:layout_alignEnd="@+id/ListingPrice" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date Expires: XX/XX/XXXX"
+        android:id="@+id/DateExpires"
+        android:textColor="#33B5E5"
+        android:textStyle="bold"
+        android:textSize="25dp"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        android:layout_below="@+id/DateListed"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Seller: Allaire"
+        android:id="@+id/Seller"
+        android:textColor="#33B5E5"
+        android:textStyle="bold"
+        android:textSize="25dp"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        android:layout_below="@+id/DateExpires"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contact Seller"
+        android:id="@+id/ContactSeller"
+        android:textColor="#33B5E5"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
