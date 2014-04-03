@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,24 +21,7 @@ public class Listing_Info extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listing__info);
         Intent intent = getIntent();
-        Listing myListing = intent.getParcelableExtra("listings");
-        /*
-        String get_end_date()
-        String get_start_date()
-        double get_price()
-        //Book get_book()
-        int get_book_id()
-        int get_user_id()
-        int get_id()
-         */
-
-        /*
-        Book info
-        listing price
-        date listed
-        date expired
-        message seller(button)
-         */
+        final Listing myListing = intent.getParcelableExtra("listings");
 
         ((ImageView)findViewById(R.id.image)).setImageBitmap(myListing.get_book().getBitmap());
         ((TextView) findViewById(R.id.BookTitle)).setText(myListing.get_book().get_title());
@@ -49,10 +33,14 @@ public class Listing_Info extends Activity {
         ((TextView)findViewById(R.id.ListingPrice)).setText("Listing Price: $" + myListing.get_price() + "0");
         ((TextView)findViewById(R.id.DateListed)).setText("Date Listed: " + myListing.get_start_date().substring(8,10) + "/" + myListing.get_start_date().substring(5,7) + "/" + myListing.get_start_date().substring(0,4));
         ((TextView)findViewById(R.id.DateExpires)).setText("Date Expires: " + myListing.get_end_date().substring(8,10) + "/" + myListing.get_end_date().substring(5,7) + "/" + myListing.get_end_date().substring(0,4));
-        //((TextView)findViewById(R.id.Seller)).setText("Seller: " + myListing.get_user_id());
-
+        ((Button)findViewById(R.id.ContactSeller)).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v)
+            {
+                //Send notification to seller
+            }
+        });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

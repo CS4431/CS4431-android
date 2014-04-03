@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,24 +22,6 @@ public class MyListings_Info extends Activity {
         setContentView(R.layout.activity_mylistings__info);
         Intent intent = getIntent();
         Listing myListing =intent.getParcelableExtra("listings");
-        /*
-        String get_end_date()
-        String get_start_date()
-        double get_price()
-        //Book get_book()
-        int get_book_id()
-        int get_user_id()
-        int get_id()
-         */
-
-        /*
-        Book info
-        listing price
-        date listed
-        date expired
-        change listing price(button)
-        remove listings(button)
-         */
 
         ((ImageView)findViewById(R.id.image)).setImageBitmap(myListing.get_book().getBitmap());
         ((TextView) findViewById(R.id.BookTitle)).setText(myListing.get_book().get_title());
@@ -50,9 +33,20 @@ public class MyListings_Info extends Activity {
         ((TextView)findViewById(R.id.ListingPrice)).setText("Listing Price: $" + myListing.get_price() + "0");
         ((TextView)findViewById(R.id.DateListed)).setText("Date Listed: " + myListing.get_start_date().substring(8,10) + "/" + myListing.get_start_date().substring(5,7) + "/" + myListing.get_start_date().substring(0,4));
         ((TextView)findViewById(R.id.DateExpires)).setText("Date Expires: " + myListing.get_end_date().substring(8,10) + "/" + myListing.get_end_date().substring(5,7) + "/" + myListing.get_end_date().substring(0,4));
-
-
-
+        ((Button)findViewById(R.id.changePrice)).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v)
+            {
+                //Change Price
+            }
+        });
+        ((Button)findViewById(R.id.removeListing)).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v)
+            {
+                //Remove Listing
+            }
+        });
     }
 
 
