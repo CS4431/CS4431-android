@@ -18,15 +18,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value="SearchResultsActivity" />
-
-        </activity>
-        <activity
-            android:name="com.lakehead.textbookmarket.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName="com.lakehead.textbookmarket.MainActivity" >
         </activity>
         <activity
             android:name="com.lakehead.textbookmarket.LoginActivity"
@@ -69,12 +64,22 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
+
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_new_settings"
+            android:parentActivityName="com.lakehead.textbookmarket.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="MainActivity" />
         </activity>
     </application>
 
