@@ -52,7 +52,7 @@ public class SpecificListingFragment extends Activity {
         ObjectItemData[17] = new ObjectItem(108, "Fat Chicken 2");
         ObjectItemData[18] = new ObjectItem(109, "Master Siomai 2");
         ObjectItemData[19] = new ObjectItem(110, "Mang Inasal 2");
-
+/*
         // our adapter instance
         SpecificListingArrayAdapter adapter = new SpecificListingArrayAdapter(SpecificListingFragment.this, ObjectItemData);
 
@@ -65,5 +65,5 @@ public class SpecificListingFragment extends Activity {
                 .setTitle("Stores")
                 .show();
 
-    }
+   */ }
 }

@@ -65,9 +65,9 @@ public class Book_Info extends Activity implements OnTaskCompleted {
         ObjectItemData[17] = new ObjectItem(108, "Fat Chicken 2");
         ObjectItemData[18] = new ObjectItem(109, "Master Siomai 2");
         ObjectItemData[19] = new ObjectItem(110, "Mang Inasal 2");
-
+/*
         // our adapter instance
-        SpecificListingArrayAdapter adapter = new SpecificListingArrayAdapter(Book_Info.this, ObjectItemData);
+        SpecificListingArrayAdapter adapter = new SpecificListingArrayAdapter(Book_Info.this, listingsList);
 
         // create a new ListView, set the adapter and item click listener
         final ListView listViewItems = new ListView(this);
@@ -80,7 +80,7 @@ public class Book_Info extends Activity implements OnTaskCompleted {
             }
 
         });
-
+*/
 
         getActionBar().setTitle("Book Information");
 
@@ -100,7 +100,7 @@ public class Book_Info extends Activity implements OnTaskCompleted {
             public void onClick(View v) {
                 if(inStock){
                 Log.d("debug","There is a listing for the book and we would go to the listing here");
-                alertDialogStores = new AlertDialog.Builder(Book_Info.this).setView(listViewItems).setTitle("Stores").show();
+                //alertDialogStores = new AlertDialog.Builder(Book_Info.this).setView(listViewItems).setTitle("Stores").show();
 
 
                 }else{

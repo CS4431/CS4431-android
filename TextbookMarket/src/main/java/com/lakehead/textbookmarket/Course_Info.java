@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,22 +24,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
-
+import java.util.ArrayList;
 
 
 public class Course_Info extends Activity implements OnTaskCompleted {
     Button bookButton;
     int cid = 0;
     String ccode;
+    ArrayList<Book> associatedBooks;
     private JSONArray jArray;
     private AlertDialog alertDialogStores;
+    SpecificListingArrayAdapter adapter;
+    ListView listViewItems;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course__info);
         bookButton = (Button) findViewById(R.id.bookButton);
         bookButton.setBackgroundResource(R.drawable.showbooksbutton);
-
+        associatedBooks = new ArrayList<Book>();
 
         ObjectItem[] ObjectItemData = new ObjectItem[20];
 
@@ -62,18 +66,28 @@ public class Course_Info extends Activity implements OnTaskCompleted {
         ObjectItemData[17] = new ObjectItem(108, "Fat Chicken 2");
         ObjectItemData[18] = new ObjectItem(109, "Master Siomai 2");
         ObjectItemData[19] = new ObjectItem(110, "Mang Inasal 2");
+        //Book tempBook = new Book(1,"temp","123456789",23,"michael",3,"michael","hard","www.ur.com");
+
+        //associatedBooks.add(tempBook);
 
         // our adapter instance
-        SpecificListingArrayAdapter adapter = new SpecificListingArrayAdapter(Course_Info.this, ObjectItemData);
+        adapter = new SpecificListingArrayAdapter(Course_Info.this, associatedBooks);
 
         // create a new ListView, set the adapter and item click listener
-        final ListView listViewItems = new ListView(this);
+        listViewItems = new ListView(this);
         listViewItems.setAdapter(adapter);
+
         listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("debug","check 1 item clicked");
+                Intent myIntent = new Intent(getBaseContext(),Book_Info.class);
+                Bundle extras = new Bundle();
 
+                extras.putParcelable("books",(Parcelable)adapter.getItem(position));
+                myIntent.putExtras(extras);
+                startActivity(myIntent);
             }
 
         });
@@ -82,7 +96,7 @@ public class Course_Info extends Activity implements OnTaskCompleted {
             public void onClick(View v) {
 
                     Log.d("debug","There is a listing for the book and we would go to the listing here");
-                    alertDialogStores = new AlertDialog.Builder(Course_Info.this).setView(listViewItems).setTitle("Stores").show();
+                    alertDialogStores = new AlertDialog.Builder(Course_Info.this).setView(listViewItems).setTitle("Books").show();
 
             }
         });
@@ -130,12 +144,13 @@ public class Course_Info extends Activity implements OnTaskCompleted {
                 Log.d("debug","check 1 nodetype is "+ nodeType);
                 Log.d("debug","check 1 bookdata is "+ bookData);
                 if(nodeType.equals("book")){
-                    //add to list here
-
+                    associatedBooks.add(generateBookFromJSONNode(bookData));
                 }else{
                     continue;
                 }
             }
+            adapter = new SpecificListingArrayAdapter(Course_Info.this, associatedBooks);
+            listViewItems.setAdapter(adapter);
             Log.d("debug", "check 1 jarray leng is " + jArray.length());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -143,20 +158,7 @@ public class Course_Info extends Activity implements OnTaskCompleted {
     }
 
     public Book generateBookFromJSONNode(JSONObject listingDataNode){
-        Book tempBook;
-        //temporary listing variables.
-        /*
 
-        _id = id;
-        _title = title;
-        _isbn = isbn;
-        _edition_group_id = book_id;
-        _author = author;
-        _edition = edition;
-        _publisher = publisher;
-        _cover = cover;
-        _image_url = image_url;
-         */
         int id;
         String title;
         String isbn;
