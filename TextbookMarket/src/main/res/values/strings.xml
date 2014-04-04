@@ -22,5 +22,8 @@
     <string name="title_activity_listing__info">Listing_Info</string>
     <string name="title_activity_mylistings__info">MyListings_Info</string>
 
+    <string name="title_activity_specific__listings">Specific_Listings</string>
+    <string name="title_activity_specific_listing_array_adapter">SpecificListingArrayAdapter</string>
+    <string name="title_activity_specific_listing_fragment">SpecificListingFragment</string>
 
 </resources>

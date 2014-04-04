@@ -138,6 +138,7 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
         NameValuePair count = new BasicNameValuePair("count", "10");
         NameValuePair offset = new BasicNameValuePair("offset", Integer.toString(currentOffset));
         new GetJSONArrayTask(this, "/api/book").execute(ext, count, offset);
+
     }
 
     private void makeAPICallWithSearchQuery(String query){
