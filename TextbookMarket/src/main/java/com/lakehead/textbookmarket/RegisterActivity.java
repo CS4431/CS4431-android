@@ -16,8 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,11 +25,12 @@ import java.util.regex.Pattern;
 /**
  * Activity used for user Registration.
  */
-public class RegisterActivity extends Activity implements OnTaskCompleted {
+public class RegisterActivity extends Activity /*implements OnTaskCompleted*/ {
     String deptCode;
     JSONArray jArray;
 
     EditText emailText;
+    EditText userText;
     EditText passText;
     EditText passConfText;
     Button registerButton;
@@ -56,6 +55,7 @@ public class RegisterActivity extends Activity implements OnTaskCompleted {
 
 
         emailText = (EditText) findViewById(R.id.email_register_field);
+        userText = (EditText) findViewById(R.id.user_register_field);
         passText = (EditText) findViewById(R.id.register_pass_field);
         passText.setTypeface(Typeface.DEFAULT);
         passText.setTransformationMethod(new PasswordTransformationMethod());
@@ -73,7 +73,6 @@ public class RegisterActivity extends Activity implements OnTaskCompleted {
 
     }
 
-
     /**
      * Executes a RegisterTask
      * @param v
@@ -81,6 +80,7 @@ public class RegisterActivity extends Activity implements OnTaskCompleted {
     public void register(View v)
     {
         email = emailText.getText().toString();
+        user = userText.getText().toString();
         pass = passText.getText().toString();
         passConfirm = passConfText.getText().toString();
 
@@ -95,6 +95,11 @@ public class RegisterActivity extends Activity implements OnTaskCompleted {
             Toast toast = Toast.makeText(getApplicationContext(), "Please enter a valid email address", Toast.LENGTH_SHORT);
             toast.show();
         }
+        else if(!user.matches("[A-Za-z0-9_-]*"))
+        {
+            Toast toast = Toast.makeText(getApplicationContext(), "Valid username characters include letters, numbers, _, and -", Toast.LENGTH_SHORT);
+            toast.show();
+        }
         else if(!pass.equals(passConfirm))
         {
             Toast toast = Toast.makeText(getApplicationContext(), "Passwords must match", Toast.LENGTH_SHORT);
@@ -104,10 +109,8 @@ public class RegisterActivity extends Activity implements OnTaskCompleted {
         }
         else
         {
+            String url = "http://lakehead-books.herokuapp.com/api/v1/register";
             //new RegisterTask(this).execute(url, email, user, pass, passConfirm);
-            NameValuePair ext = new BasicNameValuePair("email", email);
-            NameValuePair count = new BasicNameValuePair("password", pass);
-            new GetJSONArrayTask(this, "/api/create/user").execute(ext, count);
             hideUI();
         }
     }
@@ -122,52 +125,57 @@ public class RegisterActivity extends Activity implements OnTaskCompleted {
         finishActivity();
     }
 
+    /*
 
     @Override
     public void onTaskCompleted(Object obj)
     {
-
         if(obj == null)
         {
             Toast toast = Toast.makeText(getApplicationContext(), "Server Error. Could not register.", Toast.LENGTH_SHORT);
             toast.show();
             showUI();
-            //showUI();
+            //passText.setText("");
+            //passConfText.setText("");
+            showUI();
         }
-        else if(obj.getClass() == JSONArray.class)
+        else if(obj.getClass() == String.class)
         {
-            this.jArray = (JSONArray)obj;
+            if(obj.equals(RegisterTask.USER_OR_EMAIL_ALREADY_EXISTS))
+            {
+                Toast toast = Toast.makeText(getApplicationContext(), "A user with that email address or username already exists.", Toast.LENGTH_SHORT);
+                toast.show();
+                showUI();
+            }
+            if(obj.equals(RegisterTask.MESSAGE_CONNECTION_PROBLEM))
+            {
+                Toast toast = Toast.makeText(getApplicationContext(), "Internet connection problem", Toast.LENGTH_SHORT);
+                toast.show();
+                showUI();
+            }
+
+        }
+        else
+        {
+            this.rememberToken = (JSONObject)obj;
             String token = "";
-            String emailAddress = "";
+
             try
             {
-                String kind = jArray.getJSONObject(0).getString("kind");
-                if(kind.equals("error")) //login failed
-                {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Registration Error", Toast.LENGTH_SHORT);
-                    toast.show();
-                    showUI();
-                    passText.setText("");
-                    passConfText.setText("");
-                }
-                else if(kind.equals("user")) //Register success
-                {
-                    //emailAddress = emailText.getText().toString();
-
-                    //prefs.edit().putString("remember_token", token).commit();
-                    //prefs.edit().putString("email_address", emailAddress).commit();
-                    Toast.makeText(getApplicationContext(), "Registration Successful. Check your email address for a confirmation link.", Toast.LENGTH_LONG).show();
-                    bar.setVisibility(View.GONE);
-                    finishActivity();
-                }
-
+                token = rememberToken.getString("token");
             }
             catch(JSONException e)
             {
                 Log.d("Exceptions", e.toString());
             }
+
+            prefs.edit().putString("remember_token", token).commit();
+            prefs.edit().putString("email_address", email).commit();
+            bar.setVisibility(View.GONE);
+            goToAccount();
         }
     }
+    */
 
     private void finishActivity()
     {
@@ -187,6 +195,7 @@ public class RegisterActivity extends Activity implements OnTaskCompleted {
     {
         emailText.setVisibility(View.INVISIBLE);
         passText.setVisibility(View.INVISIBLE);
+        userText.setVisibility(View.INVISIBLE);
         passConfText.setVisibility(View.INVISIBLE);
         toLoginButton.setVisibility(View.INVISIBLE);
         registerButton.setVisibility(View.INVISIBLE);
@@ -200,10 +209,15 @@ public class RegisterActivity extends Activity implements OnTaskCompleted {
     {
         emailText.setVisibility(View.VISIBLE);
         passText.setVisibility(View.VISIBLE);
+        userText.setVisibility(View.VISIBLE);
         passConfText.setVisibility(View.VISIBLE);
         toLoginButton.setVisibility(View.VISIBLE);
         registerButton.setVisibility(View.VISIBLE);
 
         bar.setVisibility(View.GONE);
+    }
+
+    private void goToAccount()
+    {
     }
 }
