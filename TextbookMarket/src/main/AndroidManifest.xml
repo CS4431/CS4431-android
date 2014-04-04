@@ -95,10 +95,6 @@
             android:name="com.lakehead.textbookmarket.SpecificListingArrayAdapter"
             android:label="@string/title_activity_specific_listing_array_adapter" >
         </activity>
-        <activity
-            android:name="com.lakehead.textbookmarket.SpecificListingFragment"
-            android:label="@string/title_activity_specific_listing_fragment" >
-        </activity>
     </application>
 
 </manifest>
