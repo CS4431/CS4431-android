@@ -17,14 +17,14 @@
             android:layout_alignParentTop="false"
             android:layout_alignParentLeft="false"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/Author" />
+            android:layout_alignTop="@+id/Author" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Title: Allaire's Book of Magic"
         android:id="@+id/BookTitle"
-        android:textColor="#33b5e5"
+        android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="15dp"
         android:layout_alignParentTop="true"
@@ -38,7 +38,7 @@
         android:id="@+id/Author"
         android:layout_below="@+id/BookTitle"
         android:paddingTop="10dp"
-        android:textColor="#33b5e5"
+        android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="15dp"
         android:layout_toRightOf="@+id/image" />
@@ -52,7 +52,7 @@
         android:layout_alignLeft="@+id/Author"
         android:singleLine="false"
         android:paddingTop="10dp"
-        android:textColor="#33b5e5"
+        android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="15dp" />
 
@@ -64,7 +64,7 @@
         android:paddingTop="10dp"
         android:layout_below="@+id/ISBN"
         android:layout_alignLeft="@+id/ISBN"
-        android:textColor="#33b5e5"
+        android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="15dp" />
 
@@ -76,26 +76,23 @@
         android:paddingTop="10dp"
         android:layout_below="@+id/edition"
         android:layout_alignLeft="@+id/edition"
-        android:textColor="#33b5e5"
+        android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="15dp" />
 
-    <ImageView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Click here to see available listings"
         android:id="@+id/availableListings"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/coverType"
+        android:layout_alignEnd="@+id/coverType"
+        android:layout_toRightOf="@+id/image"
         android:clickable="true"
         android:visibility="visible"
         android:onClick="onClick"
-        android:height="100dp"
-        android:width="75dp"
-        android:minHeight="100dp"
-        android:minWidth="100dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/Publisher"
-        android:paddingLeft="75dp"
-        android:paddingStart="75dp"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/Publisher" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -106,19 +103,7 @@
         android:layout_below="@+id/coverType"
         android:paddingTop="10dp"
         android:textStyle="bold"
-        android:textColor="#33b5e5"
-        android:textSize="15dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ListingWishlist"
-        android:minWidth="150dp"
         android:textColor="#FFFFFF"
-        android:paddingTop="50dp"
-        android:layout_alignStart="@+id/BookTitle"
-        android:layout_above="@+id/availableListings"
-        android:maxHeight="50dp"
-        android:layout_centerHorizontal="true" />
+        android:textSize="15dp" />
 
 </RelativeLayout>

@@ -34,29 +34,19 @@ import java.io.ByteArrayOutputStream;
  */
 public class BooksFragment extends Fragment implements OnTaskCompleted {
 
-    public static final String TAG = "BooksFragment";
     ListView bookListView;
     View rootView;
     JSONArray jArray;
     //ArrayList<Book> bookList;
 
     int currentOffset=0;
-    int unfilteredOffset = 0;
-    int searchResultsOffset = 0;
-
     boolean loadingMore=false;
 
     ArrayList<Book> bookList;
-    ArrayList<Book> searchResultsBookList;
     BookArrayAdapter bookAdapter;
 
     //A dummy book used to tell the adapter to add a "loading" row
     Book loadingBook;
-
-    public void executeSearch(String query)
-    {
-        Log.i(TAG, "executeSearch() -> Query Received: " + query);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -68,9 +58,6 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
         bookList = new ArrayList<Book>();
         bookAdapter = new BookArrayAdapter(this.getActivity(), bookList);
         bookListView.setAdapter(bookAdapter);
-        //set the original offset to the unfiltered one. We have to hold onto both for when a search
-        //occurs so that we can backtrack to the original list once the search is done.
-        currentOffset = unfilteredOffset;
 
         //These NameValuePairs are the POST parameters for the API call
         //makeAPICall();
@@ -101,7 +88,7 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
 
         if(savedInstanceState != null)
         {
-            Log.i(TAG, "onCreateView() -> " + "Found saved instance state. Loading Book list from it...");
+            Log.i("BooksFragment", "onCreateView() -> " + "Found saved instance state. Loading Book list from it...");
             bookList = savedInstanceState.getParcelableArrayList("bookList");
             final BookArrayAdapter bookAdapter = new BookArrayAdapter(this.getActivity(), bookList);
             bookListView.setAdapter(bookAdapter);
@@ -110,7 +97,7 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
         else
         {
             //These NameValuePairs are the POST parameters for the API call
-            Log.i(TAG, "onCreateView() -> " + "No Saved instance state. Loading Book list from API...");
+            Log.i("BooksFragment", "onCreateView() -> " + "No Saved instance state. Loading Book list from API...");
             makeAPICall();
         }
 
@@ -138,37 +125,26 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
         NameValuePair count = new BasicNameValuePair("count", "10");
         NameValuePair offset = new BasicNameValuePair("offset", Integer.toString(currentOffset));
         new GetJSONArrayTask(this, "/api/book").execute(ext, count, offset);
-
-    }
-
-    private void makeAPICallWithSearchQuery(String query){
-        NameValuePair ext = new BasicNameValuePair("ext", "json");
-        NameValuePair count = new BasicNameValuePair("count", "20");
-        //todo make sure sean has implemented some Query Post parameter for searching
-        NameValuePair searchString = new BasicNameValuePair("query", query);
-        NameValuePair offset = new BasicNameValuePair("offset", Integer.toString(currentOffset));
-        //todo make sure Sean has developed a searching route for all Hashable objects.
-        new GetJSONArrayTask(this, "/api/book/search").execute(ext, count, offset,searchString);
     }
 
     @Override
     public void onPause()
     {
-        Log.d(TAG, "onPause() -> " + "paused fragment.");
+        Log.d("BooksFragment", "onPause() -> " + "paused fragment.");
         super.onPause();
     }
 
     @Override
     public void onResume()
     {
-        Log.d(TAG, "onResume() -> " + "resumed fragment.");
+        Log.d("BooksFragment", "onResume() -> " + "resumed fragment.");
         super.onResume();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState)
     {
-        Log.d(TAG, "onSaveInstanceState() -> " + "state saved for fragment.");
+        Log.d("BooksFragment", "onSaveInstanceState() -> " + "state saved for fragment.");
         outState.putParcelableArrayList("bookList", bookList);
         super.onSaveInstanceState(outState);
 
@@ -202,7 +178,7 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
         try{
             for(int i = 0 ; i < jArray.length(); i++ ){
                 bookDataNode = jArray.getJSONObject(i).getJSONObject("data");
-                Log.i(TAG, "Book Data Polled -> " + bookDataNode.toString());
+                Log.i("BooksFragment", "Book Data Polled -> " + bookDataNode.toString());
 
 
                 //First initialize the Listing's book.
@@ -270,7 +246,7 @@ public class BooksFragment extends Fragment implements OnTaskCompleted {
         }
         catch(JSONException e)
         {
-            Log.e(TAG, "OnTaskCompleted() -> " + e.toString());
+            Log.e("BooksFragment", "OnTaskCompleted() -> " + e.toString());
             e.printStackTrace();
         }
         removeLoadingBook();

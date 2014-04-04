@@ -3,8 +3,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="@color/login_background">
+    android:padding="16dp">
+
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -14,39 +14,35 @@
         android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp">
 
-        <ImageView
-            android:layout_width="64sp"
-            android:layout_height="64dp"
-            android:id="@+id/imageView"
-            android:layout_alignParentStart="true"
-            android:src="@drawable/ic_launcher"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/app_name"
+            android:text="Textbook Market"
             android:id="@+id/register_label"
-            android:textColor="#FFFFFF"
             android:textSize="32sp"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center_vertical"/>
     </LinearLayout>
 
-    <LinearLayout
+
+    <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical"
+        android:id="@+id/user_register_field"
+        android:maxLines="1"
+        android:inputType="text"
         android:layout_below="@id/title_layout"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="32dp">
+        android:hint="Username" />
+
+
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/email_register_field"
+        android:layout_below="@id/user_register_field"
         android:inputType="textEmailAddress"
-        android:hint="Email Address" />
+        android:hint="Email address" />
 
     <EditText
         android:layout_width="fill_parent"
@@ -54,6 +50,7 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/register_pass_field"
+        android:layout_below="@id/email_register_field"
         android:hint="Password" />
 
     <EditText
@@ -62,6 +59,7 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/register_confirm_pass_field"
+        android:layout_below="@id/register_pass_field"
         android:hint="Confirm Password" />
 
     <Button
@@ -69,14 +67,14 @@
         android:layout_height="wrap_content"
         android:text="Register"
         android:id="@+id/register_button"
-        android:onClick="register" />
-    </LinearLayout>
+        android:onClick="register"
+        android:layout_below="@id/register_confirm_pass_field" />
+
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="24dp"
         android:text="Have an account? Login here."
-        android:textColor="#FFFFFF"
         android:id="@+id/already_account_button"
         android:background="@android:color/transparent"
         android:onClick="goToLogin"
@@ -89,4 +87,6 @@
         android:id="@+id/loader"
         android:layout_gravity="center"
         android:layout_centerInParent="true"/>
+
+
 </RelativeLayout>

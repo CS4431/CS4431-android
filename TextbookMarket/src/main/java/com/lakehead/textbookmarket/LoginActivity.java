@@ -12,10 +12,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,8 +27,9 @@ import java.net.URLEncoder;
 /**
  * This OnTaskCompleted is an interface that Activities receiving callbacks from async tasks should implement.
  */
-public class LoginActivity extends Activity implements OnTaskCompleted {
+public class LoginActivity extends Activity /*implements OnTaskCompleted*/ {
     String deptCode;
+    JSONArray jArray;
 
     EditText emailText;
     EditText passText;
@@ -40,7 +41,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
     ProgressBar bar;
 
     String tokenString;
-    JSONArray jArray;
+    JSONObject rememberToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,24 +56,18 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
 
         loginButton = (Button) findViewById(R.id.login_button);
         toRegButton = (Button) findViewById(R.id.no_account_button);
-        bar = (ProgressBar) findViewById(R.id.loader);
 
         prefs = this.getSharedPreferences("com.lakehead.textbookmarket", Context.MODE_PRIVATE);
 
         // Keep this here for testing logging in and registering
         //prefs.edit().clear().commit();
 
-        tokenString = prefs.getString("remember_token","");
-
-        if(!tokenString.equals(""))
-        {
-            hideUI();
-            NameValuePair ext = new BasicNameValuePair("user_id", tokenString);
-            NameValuePair count = new BasicNameValuePair("count", "1");
-
-            //this call is just to test whether the token is valid/not expired. We don't actually care about sells.
-            new GetJSONArrayTask(this, "/api/sell").execute(ext, count);
-        }
+        //tokenString = prefs.getString("remember_token","");
+        //if(!tokenString.equals(""))
+        //{
+        //    goToMyBooks();
+        //}
+        bar = (ProgressBar) findViewById(R.id.loader);
         bar.setVisibility(View.INVISIBLE);
 
 
@@ -86,10 +81,10 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
      */
     public void login(View v)
     {
-        String email = emailText.getText().toString();
-        String pass = passText.getText().toString();
+        String emailAddress = emailText.getText().toString();
+        String password = passText.getText().toString();
 
-        if(email.equals("") || pass.equals(""))
+        if(emailAddress.equals("") || password.equals(""))
         {
             Toast toast = Toast.makeText(getApplicationContext(), "Invalid email address or password", Toast.LENGTH_SHORT);
             toast.show();
@@ -99,16 +94,15 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
         {
             try
             {
-                email = URLEncoder.encode(email, "utf-8");
+                emailAddress = URLEncoder.encode(emailAddress, "utf-8");
             }
             catch(UnsupportedEncodingException e)
             {
                 e.printStackTrace();
             }
 
-            NameValuePair ext = new BasicNameValuePair("email", email);
-            NameValuePair count = new BasicNameValuePair("password", pass);
-            new GetJSONArrayTask(this, "/api/login").execute(ext, count);
+            String url = "http://lakehead-books.herokuapp.com/api/v1/login";
+
             hideUI();
             //new LoginTask(this).execute(url, emailAddress, password);
         }
@@ -121,12 +115,15 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 
-    public void goToMainActivity()
+    public void goToMyBooks()
     {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
+        //Intent intent = new Intent(LoginActivity.this, MyBooksActivity.class);
+        //startActivity(intent);
+        //finish();
     }
+
+    /*
+    This is a callback from the async task. We'll override this later
 
     @Override
     public void onTaskCompleted(Object obj)
@@ -138,43 +135,47 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
             showUI();
             passText.setText("");
         }
-        else if(obj.getClass() == JSONArray.class)
+        else if(obj.getClass() == JSONObject.class)
         {
-            this.jArray = (JSONArray)obj;
+            this.rememberToken = (JSONObject)obj;
             String token = "";
             String emailAddress = "";
             try
             {
-                String kind = jArray.getJSONObject(0).getString("kind");
-                if(kind.equals("error")) //login failed
-                {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT);
-                    toast.show();
-                    showUI();
-                    passText.setText("");
-                }
-                else if(kind.equals("token")) //login success
-                {
-                    token = jArray.getJSONObject(0).getJSONObject("data").getString("token");
-                    emailAddress = emailText.getText().toString();
-
-                    prefs.edit().putString("remember_token", token).commit();
-                    prefs.edit().putString("email_address", emailAddress).commit();
-                    bar.setVisibility(View.GONE);
-                    goToMainActivity();
-                }
-                else //You have a valid token already
-                {
-                    bar.setVisibility(View.GONE);
-                    goToMainActivity();
-                }
+                token = rememberToken.getString("token");
             }
             catch(JSONException e)
             {
                 Log.d("Exceptions", e.toString());
             }
+
+            emailAddress = emailText.getText().toString();
+
+            prefs.edit().putString("remember_token", token).commit();
+            prefs.edit().putString("email_address", emailAddress).commit();
+            bar.setVisibility(View.GONE);
+            goToMyBooks();
+        }
+        else if(obj.getClass() == String.class)
+        {
+
+            if(obj.equals(LoginTask.MESSAGE_UNAUTHORIZED))
+            {
+                Toast toast = Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_SHORT);
+                toast.show();
+                showUI();
+                passText.setText("");
+            }
+            else if(obj.equals(LoginTask.MESSAGE_CONNECTION_PROBLEM))
+            {
+                Toast toast = Toast.makeText(getApplicationContext(), "Internet connection problem", Toast.LENGTH_SHORT);
+                toast.show();
+                showUI();
+            }
+
         }
     }
+    */
 
     /**
      * A simple function used to hide the user interface while executing a background task.

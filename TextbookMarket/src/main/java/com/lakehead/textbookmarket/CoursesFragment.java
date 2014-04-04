@@ -29,7 +29,6 @@ import java.util.List;
  * The fragment used in the "Books" tab of MainActivity
  */
 public class CoursesFragment extends Fragment implements OnTaskCompleted, ExpandableListView.OnChildClickListener {
-    public static final String TAG = "CoursesFragment";
     JSONArray jArray;
     ListView courseListView;
     View rootView;
@@ -46,7 +45,7 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted, Expand
         expListView = (ExpandableListView) rootView.findViewById(R.id.courses_expand_lv);
 
         if (savedInstanceState != null) {
-            Log.d(TAG, "onCreateView() -> " + "Found saved instance state. Loading Course list from it...");
+            Log.d("CoursesFragment", "onCreateView() -> " + "Found saved instance state. Loading Course list from it...");
             deptHeaders = savedInstanceState.getStringArrayList("deptHeaders");
             departmentCourseHash = new HashMap<String, ArrayList<Course>>();
             ArrayList<Course> temporary;
@@ -62,7 +61,7 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted, Expand
                 expListView.expandGroup(0);
             }
         } else {
-            Log.d(TAG, "onCreateView() -> " + "No Saved Instance state. Loading Course list from API...");
+            Log.d("CoursesFragment", "onCreateView() -> " + "No Saved Instance state. Loading Course list from API...");
 
             JSONObject request = new JSONObject();
 
@@ -76,7 +75,6 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted, Expand
                 ids.put(new JSONObject().put("dept_id", 7));
                 request.put("id", ids);
                 request.put("count", testList.size());
-                Log.i(TAG, "Request going out: " + request.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -93,43 +91,42 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted, Expand
 
     @Override
     public void onPause() {
-        Log.d(TAG, "onPause() -> " + "paused fragment.");
+        Log.d("CoursesFragment", "onPause() -> " + "paused fragment.");
         super.onPause();
     }
 
     @Override
     public void onResume() {
-        Log.d(TAG, "onResume() -> " + "resumed fragment.");
+        Log.d("CoursesFragment", "onResume() -> " + "resumed fragment.");
         super.onResume();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.d(TAG, "onSaveInstanceState() -> " + "state saved for fragment.");
-        if(deptHeaders != null){
-            outState.putInt("numDepts", deptHeaders.size());
-            outState.putStringArrayList("deptHeaders", deptHeaders);
-            for (String key : departmentCourseHash.keySet()) {
-                outState.putParcelableArrayList(key, departmentCourseHash.get(key));
-            }
-            super.onSaveInstanceState(outState);
-    }
+        Log.d("CoursesFragment", "onSaveInstanceState() -> " + "state saved for fragment.");
+        outState.putInt("numDepts", deptHeaders.size());
+        outState.putStringArrayList("deptHeaders", deptHeaders);
+        for (String key : departmentCourseHash.keySet()) {
+            outState.putParcelableArrayList(key, departmentCourseHash.get(key));
+        }
+        super.onSaveInstanceState(outState);
 
     }
 
     @Override
     public void onTaskCompleted(Object obj) {
         jArray = (JSONArray) obj;
-        if(jArray == null){
-            Log.e(TAG, "onTaskCompleted() -> Received nothing from the API call!");
-        }
-        else{
-            Log.i(TAG, "onTaskCompleted() -> Received jArray: " + jArray.toString());
-        }
+        int id;
         int numDepts = 0;
+        String deptTitle;
+        String title;
+        String code;
+        String section;
+        int department_id;
+        String instructor;
+        String term;
         JSONObject courseDataNode;
         JSONObject deptDataNode;
-        String deptTitle;
         ArrayList<Course> courseList = new ArrayList<Course>();
 
         deptHeaders = new ArrayList<String>();
@@ -152,14 +149,60 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted, Expand
 
                 for (int j = 0; j < deptDataNode.getJSONArray("courses").length(); j++) {
                     courseDataNode = deptDataNode.getJSONArray("courses").getJSONObject(j);
-                    courseList.add(Course.generateCourseFromJSONNode(courseDataNode));
 
+                    try {
+                        id = courseDataNode.getInt("id");
+                    } catch (Exception e) {
+                        id = 0;
+                        Log.e("CoursesFragment", "OnTaskCompleted() -> Couldn't parse JSON for id: " + e.toString());
+                        continue;
+                    }
+                    try {
+                        title = courseDataNode.getString("title");
+                    } catch (Exception e) {
+                        Log.e("CoursesFragment", "OnTaskCompleted() -> Couldn't parse JSON for title: " + e.toString());
+                        continue;
+                    }
+                    try {
+                        code = courseDataNode.getString("code");
+                    } catch (Exception e) {
+                        code = "N/A";
+                        Log.e("CoursesFragment", "OnTaskCompleted() -> Couldn't parse JSON for code: " + e.toString());
+                    }
+                    try {
+                        section = courseDataNode.getString("section");
+                    } catch (Exception e) {
+                        section = "N/A";
+                        Log.e("CoursesFragment", "OnTaskCompleted() -> Couldn't parse JSON for section: " + e.toString());
+                    }
+                    try {
+                        department_id = courseDataNode.getInt("department_id");
+                    } catch (Exception e) {
+                        //maybe we should hold some uncategorized classes?
+                        department_id = -1;
+                        Log.e("CoursesFragment", "OnTaskCompleted() -> Couldn't parse JSON for department_id: " + e.toString());
+                    }
+                    try {
+                        instructor = courseDataNode.getString("instructor");
+                    } catch (Exception e) {
+                        //maybe we should hold some uncategorized classes?
+                        instructor = "N/A";
+                        Log.e("CoursesFragment", "OnTaskCompleted() -> Couldn't parse JSON for instructor: " + e.toString());
+                    }
+                    try {
+                        term = courseDataNode.getString("term");
+                    } catch (Exception e) {
+                        term = "N/A";
+                        Log.e("CoursesFragment", "OnTaskCompleted() -> Couldn't parse JSON for term: " + e.toString());
+                    }
+
+                    courseList.add(new Course(id, title, code, section, department_id, instructor, term));
                 }
                 departmentCourseHash.put(deptTitle, courseList);
                 numDepts++;
             }
         } catch (Exception e) {
-            Log.e(TAG, "onTaskCompleted() -> " + e.toString());
+            Log.e("CoursesFragment", "onTaskCompleted() -> " + e.toString());
             e.printStackTrace();
         }
 
@@ -183,6 +226,5 @@ public class CoursesFragment extends Fragment implements OnTaskCompleted, Expand
         startActivity(intent);
         return true;
     }
-
 }
 

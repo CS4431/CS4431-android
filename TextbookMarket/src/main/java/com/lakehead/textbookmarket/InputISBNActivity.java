@@ -21,7 +21,6 @@ import org.json.JSONObject;
  * Class that handles ISBN Lookup.
  */
 public class InputISBNActivity extends Activity implements OnTaskCompleted{
-    public static final String TAG = "InputISBNActivity";
     private ProgressBar bar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +75,8 @@ public class InputISBNActivity extends Activity implements OnTaskCompleted{
             //null as the STRING and occasionally will return null as the scanningResult
             String scanContent = scanningResult.getContents();
             if(scanContent != null && isISBN13Valid(scanContent)){
-                Log.d(TAG,"This is the ISBN " + scanContent);
-                Log.d(TAG, "This is the scanFormat " + scanningResult.getFormatName());
+                Log.d("InputISBNActivity","This is the ISBN " + scanContent);
+                Log.d("InputISBNActivity", "This is the scanFormat " + scanningResult.getFormatName());
                 TextView isbnTextView = (TextView)findViewById(R.id.isbnText);
                 isbnTextView.setText(scanContent);
             }else{
@@ -91,7 +90,7 @@ public class InputISBNActivity extends Activity implements OnTaskCompleted{
                     "No scan data received!", Toast.LENGTH_SHORT);
             toast.show();
         }
-        }catch(Exception e){Log.e(TAG,"Error during reading of scan data: " + e.toString());}
+        }catch(Exception e){Log.e("InputISBNActivity","Error during reading of scan data: " + e.toString());}
     }
 
     /**
@@ -103,7 +102,7 @@ public class InputISBNActivity extends Activity implements OnTaskCompleted{
         isbnTextView.clearFocus();
         ProgressBar bar = (ProgressBar)findViewById(R.id.isbnProgressBar);
         bar.setVisibility(View.VISIBLE);
-        Log.i(TAG, "okClicked() - isbn text is: " + isbnTextView.getText());
+        Log.i("InputISBNActivity", "okClicked() - isbn text is: " + isbnTextView.getText());
         NameValuePair isbn = new BasicNameValuePair("isbn", String.valueOf(isbnTextView.getText()));
         new GetJSONArrayTask(this, "/api/book").execute(isbn);
 
@@ -147,7 +146,7 @@ public class InputISBNActivity extends Activity implements OnTaskCompleted{
         }
         catch(Exception e)
         {
-            Log.e(TAG, "OnTaskCompleted() -> Couldn't parse a DATA object out of the array. Error:  " + e.toString());
+            Log.e("InputISBNActivity", "OnTaskCompleted() -> Couldn't parse a DATA object out of the array. Error:  " + e.toString());
             return;
         }
         }
@@ -161,7 +160,7 @@ public class InputISBNActivity extends Activity implements OnTaskCompleted{
             return;
         }
 
-        Log.i(TAG, "OnTaskCompleted() -> " + "Found legal JSONArray, starting newbook intent.");
+        Log.i("InputISBNActivity", "OnTaskCompleted() -> " + "Found legal JSONArray, starting newbook intent.");
         Intent addListingIntent = new Intent(this, AddListingActivity.class);
         addListingIntent.putExtra("book",found_book);
         startActivity(addListingIntent);

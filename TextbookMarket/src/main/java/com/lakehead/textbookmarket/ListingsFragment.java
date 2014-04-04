@@ -1,6 +1,5 @@
 package com.lakehead.textbookmarket;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -8,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.apache.http.NameValuePair;
@@ -23,7 +21,6 @@ import java.util.List;
  * The fragment used in the "Listings" tab of MainActivity
  */
 public class ListingsFragment extends Fragment implements OnTaskCompleted{
-    public static final String TAG = "ListingsFragment";
     ListView listingsListView;
     View rootView;
     JSONArray jArray;
@@ -34,12 +31,6 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
 
     //A dummy listing used to tell the adapter to add a "loading" row
     Listing loadingListing;
-
-    public void executeSearch(String query)
-    {
-        Log.i(TAG, "executeSearch() -> Query Received: " + query);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -76,14 +67,14 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
 
         if(savedInstanceState != null)
         {
-            Log.d(TAG, "onCreateView() -> " + "Found Saved Instance state. Loading Course list from it...");
+            Log.d("ListingsFragment", "onCreateView() -> " + "Found Saved Instance state. Loading Course list from it...");
             listingsList = savedInstanceState.getParcelableArrayList("listingsList");
             ListingArrayAdapter listingsAdapter = new ListingArrayAdapter(this.getActivity(), listingsList);
             listingsListView.setAdapter(listingsAdapter);
         }
         else
         {
-            Log.d(TAG, "onCreateView() -> " + "No Saved Instance state. Loading Course list from API...");
+            Log.d("ListingsFragment", "onCreateView() -> " + "No Saved Instance state. Loading Course list from API...");
             makeAPICall();
         }
         return rootView;
@@ -115,21 +106,21 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
     @Override
     public void onPause()
     {
-        Log.d(TAG, "onPause() -> " + "paused fragment.");
+        Log.d("ListingsFragment", "onPause() -> " + "paused fragment.");
         super.onPause();
     }
 
     @Override
     public void onResume()
     {
-        Log.d(TAG, "onResume() -> " + "resumed fragment.");
+        Log.d("ListingsFragment", "onResume() -> " + "resumed fragment.");
         super.onResume();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState)
     {
-        Log.d(TAG, "onSaveInstanceState() -> " + "state saved for fragment.");
+        Log.d("ListingsFragment", "onSaveInstanceState() -> " + "state saved for fragment.");
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList("listingsList", listingsList);
 
@@ -138,10 +129,10 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
 
     @Override
     public void onTaskCompleted(Object obj) {
-        ArrayList<Book> temporaryBookList = new ArrayList<Book>();
+        List<Book> temporaryBookList = new ArrayList<Book>();
 
         jArray = (JSONArray)obj;
-        Log.i(TAG,"jArray length -> " + jArray.length());
+        Log.i("ListingsFragment","jArray length -> " + jArray.length());
 
         String nodeType;
         JSONObject nodeData;
@@ -154,24 +145,39 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
                 //Log.v("ListingsFragment", "OnTaskCompleted() -> Kind is: " + nodeType);
                 if(nodeType.equals("sell"))
                 {
-                    Log.v(TAG, "OnTaskCompleted() -> Sell Data Polled -> " + nodeData.toString());
-                    listingsList.add(Listing.generateListingFromJSONNode(nodeData));
+                    Log.v("ListingsFragment", "OnTaskCompleted() -> Sell Data Polled -> " + nodeData.toString());
+                    listingsList.add(generateListingFromJSONNode(nodeData));
                 }
                 else if(nodeType.equals("book"))
                 {
-                    Log.v(TAG, "OnTaskCompleted() -> Book Data Polled -> " + nodeData.toString());
+                    Log.v("ListingsFragment", "OnTaskCompleted() -> Book Data Polled -> " + nodeData.toString());
                     temporaryBookList.add(Book.generateBookFromJSONNode(nodeData));
                 }
                 else
                 {
-                    Log.e(TAG, "OnTaskCompleted() -> NODE IS NEITHER BOOK NOR SELL!!!! Node Data is: " + nodeData.toString());
+                    Log.e("ListingsFragment", "OnTaskCompleted() -> NODE IS NEITHER BOOK NOR SELL!!!! Node Data is: " + nodeData.toString());
                 }
             }
-            //Final step of associating the listings with their actual books objects.
-            Listing.associateBooksToListings(listingsList, temporaryBookList);
+
+            for(Listing current_listing : listingsList){
+                for(Book current_book : temporaryBookList){
+                    if(current_listing.get_book_id() == current_book.get_id()){
+                        Log.v("ListingsFragment", "OnTaskCompleted() -> Associated Book with ID {" + current_book.get_id()
+                                + "} with Listing {" + current_listing.get_id()+"} which was requesting Book with ID {"
+                                + current_listing.get_book_id()+"}");
+                        current_listing.set_book(current_book);
+
+                    }
+                }
+                if(current_listing.get_book() == null){
+                    Log.e("ListingsFragment","OnTaskCompleted() -> Could not associate a book to Listing with ID {"
+                            + current_listing.get_id()+"} as it was requesting Book ID {" + current_listing.get_book_id()
+                            +"} which does not exist in our Temporary Book List. CONTACT API TEAM!!!!");
+                }
+            }
 
         }catch(Exception e){
-            Log.e(TAG, "OnTaskCompleted() -> HighLevel Catch -> "+ e.toString());
+            Log.e("ListingsFragment", "OnTaskCompleted() -> HighLevel Catch -> "+ e.toString());
             e.printStackTrace();
         }
 
@@ -179,16 +185,6 @@ public class ListingsFragment extends Fragment implements OnTaskCompleted{
         removeLoadingListing();
         listingsAdapter.notifyDataSetChanged();
         loadingMore=false;
-        listingsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(view.getContext(), Listing_Info.class);
-                Bundle extras = new Bundle();
-                extras.putParcelable("listings",listingsAdapter.getItem(position));
-                intent.putExtras(extras);
-                startActivity(intent);
-            }});
     }
 
     /**
