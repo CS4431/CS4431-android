@@ -28,6 +28,7 @@ import java.net.URLEncoder;
  * This OnTaskCompleted is an interface that Activities receiving callbacks from async tasks should implement.
  */
 public class LoginActivity extends Activity implements OnTaskCompleted {
+    private static final String TAG = "LoginActivity";
     String deptCode;
 
     EditText emailText;
@@ -66,6 +67,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
 
         if(!tokenString.equals(""))
         {
+            Log.i(TAG, "onCreate() -> " + "Found some token in prefs: " + tokenString);
             hideUI();
             NameValuePair ext = new BasicNameValuePair("user_id", tokenString);
             NameValuePair count = new BasicNameValuePair("count", "1");
@@ -108,6 +110,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
 
             NameValuePair ext = new BasicNameValuePair("email", email);
             NameValuePair count = new BasicNameValuePair("password", pass);
+            Log.i(TAG, "Login() -> " + "Attempting login with user: " + email);
             new GetJSONArrayTask(this, "/api/login").execute(ext, count);
             hideUI();
             //new LoginTask(this).execute(url, emailAddress, password);
@@ -148,6 +151,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
                 String kind = jArray.getJSONObject(0).getString("kind");
                 if(kind.equals("error")) //login failed
                 {
+                    Log.e(TAG, "OnTaskCompleted() -> " + "Login Failed.");
                     Toast toast = Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT);
                     toast.show();
                     showUI();
@@ -155,7 +159,9 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
                 }
                 else if(kind.equals("token")) //login success
                 {
+
                     token = jArray.getJSONObject(0).getJSONObject("data").getString("token");
+                    Log.i(TAG, "OnTaskCompleted() -> " + "Token Returned. This is a new login. Token = " + token);
                     emailAddress = emailText.getText().toString();
 
                     prefs.edit().putString("remember_token", token).commit();
@@ -165,6 +171,7 @@ public class LoginActivity extends Activity implements OnTaskCompleted {
                 }
                 else //You have a valid token already
                 {
+                    Log.i(TAG, "OnTaskCompleted() -> " + "Token was already valid");
                     bar.setVisibility(View.GONE);
                     goToMainActivity();
                 }

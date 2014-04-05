@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -24,7 +25,7 @@ public class MainActivity extends FragmentActivity implements
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
-    // Tab titles
+    //Tab titles
     private String[] tabs = { "Courses", "Books", "Listings", "My Listings" };
 
     @Override
@@ -166,8 +167,11 @@ public class MainActivity extends FragmentActivity implements
 
     private void logout(){
         Log.i(TAG, "logout() -> Logout requested.");
-        //wipe out token.
-        //send user back to Login Screen.
+        SharedPreferences prefs = this.getSharedPreferences("com.lakehead.textbookmarket", Context.MODE_PRIVATE);
+        prefs.edit().putString("remember_token", "").commit();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }
