@@ -2,6 +2,9 @@ package com.lakehead.textbookmarket;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
+import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -9,6 +12,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
 
 /**
  * Primary Activity Holding the tabs managed by TabsPagerAdapter , it also handles the action bar.
@@ -16,6 +20,7 @@ import android.view.MenuItem;
 public class MainActivity extends FragmentActivity implements
         ActionBar.TabListener {
 
+    public static final String TAG = "MainActivity";
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
@@ -26,6 +31,9 @@ public class MainActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
 
         // Initilization
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -86,11 +94,36 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_activity_actions, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                return true;
+            }
+        });
+
+        SearchView searchView = (SearchView)searchItem.getActionView();
+        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+
+        if(searchManager != null){
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName("com.lakehead.textbookmarket", "com.lakehead.textbookmarket.SearchResultsActivity")));
+            searchView.setQueryHint("Book/Course");
+            searchView.setIconifiedByDefault(true);
+        }
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -103,10 +136,16 @@ public class MainActivity extends FragmentActivity implements
             return true;
         }
         else if(id == R.id.action_search){
-            Log.i("MainActivity", "onOptionsItemSelected: " + "Search Selected!");
+            Log.i(TAG, "onOptionsItemSelected: " + "Search Selected!");
+            return true;
         }
         else if(id == R.id.action_new_listing){
             openIsbnSearch();
+            return true;
+        }
+        else if(id == R.id.action_logout){
+            logout();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -118,16 +157,17 @@ public class MainActivity extends FragmentActivity implements
     }
 
     /**
-     * A placeholder fragment containing a simple view.
-     */
-
-
-    /**
      * Method is called when the Settings button is selected from the optionMenu; Starts new SettingsActivity.
      */
     private void openSettings(){
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
+    }
+
+    private void logout(){
+        Log.i(TAG, "logout() -> Logout requested.");
+        //wipe out token.
+        //send user back to Login Screen.
     }
 
 }

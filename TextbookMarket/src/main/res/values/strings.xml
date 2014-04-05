@@ -12,7 +12,18 @@
     <string name="title_activity_book__info">Book_Info</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_course__info">Course_Info</string>
+    <string name="app_label">Test1</string>
+    <string name="search_hint">CS4431</string>
+    <string name="title_activity_search_results">SearchResultsActivity</string>
+    <string name="title_activity_new_settings">NewSettings</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Save">Save</string>
+    <string name="Logout">Logout</string>
+    <string name="title_activity_listing__info">Listing_Info</string>
+    <string name="title_activity_mylistings__info">MyListings_Info</string>
 
-
+    <string name="title_activity_specific__listings">Specific_Listings</string>
+    <string name="title_activity_specific_listing_array_adapter">SpecificListingArrayAdapter</string>
+    <string name="title_activity_specific_listing_fragment">SpecificListingFragment</string>
 
 </resources>
